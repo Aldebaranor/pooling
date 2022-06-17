@@ -1,0 +1,28 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+    <changeSet author="41656 (generated)" id="1647400803042-34">
+        <createTable remarks="名称" tableName="fregata_map_point">
+            <column name="id" type="VARCHAR(50)">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="pageCode" remarks="页面编码" type="VARCHAR(50)"/>
+            <column name="lon" remarks="经度" type="DOUBLE(20, 10)"/>
+            <column name="lat" remarks="纬度" type="DOUBLE(20, 10)"/>
+            <column name="alt" remarks="海拔" type="DOUBLE(20, 10)"/>
+            <column name="heading" remarks="航向角" type="DOUBLE(20, 10)"/>
+            <column name="roll" remarks="横滚角" type="DOUBLE(20, 10)"/>
+            <column name="pitch" remarks="俯仰角" type="DOUBLE(20, 10)"/>
+            <column name="zoom" remarks="上升角" type="DOUBLE(20, 10)"/>
+            <column name="disabled" type="INT"/>
+            <column name="beDefault" type="INT"/>
+            <column name="createTime" remarks="创建时间" type="datetime"/>
+            <column name="modifyTime" remarks="修改时间" type="datetime"/>
+            <column name="name" remarks="名称" type="VARCHAR(50)"/>
+        </createTable>
+    </changeSet>
+
+
+
+</databaseChangeLog>
