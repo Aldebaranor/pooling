@@ -17,7 +17,7 @@
         <dependency>
             <groupId>com.egova</groupId>
             <artifactId>egova-framework-redis</artifactId>
-            <version>${egova-framework}</version>
+            <version>${egova-framework.version}</version>
         </dependency>
         <!-- 业务模块 -->
         <dependency>
