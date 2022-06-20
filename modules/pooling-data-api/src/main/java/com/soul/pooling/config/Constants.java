@@ -7,6 +7,7 @@ package com.soul.pooling.config;
  */
 public class Constants {
 
-    public static String POSE_MESSAGE= "pose:message";
+
+    public static String FORCE_HEAR= "pooling:force:";
 
 }
