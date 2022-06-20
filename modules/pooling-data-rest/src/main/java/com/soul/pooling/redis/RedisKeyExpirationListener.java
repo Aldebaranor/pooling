@@ -1,6 +1,7 @@
 package com.soul.pooling.redis;
 
 import com.soul.pooling.config.Constants;
+import com.soul.pooling.service.StatusManagement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.connection.Message;
 import org.springframework.data.redis.listener.KeyExpirationEventMessageListener;
@@ -15,6 +16,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class RedisKeyExpirationListener extends KeyExpirationEventMessageListener {
 
+    @Autowired
+    private StatusManagement management;
 
 
     public RedisKeyExpirationListener(RedisMessageListenerContainer listenerContainer) {
@@ -33,7 +36,8 @@ public class RedisKeyExpirationListener extends KeyExpirationEventMessageListene
         String expiredKey = message.toString();
         if (expiredKey.contains( Constants.FORCE_HEAR)) {
             //有兵力注销，通知仿真引擎将对应的仿真节点退出
-
+            String id = expiredKey.replace(Constants.FORCE_HEAR, "");
+            management.deleteForce(id);
         }
 
     }
