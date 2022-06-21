@@ -42,6 +42,7 @@ public class StatusManagement {
         }else{
             ForcesStatus forcesStatus = forceStatusData.get(id);
             if(forcesStatus.getInitStatus()){
+                log.info("--->兵力"+id+"已经初始化成功，无需重新初始化");
                 return;
             }else{
                 forcesStatus.setInitStatus(true);

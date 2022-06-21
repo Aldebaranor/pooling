@@ -8,6 +8,6 @@ package com.soul.pooling.config;
 public class Constants {
 
 
-    public static String FORCE_HEAR= "pooling:force:";
+    public static String FORCE_HEAR= "pooling:force:init:";
 
 }

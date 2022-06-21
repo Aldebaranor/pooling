@@ -224,6 +224,7 @@
         <module>modules/pooling-launch-single</module>
         <module>modules/pooling-data-api</module>
         <module>modules/pooling-data-rest</module>
+        <module>modules/pooling-message</module>
     </modules>
 
 </project>
