@@ -38,14 +38,16 @@ public class StatusManagement {
             status.setInitStatus(true);
             status.setActiveStatus(false);
             forceStatusData.put(id,status);
+            log.info("--->兵力"+id+"初始化成功");
         }else{
             ForcesStatus forcesStatus = forceStatusData.get(id);
             if(forcesStatus.getInitStatus()){
-                throw ExceptionUtils.api(String.format("该兵力已经初始化"));
+                return;
             }else{
                 forcesStatus.setInitStatus(true);
                 forcesStatus.setActiveStatus(false);
                 forceStatusData.put(id,forcesStatus);
+                log.info("--->兵力"+id+"初始化成功");
             }
         }
     }
@@ -57,6 +59,7 @@ public class StatusManagement {
             }
             forcesStatus.setActiveStatus(true);
             forceStatusData.put(id,forcesStatus);
+            log.info("--->兵力"+id+"激活成功");
         }else{
             throw ExceptionUtils.api(String.format("该兵力未初始化"));
         }
@@ -72,6 +75,7 @@ public class StatusManagement {
             }
             forcesStatus.setActiveStatus(false);
             forceStatusData.put(id,forcesStatus);
+            log.info("--->兵力"+id+"注销成功");
         }else{
             throw ExceptionUtils.api(String.format("该兵力未初始化"));
         }
@@ -84,6 +88,7 @@ public class StatusManagement {
             forcesStatus.setInitStatus(false);
             forcesStatus.setActiveStatus(false);
             forceStatusData.put(id,forcesStatus);
+            log.info("--->兵力"+id+"注销成功");
         }
     }
 
