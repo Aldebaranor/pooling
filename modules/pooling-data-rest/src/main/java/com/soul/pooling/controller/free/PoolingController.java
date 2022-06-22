@@ -71,7 +71,7 @@ public class PoolingController {
         return true;
     }
     @Api
-    @GetMapping(value = "/activated/forces/{forcesId}")
+    @GetMapping(value = "/activated/{forcesId}")
     public Boolean forcesActivated(@PathVariable String forcesId) {
         management.activeForce(forcesId);
 
