@@ -2,11 +2,10 @@ package com.soul.pooling.utils;
 
 import io.netty.buffer.ByteBuf;
 
-
-/**
+ /**
  * @Description:
  * @Author: nemo
- * @Date: 2022/3/26
+ * @Date: 2022/6/22
  */
 public class NettyUtils {
 

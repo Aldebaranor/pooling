@@ -14,12 +14,10 @@ import org.springframework.integration.mqtt.support.DefaultPahoMessageConverter;
 import org.springframework.messaging.MessageChannel;
 import org.springframework.messaging.MessageHandler;
 
-/**
- * @ClassName: MqttSubscribeConfig
+ /**
  * @Description: mqtt订阅消息配置
- * @Author: jodi
- * @Date: 2021/6/29 15:51
- * @Version: 1.0
+ * @Author: nemo
+ * @Date: 2022/6/22
  */
 @Configuration
 @ConditionalOnProperty(value = "mqtt.subscribe.enabled", havingValue = "true")

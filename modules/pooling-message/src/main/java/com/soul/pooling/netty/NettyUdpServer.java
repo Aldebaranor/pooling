@@ -18,10 +18,10 @@ import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import java.net.InetSocketAddress;
 
-/**
- * @Description:
+ /**
+ * @Description: udp服务端
  * @Author: nemo
- * @Date: 2022/3/23
+ * @Date: 2022/6/22
  */
 @Data
 @Slf4j

@@ -9,12 +9,10 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.integration.mqtt.core.DefaultMqttPahoClientFactory;
 import org.springframework.integration.mqtt.core.MqttPahoClientFactory;
 
-/**
- * @ClassName: MqttConfig
+ /**
  * @Description: MQTT配置类
- * @Author: jodi
- * @Date: 2021/6/29 15:20
- * @Version: 1.0
+ * @Author: nemo
+ * @Date: 2022/6/22
  */
 @Configuration
 @ConditionalOnExpression("${mqtt.producer.enabled:true} || ${mqtt.subscribe.enabled:true}")

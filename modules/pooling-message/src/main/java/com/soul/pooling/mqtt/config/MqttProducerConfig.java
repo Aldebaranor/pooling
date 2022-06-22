@@ -12,12 +12,10 @@ import org.springframework.integration.mqtt.outbound.MqttPahoMessageHandler;
 import org.springframework.messaging.MessageChannel;
 import org.springframework.messaging.MessageHandler;
 
-/**
- * @ClassName: MqttPublishConfig
+ /**
  * @Description: Mqtt推送消息配置类
- * @Author: jodi
- * @Date: 2021/6/29 15:32
- * @Version: 1.0
+ * @Author: nemo
+ * @Date: 2022/6/22
  */
 @Configuration
 @ConditionalOnProperty(value = "mqtt.producer.enabled", havingValue = "true")

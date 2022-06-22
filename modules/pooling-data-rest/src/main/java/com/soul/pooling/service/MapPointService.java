@@ -6,9 +6,12 @@ import com.egova.model.QueryModel;
 import com.soul.pooling.condition.MapPointCondition;
 import com.soul.pooling.entity.MapPoint;
 
+
 /**
- * created by yangL
- */
+* @Description:
+* @Author: nemo
+* @Date: 2022/6/22
+*/
 public interface MapPointService  {
 
 

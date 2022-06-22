@@ -5,11 +5,10 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.client.ClientHttpRequestFactory;
 import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.web.client.RestTemplate;
-
-/**
- * @Auther: 码头工人
- * @Date: 2021/11/03/6:28 下午
+ /**
  * @Description:
+ * @Author: nemo
+ * @Date: 2022/6/22
  */
 @Configuration
 public class RestTemplateConfig {

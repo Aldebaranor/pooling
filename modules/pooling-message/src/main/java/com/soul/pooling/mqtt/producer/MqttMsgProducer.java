@@ -6,12 +6,10 @@ import org.springframework.integration.mqtt.support.MqttHeaders;
 import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.stereotype.Component;
 
-/**
- * @ClassName: MqttPushlishMsg
+ /**
  * @Description: 向MQTT服务器推送消息
- * @Author: jodi
- * @Date: 2021/6/29 15:27
- * @Version: 1.0
+ * @Author: nemo
+ * @Date: 2022/6/22
  */
 @Component
 @ConditionalOnProperty(value = "mqtt.producer.enabled", havingValue = "true",matchIfMissing = false)

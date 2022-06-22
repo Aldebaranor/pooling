@@ -5,11 +5,12 @@ import java.io.IOException;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
+
 /**
- * @Auther: 码头工人
- * @Date: 2021/07/21/12:54 下午
- * @Description:
- */
+* @Description:
+* @Author: nemo
+* @Date: 2022/6/22
+*/
 public class GZIPUtils {
 
     public static final String GZIP_ENCODE_UTF_8 = "UTF-8";

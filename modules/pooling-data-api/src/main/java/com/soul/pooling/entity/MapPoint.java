@@ -14,9 +14,12 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import java.sql.Timestamp;
 
+
 /**
- * created by yangL
- */
+* @Description: 
+* @Author: nemo
+* @Date: 2022/6/22
+*/
 @Data
 @Entity
 @Table(name = "fregata_map_point")

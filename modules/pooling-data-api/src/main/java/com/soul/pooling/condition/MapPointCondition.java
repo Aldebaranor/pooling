@@ -6,9 +6,12 @@ import com.flagwind.persistent.annotation.ConditionOperator;
 import com.flagwind.persistent.model.ClauseOperator;
 import lombok.Data;
 
+
 /**
- * created by yangL
- */
+* @Description: 
+* @Author: nemo
+* @Date: 2022/6/22
+*/
 @Data
 @Condition
 @Display("地图设置")

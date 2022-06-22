@@ -10,12 +10,11 @@ import org.springframework.messaging.MessageHandler;
 import org.springframework.messaging.MessagingException;
 import org.springframework.stereotype.Component;
 
-/**
- * @ClassName: MqttMsgSubscribe
+
+ /**
  * @Description: mqtt订阅处理
- * @Author: jodi
- * @Date: 2021/6/29 15:47
- * @Version: 1.0
+ * @Author: nemo
+ * @Date: 2022/6/22
  */
 @Component
 @ConditionalOnProperty(value = "mqtt.subscribe.enabled", havingValue = "true" ,matchIfMissing = false)

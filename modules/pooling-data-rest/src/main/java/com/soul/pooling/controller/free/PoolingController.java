@@ -7,6 +7,7 @@ import com.flagwind.commons.StringUtils;
 import com.soul.pooling.config.PoolingConfig;
 import com.soul.pooling.model.ForcesStatus;
 import com.soul.pooling.mqtt.producer.MqttMsgProducer;
+import com.soul.pooling.netty.NettyUdpServer;
 import com.soul.pooling.service.StatusManagement;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,11 +18,12 @@ import org.springframework.web.client.RestTemplate;
 import java.util.List;
 import java.util.Map;
 
+
 /**
- * @author: 码头工人
- * @Date: 2021/11/01/2:10 下午
- * @Description:
- */
+* @Description:
+* @Author: nemo
+* @Date: 2022/6/22
+*/
 @Slf4j
 @RestController
 @RequestMapping("/free/pooling")
@@ -38,6 +40,9 @@ public class PoolingController {
 
     @Autowired
     private PoolingConfig poolingConfig;
+
+    @Autowired
+    private NettyUdpServer nettyUdpServer;
 
     @Api
     @GetMapping(value = "/start/{experiment}")
@@ -78,6 +83,7 @@ public class PoolingController {
         //TODO:
         //进行资源注册
         //通知仿真
+        nettyUdpServer.sendToAll("");
         return true;
     }
 

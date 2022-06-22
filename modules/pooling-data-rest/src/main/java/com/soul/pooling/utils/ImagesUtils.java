@@ -5,11 +5,12 @@ import sun.misc.BASE64Encoder;
 
 import java.io.*;
 
+
 /**
- * @auther: 码头工人
- * @date: 2022/03/28/3:17 下午
- * @description:
- */
+* @Description: 
+* @Author: nemo
+* @Date: 2022/6/22
+*/
 public class ImagesUtils {
 
     public static String GetImageStr(String imgFilePath) {// 将图片文件转化为字节数组字符串，并对其进行Base64编码处理

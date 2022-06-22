@@ -32,6 +32,10 @@ public class StatusManagement {
         return forceStatusData.get(id);
     }
 
+    /**
+     * 初始化兵力
+     * @param id
+     */
     public void initForce(String id){
         if(!forceStatusData.containsKey(id)){
             ForcesStatus status = new ForcesStatus();
@@ -52,6 +56,11 @@ public class StatusManagement {
             }
         }
     }
+
+    /**
+     * 向资源中心注册
+     * @param id
+     */
     public void activeForce(String id){
         if(forceStatusData.containsKey(id)){
             ForcesStatus forcesStatus = forceStatusData.get(id);
@@ -65,6 +74,11 @@ public class StatusManagement {
             throw ExceptionUtils.api(String.format("该兵力未初始化"));
         }
     }
+
+    /**
+     * 从资源中心注销
+     * @param id
+     */
     public void disActiveForce(String id){
         if(forceStatusData.containsKey(id)){
             ForcesStatus forcesStatus = forceStatusData.get(id);
@@ -81,6 +95,11 @@ public class StatusManagement {
             throw ExceptionUtils.api(String.format("该兵力未初始化"));
         }
     }
+
+    /**
+     * 兵力删除
+     * @param id
+     */
     public void deleteForce(String id){
         if(!forceStatusData.containsKey(id)){
             throw ExceptionUtils.api(String.format("该兵力未初始化"));
@@ -93,6 +112,9 @@ public class StatusManagement {
         }
     }
 
+    /**
+     * 清楚资源库
+     */
     public void cleanForce(){
         forceStatusData.clear();
     }

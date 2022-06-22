@@ -1,12 +1,11 @@
 package com.soul.pooling.config;
 
-/**
- * @Auther: 码头工人
- * @Date: 2021/04/07/5:01 下午
+ /**
  * @Description:
+ * @Author: nemo
+ * @Date: 2022/6/22
  */
 public class Constants {
-
 
     public static String FORCE_HEAR= "pooling:force:init:";
 

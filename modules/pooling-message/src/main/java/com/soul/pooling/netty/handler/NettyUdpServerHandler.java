@@ -6,8 +6,10 @@ import io.netty.channel.socket.DatagramPacket;
 import io.netty.util.CharsetUtil;
 import lombok.extern.slf4j.Slf4j;
 
-/**
- * @author zhp91
+ /**
+ * @Description: udp服务端
+ * @Author: nemo
+ * @Date: 2022/6/22
  */
 @Slf4j
 public class NettyUdpServerHandler extends SimpleChannelInboundHandler<DatagramPacket> {
