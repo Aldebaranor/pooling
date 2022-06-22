@@ -24,9 +24,9 @@ import java.util.Map;
  */
 @Slf4j
 @RestController
-@RequestMapping("/free/pump")
+@RequestMapping("/free/pooling")
 @RequiredArgsConstructor
-public class PumpController {
+public class PoolingController {
 
     private final RestTemplate restTemplate;
 
@@ -56,26 +56,33 @@ public class PumpController {
     }
 
     @Api
-    @PostMapping(value = "/init")
-    public Boolean pumpInit(@RequestBody List<String> forces) {
+    @PostMapping(value = "/init/forces")
+    public Boolean forcesInit(@RequestBody List<String> forces) {
         for (String id:forces){
             management.initForce(id);
         }
         return true;
     }
     @Api
-    @PostMapping(value = "/activate")
-    public Boolean pumpActivate(@RequestBody List<String> forces) {
-        //通知仿真节点激活
-//        for (String id:forces){
-//            management.activeForce(id);
-//        }
+    @PostMapping(value = "/activate/forces")
+    public Boolean forcesActivate(@RequestBody List<String> forces) {
+        //通知仿真节点执行激活
         mqttMsgProducer.producerMsg(poolingConfig.getActivateTopic(),JsonUtils.serialize(forces));
+        return true;
+    }
+    @Api
+    @GetMapping(value = "/activated/forces/{forcesId}")
+    public Boolean forcesActivated(@PathVariable String forcesId) {
+        management.activeForce(forcesId);
+
+        //TODO:
+        //进行资源注册
+        //通知仿真
         return true;
     }
 
     @Api
-    @PostMapping(value = "/dis-activate")
+    @PostMapping(value = "/dis-activate/forces")
     public Boolean pumpDisActivate( @RequestBody List<String> forces) {
         for (String id:forces){
             management.disActiveForce(id);
