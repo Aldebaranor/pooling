@@ -13,6 +13,9 @@ import java.io.Serializable;
 public class ForcesStatus implements Serializable {
 
     private static final long serialVersionUID = 5770184557706043686L;
+
+    private String forceId;
+
     private Boolean initStatus;
 
     private Boolean activeStatus;

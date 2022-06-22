@@ -1,9 +1,12 @@
 package com.soul.pooling.controller.free;
 
 import com.egova.exception.ExceptionUtils;
+import com.egova.json.utils.JsonUtils;
 import com.egova.web.annotation.Api;
 import com.flagwind.commons.StringUtils;
+import com.soul.pooling.config.PoolingConfig;
 import com.soul.pooling.model.ForcesStatus;
+import com.soul.pooling.mqtt.producer.MqttMsgProducer;
 import com.soul.pooling.service.StatusManagement;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -29,6 +32,12 @@ public class PumpController {
 
     @Autowired
     private StatusManagement management;
+
+    @Autowired
+    private MqttMsgProducer mqttMsgProducer;
+
+    @Autowired
+    private PoolingConfig poolingConfig;
 
     @Api
     @GetMapping(value = "/start/{experiment}")
@@ -57,9 +66,11 @@ public class PumpController {
     @Api
     @PostMapping(value = "/activate")
     public Boolean pumpActivate(@RequestBody List<String> forces) {
-        for (String id:forces){
-            management.activeForce(id);
-        }
+        //通知仿真节点激活
+//        for (String id:forces){
+//            management.activeForce(id);
+//        }
+        mqttMsgProducer.producerMsg(poolingConfig.getActivateTopic(),JsonUtils.serialize(forces));
         return true;
     }
 

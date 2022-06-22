@@ -26,8 +26,8 @@ import java.net.InetSocketAddress;
 @Data
 @Slf4j
 @Component
-@ConfigurationProperties(prefix = "pooling.netty")
-@ConditionalOnProperty(prefix = "pooling.netty.udp.server", name = "enable", havingValue = "true", matchIfMissing = true)
+@ConfigurationProperties(prefix = "netty")
+@ConditionalOnProperty(prefix = "netty.udp.server", name = "enable", havingValue = "true", matchIfMissing = false)
 public class NettyUdpServer {
 
     private Bootstrap bootstrap = new Bootstrap();

@@ -20,6 +20,11 @@
             <artifactId>egova-starter-platform</artifactId>
         </dependency>
         <dependency>
+            <groupId>com.soul</groupId>
+            <artifactId>pooling-common-base</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <version>1.18.20</version>
