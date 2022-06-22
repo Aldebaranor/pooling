@@ -7,6 +7,7 @@ import com.flagwind.commons.StringUtils;
 import com.soul.pooling.config.PoolingConfig;
 import com.soul.pooling.model.ForcesStatus;
 import com.soul.pooling.mqtt.producer.MqttMsgProducer;
+import com.soul.pooling.netty.NettyUdpClient;
 import com.soul.pooling.netty.NettyUdpServer;
 import com.soul.pooling.service.StatusManagement;
 import lombok.RequiredArgsConstructor;
@@ -44,6 +45,9 @@ public class PoolingController {
     @Autowired
     private NettyUdpServer nettyUdpServer;
 
+    @Autowired
+    private NettyUdpClient nettyUdpClient;
+
     @Api
     @GetMapping(value = "/start/{experiment}")
     public Boolean pumpStart(@PathVariable String experiment) {
@@ -78,12 +82,18 @@ public class PoolingController {
     @Api
     @GetMapping(value = "/activated/{forcesId}")
     public Boolean forcesActivated(@PathVariable String forcesId) {
+        ForcesStatus status = new ForcesStatus();
+        status.setForceId(forcesId);
+        status.setActiveStatus(true);
+        status.setInitStatus(true);
+        //nettyUdpServer.sendToAll("我是服务端");
+        nettyUdpClient.sendToServer(JsonUtils.serialize(status));
         management.activeForce(forcesId);
 
         //TODO:
         //进行资源注册
         //通知仿真
-        nettyUdpServer.sendToAll("");
+
         return true;
     }
 

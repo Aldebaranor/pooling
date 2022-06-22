@@ -1,8 +1,8 @@
 package com.soul.pooling.netty;
 
-import com.soul.pooling.netty.handler.NettyUdpServerHandler;
+import com.soul.pooling.model.MessageProtocol;
+import com.soul.pooling.netty.handler.NettyUdpClientHandler;
 import io.netty.bootstrap.Bootstrap;
-import io.netty.buffer.Unpooled;
 import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.DatagramPacket;
@@ -12,23 +12,25 @@ import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import java.net.InetSocketAddress;
 
- /**
- * @Description: udp服务端
+/**
+ * @Description:
  * @Author: nemo
- * @Date: 2022/6/22
+ * @Date: 2022/3/23
  */
 @Data
-@Slf4j
 @Component
+@Configuration
+@Slf4j
 @ConfigurationProperties(prefix = "netty")
-@ConditionalOnProperty(prefix = "netty.udp.server", name = "enable", havingValue = "true", matchIfMissing = false)
-public class NettyUdpServer {
+@ConditionalOnProperty(prefix = "netty.udp.client", name = "enable", havingValue = "true", matchIfMissing = false)
+public class NettyUdpClient {
 
     private Bootstrap bootstrap = new Bootstrap();
 
@@ -36,10 +38,11 @@ public class NettyUdpServer {
 
     private Channel channel;
 
-     private Integer clientPort;
+    private Integer clientPort;
 
-     private Integer serverPort;
+    private Integer serverPort;
 
+    private String serverIp;
 
     @PostConstruct
     public void start() throws InterruptedException {
@@ -53,23 +56,23 @@ public class NettyUdpServer {
                     @Override
                     protected void initChannel(Channel channel) throws Exception {
                         ChannelPipeline pipeline = channel.pipeline();
-                        pipeline.addLast(new NettyUdpServerHandler());
+                        pipeline.addLast(new NettyUdpClientHandler());
                     }
                 });
-        channel = bootstrap.bind(serverPort).sync().channel();
-        log.info("----------------------------UdpServer start success");
+        channel = bootstrap.bind(clientPort).sync().channel();
+        log.info("----------------------------UdpClient start success");
     }
 
     @PreDestroy
     public void destory() throws InterruptedException {
         group.shutdownGracefully().sync();
-        log.info("----------------------------关闭NettyServer");
+        log.info("----------------------------关闭Netty");
     }
 
-    public void sendToAll(String msg) {
+    public void sendToServer(String msg) {
         try {
-            this.channel.writeAndFlush(new DatagramPacket(Unpooled.copiedBuffer(
-                    msg, CharsetUtil.UTF_8), new InetSocketAddress("255.255.255.255", clientPort)));
+            MessageProtocol protocol = new MessageProtocol(msg.getBytes(CharsetUtil.UTF_8).length,msg.getBytes(CharsetUtil.UTF_8));
+            this.channel.writeAndFlush(new DatagramPacket(protocol.toByteBuf(), new InetSocketAddress(serverIp, serverPort)));
         } catch (Exception e) {
             return;
         }
