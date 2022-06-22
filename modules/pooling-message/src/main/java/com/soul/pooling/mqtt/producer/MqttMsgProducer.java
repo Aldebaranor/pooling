@@ -1,4 +1,4 @@
-package com.soul.pooling.mqtt.publish;
+package com.soul.pooling.mqtt.producer;
 
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.integration.annotation.MessagingGateway;
@@ -16,7 +16,7 @@ import org.springframework.stereotype.Component;
 @Component
 @ConditionalOnProperty(value = "mqtt.producer.enabled", havingValue = "true",matchIfMissing = false)
 @MessagingGateway(defaultRequestChannel = "publishChannel")
-public interface MqttMsgPublisher {
+public interface MqttMsgProducer {
 
     /**
      * 推送消息

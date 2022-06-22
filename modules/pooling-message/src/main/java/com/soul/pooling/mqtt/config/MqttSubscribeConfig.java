@@ -1,8 +1,5 @@
 package com.soul.pooling.mqtt.config;
-
-import com.soul.online.mqtt.subscribe.MqttHashMsgSubscribe;
-import com.soul.online.mqtt.subscribe.MqttListMsgSubscribe;
-import com.soul.online.mqtt.subscribe.MqttMsgSubscribe;
+import com.soul.pooling.mqtt.subscribe.MqttMsgSubscribe;
 import lombok.Data;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -31,14 +28,8 @@ import org.springframework.messaging.MessageHandler;
 public class MqttSubscribeConfig {
 
     public static final String OUTBOUND_CHANNEL = "mqttOutboundChannel";
-    public static final String OUTBOUND_CHANNEL_HASH = "mqttOutboundChannelHash";
-    public static final String OUTBOUND_CHANNEL_LIST = "mqttOutboundChannelList";
 
-    private String consumerValueTopics="juntai_zhuhai_test";
-
-    private String consumerHashTopics="juntai_zhuhai_test";
-
-    private String consumerListTopics="juntai_zhuhai_test";
+    private String consumerValueTopics="juntai_test";
 
     private int defaultQos;
 
@@ -46,13 +37,6 @@ public class MqttSubscribeConfig {
 
 
     private final MqttMsgSubscribe subscriber;
-
-
-    private final MqttHashMsgSubscribe subscriberHash;
-
-
-    private final MqttListMsgSubscribe subscriberList;
-
 
 
     /**
@@ -71,27 +55,6 @@ public class MqttSubscribeConfig {
         return adapter;
     }
 
-    @Bean(name = "channelInboundList")
-    public MessageProducer channelInboundList( MqttPahoClientFactory factory) {
-        String clientId = "mqtt-subscribe-list-" + System.currentTimeMillis();
-        MqttPahoMessageDrivenChannelAdapter adapter = new MqttPahoMessageDrivenChannelAdapter(clientId, factory, consumerListTopics.split(","));
-        adapter.setCompletionTimeout(completionTimeout);
-        adapter.setConverter(new DefaultPahoMessageConverter());
-        adapter.setQos(defaultQos);
-        adapter.setOutputChannel(mqttSubscribeChannelList());
-        return adapter;
-    }
-
-    @Bean(name = "channelInboundHash")
-    public MessageProducer channelInboundHash( MqttPahoClientFactory factory) {
-        String clientId = "mqtt-subscribe-hash-" + System.currentTimeMillis();
-        MqttPahoMessageDrivenChannelAdapter adapter = new MqttPahoMessageDrivenChannelAdapter(clientId, factory, consumerHashTopics.split(","));
-        adapter.setCompletionTimeout(completionTimeout);
-        adapter.setConverter(new DefaultPahoMessageConverter());
-        adapter.setQos(defaultQos);
-        adapter.setOutputChannel(mqttSubscribeChannelHash());
-        return adapter;
-    }
 
     /**
      * 订阅消息处理类
@@ -106,20 +69,7 @@ public class MqttSubscribeConfig {
      * 订阅消息处理类
      * @return
      */
-    @Bean
-    @ServiceActivator(inputChannel = OUTBOUND_CHANNEL_HASH)
-    public MessageHandler mqttMessageHandlerHash(){
-        return subscriberHash;
-    }
-    /**
-     * 订阅消息处理类
-     * @return
-     */
-    @Bean
-    @ServiceActivator(inputChannel = OUTBOUND_CHANNEL_LIST)
-    public MessageHandler mqttMessageHandlerList(){
-        return subscriberList;
-    }
+
 
     /**
      * mqtt消息订阅消息通道
@@ -131,22 +81,5 @@ public class MqttSubscribeConfig {
         return new DirectChannel();
     }
 
-    /**
-     * mqtt消息订阅消息通道
-     *
-     * @return
-     */
-    @Bean(value = OUTBOUND_CHANNEL_HASH)
-    public MessageChannel mqttSubscribeChannelHash() {
-        return new DirectChannel();
-    }
-    /**
-     * mqtt消息订阅消息通道
-     *
-     * @return
-     */
-    @Bean(value = OUTBOUND_CHANNEL_LIST)
-    public MessageChannel mqttSubscribeChannelList() {
-        return new DirectChannel();
-    }
+
 }
