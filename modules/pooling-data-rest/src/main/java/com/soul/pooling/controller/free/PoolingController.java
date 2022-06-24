@@ -75,34 +75,49 @@ public class PoolingController {
     @Api
     @PostMapping(value = "/activate/forces")
     public Boolean forcesActivate(@RequestBody List<String> forces) {
-        //通知仿真节点执行激活
+        //通知仿真节点（resources）执行激活
         mqttMsgProducer.producerMsg(poolingConfig.getActivateTopic(),JsonUtils.serialize(forces));
         return true;
     }
     @Api
     @GetMapping(value = "/activated/{forcesId}")
     public Boolean forcesActivated(@PathVariable String forcesId) {
-        ForcesStatus status = new ForcesStatus();
-        status.setForceId(forcesId);
-        status.setActiveStatus(true);
-        status.setInitStatus(true);
-        //nettyUdpServer.sendToAll("我是服务端");
-        nettyUdpClient.sendToServer(JsonUtils.serialize(status));
-        management.activeForce(forcesId);
+        ForcesStatus forcesData = management.getForcesData(forcesId);
+        if(forcesData == null){
+            throw ExceptionUtils.api(String.format("该兵力未注册"));
+        }
+        if(!forcesData.getInitStatus()){
+            throw ExceptionUtils.api(String.format("该兵力未初始化"));
+        }
 
+        forcesData.setActiveStatus(true);
+        //通知仿真
+        nettyUdpClient.sendToServer(JsonUtils.serialize(forcesData));
         //TODO:
         //进行资源注册
-        //通知仿真
-
+        management.activeForce(forcesId);
         return true;
     }
 
     @Api
-    @PostMapping(value = "/dis-activate/forces")
-    public Boolean pumpDisActivate( @RequestBody List<String> forces) {
-        for (String id:forces){
-            management.disActiveForce(id);
+    @PostMapping(value = "/dis-activate/{forcesId}")
+    public Boolean forcesDisActivated(@PathVariable String forcesId) {
+        ForcesStatus forcesData = management.getForcesData(forcesId);
+        if(forcesData == null){
+            throw ExceptionUtils.api(String.format("该兵力未注册"));
         }
+        if(!forcesData.getInitStatus()){
+            throw ExceptionUtils.api(String.format("该兵力未初始化"));
+        }
+        if(!forcesData.getActiveStatus()){
+            throw ExceptionUtils.api(String.format("该兵力未被激活"));
+        }
+        forcesData.setActiveStatus(false);
+        //通知仿真
+        nettyUdpClient.sendToServer(JsonUtils.serialize(forcesData));
+        //TODO:
+        //进行资源注册
+        management.disActiveForce(forcesId);
         return true;
     }
 
