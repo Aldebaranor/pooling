@@ -74,7 +74,7 @@ public class ZeroMqSubscriber {
         Thread zeroMqSubscriberThread = new ZeroMqSubscriberThread();
         zeroMqSubscriberThread.setName(zeroMqSubscriberThread.getClass().getSimpleName());
         zeroMqSubscriberThread.start();
-        log.info("----------------------------ZeroMqPublisher start success");
+        log.info("----------------------------ZeroMqSubscribe start success");
     }
 
     @PreDestroy
@@ -82,7 +82,7 @@ public class ZeroMqSubscriber {
         unsubscribe();
         zAuth.close();
         zContext.close();
-        log.info("----------------------------关闭ZeroMqPublisher");
+        log.info("----------------------------关闭ZeroMqSubscribe");
     }
 
     private final class ZeroMqSubscriberThread extends Thread {
