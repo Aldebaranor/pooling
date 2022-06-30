@@ -122,7 +122,7 @@ public class PoolingController {
      */
 
     @Api
-    @PostMapping(value = "/dis-activated/{forcesId}")
+    @GetMapping(value = "/dis-activated/{forcesId}")
     public Boolean forcesDisActivated(@PathVariable String forcesId) {
         ForcesStatus forcesData = management.getForcesData(forcesId);
         if(forcesData == null){
