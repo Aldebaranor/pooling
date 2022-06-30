@@ -33,7 +33,7 @@ import java.util.Map;
 public class TestController {
 
 
-    @Autowired
+    @Autowired(required = false)
     private ZeroMqPublisher zeroMqPublisher;
 
 

@@ -1,5 +1,7 @@
 package com.soul.pooling.netty;
 
+import com.soul.pooling.model.EntityOffline;
+import com.soul.pooling.model.EntityOnline;
 import com.soul.pooling.model.MessageProtocol;
 import com.soul.pooling.netty.handler.NettyUdpClientHandler;
 import io.netty.bootstrap.Bootstrap;
@@ -77,6 +79,25 @@ public class NettyUdpClient {
             return;
         }
     }
+
+    public void online(String msg){
+        try{
+            EntityOnline protocol = new EntityOnline(4,Integer.parseInt(msg));
+            this.channel.writeAndFlush(new DatagramPacket(protocol.toByteBuf(), new InetSocketAddress(serverIp, serverPort)));
+        } catch (Exception e){
+            return;
+        }
+    }
+
+    public void offline(String msg){
+        try{
+            EntityOffline protocol = new EntityOffline(4,Integer.parseInt(msg));
+            this.channel.writeAndFlush(new DatagramPacket(protocol.toByteBuf(), new InetSocketAddress(serverIp, serverPort)));
+        } catch (Exception e){
+            return;
+        }
+    }
+
 
 
 }

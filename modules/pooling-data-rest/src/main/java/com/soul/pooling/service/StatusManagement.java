@@ -39,6 +39,7 @@ public class StatusManagement {
     public void initForce(String id){
         if(!forceStatusData.containsKey(id)){
             ForcesStatus status = new ForcesStatus();
+            status.setForceId(id);
             status.setInitStatus(true);
             status.setActiveStatus(false);
             forceStatusData.put(id,status);

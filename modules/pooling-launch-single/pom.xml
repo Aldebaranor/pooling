@@ -112,7 +112,7 @@
     </dependencies>
 
     <build>
-        <finalName>pose-single</finalName>
+        <finalName>resource-pooling</finalName>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
