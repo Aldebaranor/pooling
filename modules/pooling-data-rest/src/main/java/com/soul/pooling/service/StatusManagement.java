@@ -120,7 +120,9 @@ public class StatusManagement {
         forceStatusData.clear();
     }
 
-
+    public boolean IsInited(String id){
+        return forceStatusData.containsKey(id);
+    }
 
 
 
