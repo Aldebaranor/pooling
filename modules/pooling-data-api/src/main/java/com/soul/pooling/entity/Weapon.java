@@ -20,7 +20,7 @@ import javax.persistence.Table;
 @Data
 @Entity
 @Table(name = "polling_weapon")
-@Display("地图设置")
+@Display("武器")
 @EqualsAndHashCode(callSuper = true)
 public class Weapon extends BaseEntity{
 
@@ -40,10 +40,10 @@ public class Weapon extends BaseEntity{
     private String name;
 
     @Display("类型")
-    @Column(name = "entity")
-    private String entity;
+    @Column(name = "type")
+    private String type;
 
-    @Display("类型")
+    @Display("数量")
     @Column(name = "number")
     private String number;
 

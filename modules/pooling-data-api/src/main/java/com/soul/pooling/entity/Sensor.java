@@ -20,7 +20,7 @@ import javax.persistence.Table;
 @Data
 @Entity
 @Table(name = "polling_sensor")
-@Display("地图设置")
+@Display("传感器")
 @EqualsAndHashCode(callSuper = true)
 public class Sensor extends BaseEntity{
 
@@ -40,8 +40,8 @@ public class Sensor extends BaseEntity{
     private String name;
 
     @Display("类型")
-    @Column(name = "entity")
-    private String entity;
+    @Column(name = "type")
+    private String type;
 
     @Display("对空探测能力（公里）")
     @Column(name = "detectionAir")

@@ -23,6 +23,52 @@
         </createTable>
     </changeSet>
 
+    <changeSet author="41656 (generated)" id="1647400803042-35">
+        <createTable remarks="平台" tableName="pooling_platform">
+            <column name="id" type="VARCHAR(50)">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="code" remarks="编号" type="VARCHAR(50)"/>
+            <column name="name" remarks="名称" type="VARCHAR(50)"/>
+            <column name="type" remarks="类型" type="VARCHAR(50)"/>
+            <column name="battery" remarks="续航（公里）" type="VARCHAR(50)"/>
+            <column name="maxSpeed" remarks="最大航速" type="FLOAT"/>
+            <column name="status" remarks="状态" type="INT"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="41656 (generated)" id="1647400803042-36">
+        <createTable remarks="传感器" tableName="pooling_sensor">
+            <column name="id" type="VARCHAR(50)">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="platformCode" remarks="平台编号" type="VARCHAR(50)"/>
+            <column name="name" remarks="名称" type="VARCHAR(50)"/>
+            <column name="type" remarks="类型" type="VARCHAR(50)"/>
+            <column name="detectionAir" remarks="对空探测能力（公里）" type="FLOAT"/>
+            <column name="detectionSea" remarks="对海探测能力（公里）" type="FLOAT"/>
+            <column name="detectionUnderSea" remarks="对水下探测能力（公里）" type="FLOAT"/>
+            <column name="status" remarks="状态" type="INT"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="41656 (generated)" id="1647400803042-37">
+        <createTable remarks="武器" tableName="pooling_weapon">
+            <column name="id" type="VARCHAR(50)">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="platformCode" remarks="平台编号" type="VARCHAR(50)"/>
+            <column name="name" remarks="名称" type="VARCHAR(50)"/>
+            <column name="type" remarks="类型" type="VARCHAR(50)"/>
+            <column name="number" remarks="数量" type="VARCHAR(50)"/>
+            <column name="fireAir" remarks="对空作战能力（公里）" type="FLOAT"/>
+            <column name="fireSea" remarks="对海作战能力（公里）" type="FLOAT"/>
+            <column name="fireUnderSea" remarks="对水下作战能力（公里）" type="FLOAT"/>
+            <column name="hitRate" remarks="命中概率" type="FLOAT"/>
+            <column name="status" remarks="状态" type="INT"/>
+        </createTable>
+    </changeSet>
+
 
 
 </databaseChangeLog>

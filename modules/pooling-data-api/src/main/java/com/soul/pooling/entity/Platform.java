@@ -21,7 +21,7 @@ import java.util.List;
 @Data
 @Entity
 @Table(name = "polling_platform")
-@Display("地图设置")
+@Display("平台")
 @EqualsAndHashCode(callSuper = true)
 public class Platform extends BaseEntity{
 
@@ -41,15 +41,15 @@ public class Platform extends BaseEntity{
     private String name;
 
     @Display("类型")
-    @Column(name = "entity")
-    private String entity;
+    @Column(name = "type")
+    private String type;
 
     @Display("续航（公里）")
     @Column(name = "battery")
     private String battery;
 
-    @Display("航速")
-    @Column(name = "speed")
+    @Display("最大航速")
+    @Column(name = "maxSpeed")
     private float speed;
 
     @Display("状态")
