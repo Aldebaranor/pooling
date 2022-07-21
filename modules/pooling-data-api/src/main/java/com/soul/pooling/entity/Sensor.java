@@ -19,12 +19,12 @@ import javax.persistence.Table;
 */
 @Data
 @Entity
-@Table(name = "polling_sensor")
+@Table(name = "pooling_sensor")
 @Display("传感器")
 @EqualsAndHashCode(callSuper = true)
 public class Sensor extends BaseEntity{
 
-    public static final String NAME = "polling:sensor";
+    public static final String NAME = "pooling:sensor";
 
     @Id
     @Display("主键")

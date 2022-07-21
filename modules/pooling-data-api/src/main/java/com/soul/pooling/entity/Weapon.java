@@ -19,12 +19,12 @@ import javax.persistence.Table;
 */
 @Data
 @Entity
-@Table(name = "polling_weapon")
+@Table(name = "pooling_weapon")
 @Display("武器")
 @EqualsAndHashCode(callSuper = true)
 public class Weapon extends BaseEntity{
 
-    public static final String NAME = "polling:weapon";
+    public static final String NAME = "pooling:weapon";
 
     @Id
     @Display("主键")
@@ -46,7 +46,6 @@ public class Weapon extends BaseEntity{
     @Display("数量")
     @Column(name = "number")
     private String number;
-
 
     @Display("对空作战能力（公里）")
     @Column(name = "fireAir")

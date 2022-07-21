@@ -20,12 +20,12 @@ import java.util.List;
 */
 @Data
 @Entity
-@Table(name = "polling_platform")
+@Table(name = "pooling_platform")
 @Display("平台")
 @EqualsAndHashCode(callSuper = true)
 public class Platform extends BaseEntity{
 
-    public static final String NAME = "polling:platform";
+    public static final String NAME = "pooling:platform";
 
     @Id
     @Display("主键")

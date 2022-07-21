@@ -9,4 +9,8 @@ public class Constants {
 
     public static String FORCE_HEAR= "pooling:force:init:";
 
+
+     public static String OPERATE_FORCE_URL = "/csp/operate/force";
+
+
 }
