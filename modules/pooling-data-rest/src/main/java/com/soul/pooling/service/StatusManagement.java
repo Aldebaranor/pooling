@@ -1,7 +1,7 @@
 package com.soul.pooling.service;
 
 import com.egova.exception.ExceptionUtils;
-import com.soul.pooling.model.ForcesStatus;
+import com.soul.pooling.model.PlatformStatus;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -21,14 +21,14 @@ import java.util.concurrent.ConcurrentMap;
 @Priority(5)
 public class StatusManagement {
 
-    private final ConcurrentMap<String, ForcesStatus> forceStatusData = new ConcurrentHashMap();
+    private final ConcurrentMap<String, PlatformStatus> forceStatusData = new ConcurrentHashMap();
 
 
-    public Map<String, ForcesStatus> getAll() {
+    public Map<String, PlatformStatus> getAll() {
         return forceStatusData;
     }
 
-    public ForcesStatus getForcesData(String id) {
+    public PlatformStatus getForcesData(String id) {
         return forceStatusData.get(id);
     }
 
@@ -38,14 +38,14 @@ public class StatusManagement {
      */
     public void initForce(String id){
         if(!forceStatusData.containsKey(id)){
-            ForcesStatus status = new ForcesStatus();
-            status.setForceId(id);
+            PlatformStatus status = new PlatformStatus();
+            status.setPlatformId(id);
             status.setInitStatus(true);
             status.setActiveStatus(false);
             forceStatusData.put(id,status);
             log.info("--->兵力"+id+"初始化成功");
         }else{
-            ForcesStatus forcesStatus = forceStatusData.get(id);
+            PlatformStatus forcesStatus = forceStatusData.get(id);
             if(forcesStatus.getInitStatus()){
                 log.info("--->兵力"+id+"已经初始化成功，无需重新初始化");
                 return;
@@ -64,7 +64,7 @@ public class StatusManagement {
      */
     public void activeForce(String id){
         if(forceStatusData.containsKey(id)){
-            ForcesStatus forcesStatus = forceStatusData.get(id);
+            PlatformStatus forcesStatus = forceStatusData.get(id);
             if(!forcesStatus.getInitStatus()){
                 throw ExceptionUtils.api(String.format("该兵力未初始化"));
             }
@@ -82,7 +82,7 @@ public class StatusManagement {
      */
     public void disActiveForce(String id){
         if(forceStatusData.containsKey(id)){
-            ForcesStatus forcesStatus = forceStatusData.get(id);
+            PlatformStatus forcesStatus = forceStatusData.get(id);
             if(!forcesStatus.getInitStatus()){
                 throw ExceptionUtils.api(String.format("该兵力未初始化"));
             }
@@ -105,7 +105,7 @@ public class StatusManagement {
         if(!forceStatusData.containsKey(id)){
             throw ExceptionUtils.api(String.format("该兵力未初始化"));
         }else{
-            ForcesStatus forcesStatus = forceStatusData.get(id);
+            PlatformStatus forcesStatus = forceStatusData.get(id);
             forcesStatus.setInitStatus(false);
             forcesStatus.setActiveStatus(false);
             forceStatusData.put(id,forcesStatus);

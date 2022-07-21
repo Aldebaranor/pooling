@@ -6,7 +6,10 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
- /**
+import java.util.ArrayList;
+import java.util.List;
+
+/**
  * @Description:
  * @Author: nemo
  * @Date: 2022/6/22
@@ -18,6 +21,10 @@ public class PoolingConfig {
 
 
     private String activateTopic;
+
+    private String simulationUrlHead;
+
+    private List<String> unmannedHostList = new ArrayList<>();
 
 
 }

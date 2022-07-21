@@ -10,11 +10,17 @@ import java.io.Serializable;
  * @Date: 2022/6/20 6:13 PM
  */
 @Data
-public class ForcesStatus implements Serializable {
+public class PlatformStatus implements Serializable {
 
     private static final long serialVersionUID = 5770184557706043686L;
 
-    private String forceId;
+    private String platformId;
+
+    private String name;
+
+    private String code;
+
+    private String type;
 
     private Boolean initStatus;
 

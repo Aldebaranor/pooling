@@ -1,7 +1,7 @@
 package com.soul.pooling.task;
 
 
-import com.soul.pooling.config.PingConfig;
+import com.soul.pooling.config.PoolingConfig;
 import com.soul.pooling.service.StatusManagement;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +23,7 @@ import java.util.List;
 public class PingJob {
 
     @Autowired
-    public PingConfig pingConfig;
+    public PoolingConfig poolingConfig;
 
     @Autowired
     private StatusManagement management;
@@ -31,7 +31,7 @@ public class PingJob {
     @Scheduled(fixedDelayString = "1000" )
     public void execute(){
         try{
-            List<String> domains = pingConfig.getHostList();
+            List<String> domains = poolingConfig.getUnmannedHostList();
             for(String domain:domains){
                 ping(domain);
             }
