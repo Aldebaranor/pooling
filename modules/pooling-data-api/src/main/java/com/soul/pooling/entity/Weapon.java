@@ -55,6 +55,10 @@ public class Weapon extends BaseEntity{
     @Column(name = "fireSea")
     private float fireSea;
 
+    @Display("对陆作战能力（公里）")
+    @Column(name = "fireLand")
+    private float fireLand;
+
     @Display("对水下作战能力（公里）")
     @Column(name = "fireUnderSea")
     private float fireUnderSea;

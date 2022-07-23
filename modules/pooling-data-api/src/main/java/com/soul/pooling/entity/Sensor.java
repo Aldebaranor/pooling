@@ -51,6 +51,10 @@ public class Sensor extends BaseEntity{
     @Column(name = "detectionSea")
     private float detectionSea;
 
+    @Display("对陆地探测能力（公里）")
+    @Column(name = "detectionLand")
+    private float detectionLand;
+
     @Display("对水下探测能力（公里）")
     @Column(name = "detectionUnderSea")
     private float detectionUnderSea;
