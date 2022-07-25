@@ -27,7 +27,7 @@ public class PlatformCondition {
     private String name;
 
     @Display("类型")
-    @ConditionOperator(name = "type",operator = ClauseOperator.Like)
+    @ConditionOperator(name = "type",operator = ClauseOperator.Equal)
     private String type;
 
     @Display("状态")

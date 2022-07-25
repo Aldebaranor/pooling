@@ -7,11 +7,15 @@ import com.egova.model.QueryModel;
 import com.soul.pooling.condition.PlatformCondition;
 import com.soul.pooling.domain.PlatformRepository;
 import com.soul.pooling.entity.Platform;
+import com.soul.pooling.entity.Sensor;
+import com.soul.pooling.entity.Weapon;
 import com.soul.pooling.service.PlatformService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * @author Administrator

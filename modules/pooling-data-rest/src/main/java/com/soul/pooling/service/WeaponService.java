@@ -47,11 +47,25 @@ public interface WeaponService {
     int deleteById(String id);
 
     /**
+     * 主键批量删除
+     * @param ids
+     * @return
+     */
+    int deleteByIds(List<String> ids);
+
+    /**
      * 分页查询
      * @param model
      * @return
      */
     PageResult<Weapon> page(QueryModel<WeaponCondition> model);
+
+    /**
+     * 查询指定平台所有武器
+     * @param platformCode
+     * @return
+     */
+    List<Weapon> getByPlatformCode(String platformCode);
 
 
 }

@@ -2,7 +2,11 @@ package com.egova;
 
 import com.egova.model.PropertyItem;
 import com.soul.Bootstrap;
+import com.soul.pooling.entity.Sensor;
+import com.soul.pooling.service.PlatformService;
+import com.soul.pooling.service.SensorService;
 import com.soul.pooling.utils.ImagesUtils;
+import liquibase.pro.packaged.S;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +31,16 @@ public class BootstrapTest {
     @Autowired
     private StringRedisTemplate stringRedisTemplate;
 
+    @Autowired
+    private SensorService sensorService;
+
+    @Autowired
+    private PlatformService platformService;
+
+    @Test
+    public void crud(){
+        System.out.println(platformService.getById("1"));
+    }
 
 
     @Test

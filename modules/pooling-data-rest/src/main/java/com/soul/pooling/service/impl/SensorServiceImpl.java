@@ -4,6 +4,8 @@ import com.egova.data.service.AbstractRepositoryBase;
 import com.egova.data.service.TemplateService;
 import com.egova.model.PageResult;
 import com.egova.model.QueryModel;
+import com.flagwind.persistent.model.Sorting;
+import com.soul.pooling.condition.PlatformCondition;
 import com.soul.pooling.condition.SensorCondition;
 import com.soul.pooling.domain.SensorRepository;
 import com.soul.pooling.entity.Sensor;
@@ -11,6 +13,8 @@ import com.soul.pooling.service.SensorService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * @author Administrator
@@ -43,6 +47,14 @@ public class SensorServiceImpl extends TemplateService<Sensor,String> implements
     @Override
     public PageResult<Sensor> page(QueryModel<SensorCondition> model){
         return super.page(model.getCondition(),model.getPaging(),model.getSorts());
+    }
+
+    @Override
+    public List<Sensor> getByPlatformCode(String platformCode ) {
+        SensorCondition sensorCondition = new SensorCondition();
+        sensorCondition.setPlatformCode(platformCode);
+        List<Sensor> sensorList = super.query(sensorCondition,new Sorting[]{Sorting.descending("id")});
+        return sensorList;
     }
 
 }

@@ -4,6 +4,8 @@ import com.egova.model.PageResult;
 import com.egova.model.QueryModel;
 import com.soul.pooling.condition.PlatformCondition;
 import com.soul.pooling.entity.Platform;
+import com.soul.pooling.entity.Sensor;
+import com.soul.pooling.entity.Weapon;
 
 import java.util.List;
 import java.util.Map;
@@ -47,6 +49,13 @@ public interface PlatformService {
      * @return
      */
     int deleteById(String id);
+
+    /**
+     * 主键批量删除
+     * @param ids
+     * @return
+     */
+    int deleteByIds(List<String> ids);
 
     /**
      * 分页查询

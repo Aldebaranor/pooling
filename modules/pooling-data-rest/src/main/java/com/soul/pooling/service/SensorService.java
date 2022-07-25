@@ -47,9 +47,31 @@ public interface SensorService {
     int deleteById(String id);
 
     /**
+     * 主键批量删除
+     * @param ids
+     * @return
+     */
+    int deleteByIds(List<String> ids);
+
+    /**
      * 分页查询
      * @param model
      * @return
      */
     PageResult<Sensor> page(QueryModel<SensorCondition> model);
+
+    /**
+     * 查询指定平台所有传感器
+     * @param platformCode
+     * @return
+     */
+    List<Sensor> getByPlatformCode(String platformCode);
+
+    /**
+     * 主键查询 id
+     * @param id
+     * @return
+     */
+    Sensor seekById(String id);
+
 }

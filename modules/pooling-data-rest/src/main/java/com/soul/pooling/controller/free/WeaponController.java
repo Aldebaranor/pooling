@@ -1,10 +1,11 @@
 package com.soul.pooling.controller.free;
 
+import com.egova.exception.ExceptionUtils;
 import com.egova.model.PageResult;
 import com.egova.model.QueryModel;
 import com.egova.web.annotation.Api;
+import com.flagwind.commons.StringUtils;
 import com.soul.pooling.condition.WeaponCondition;
-import com.soul.pooling.entity.Sensor;
 import com.soul.pooling.entity.Weapon;
 import com.soul.pooling.service.WeaponService;
 import lombok.RequiredArgsConstructor;
@@ -33,6 +34,40 @@ public class WeaponController {
     private WeaponService weaponService;
 
     /**
+     * 新增武器
+     * @param weapon
+     */
+    @Api
+    @GetMapping(value = "/weapon/insert")
+    public void insert(@RequestBody Weapon weapon){
+        weaponService.insert(weapon);
+    }
+
+    /**
+     * 根据主键id删除武器
+     * @return
+     */
+    @Api
+    @DeleteMapping(value = "/weapon/delete/{weaponId}")
+    public Boolean deleteById(@PathVariable("weaponId") String weaponId){
+        if(StringUtils.isBlank(weaponId)){
+            throw ExceptionUtils.api("id can not be null");
+        }
+        weaponService.deleteById(weaponId);
+        return true;
+    }
+
+    /**
+     * 新增武器
+     * @param weapon
+     */
+    @Api
+    @PutMapping(value = "/weapon/update")
+    public void update(@RequestBody Weapon weapon){
+        weaponService.update(weapon);
+    }
+
+    /**
      * 获取作战资源池武器列表信息
      * @return
      */
@@ -53,5 +88,27 @@ public class WeaponController {
     public PageResult<Weapon> pageWeapon(@RequestBody WeaponCondition condition){
 
         return weaponService.page(new QueryModel<>(condition));
+    }
+
+    /**
+     * 查找指定平台下所有武器
+     * @param platformCode
+     * @return
+     */
+    @Api
+    @GetMapping(value = "/weapon/queryByPlat/{platformCode}")
+    public List<Weapon> getByPlatformCode(@PathVariable("platformCode") String platformCode){
+        return weaponService.getByPlatformCode(platformCode);
+    }
+
+    /**
+     * 批量主键删除
+     * @param ids
+     * @return
+     */
+    @Api
+    @DeleteMapping(value = "/weapon/delete/batch")
+    public int batchDelete(@RequestBody List<String> ids){
+        return weaponService.deleteByIds(ids);
     }
 }

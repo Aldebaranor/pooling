@@ -71,7 +71,4 @@ public class Weapon extends BaseEntity{
     @Column(name = "status")
     private int status;
 
-
-    
-
 }
