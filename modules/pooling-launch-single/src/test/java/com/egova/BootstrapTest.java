@@ -2,6 +2,7 @@ package com.egova;
 
 import com.egova.model.PropertyItem;
 import com.soul.Bootstrap;
+import com.soul.pooling.entity.Platform;
 import com.soul.pooling.entity.Sensor;
 import com.soul.pooling.service.PlatformService;
 import com.soul.pooling.service.SensorService;
@@ -39,7 +40,8 @@ public class BootstrapTest {
 
     @Test
     public void crud(){
-        System.out.println(platformService.getById("1"));
+        Platform byId = platformService.getById("1");
+        System.out.println(byId);
     }
 
 
