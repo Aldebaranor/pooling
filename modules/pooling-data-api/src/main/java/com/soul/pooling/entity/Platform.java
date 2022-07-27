@@ -58,12 +58,12 @@ public class Platform extends BaseEntity{
 
 
     @Transient
-    @JoinColumn
+    @JoinColumn(name = "code")
     @OneToMany(targetEntity = Sensor.class,mappedBy = "platformCode")
     private List<Sensor> sensors;
 
     @Transient
-    @JoinColumn
+    @JoinColumn(name = "code")
     @OneToMany(targetEntity = Weapon.class,mappedBy = "platformCode")
     private List<Weapon> weapons;
 

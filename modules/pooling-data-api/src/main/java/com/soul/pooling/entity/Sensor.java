@@ -30,6 +30,7 @@ public class Sensor extends BaseEntity{
 
     @Display("平台编号")
     @Column(name = "platformCode")
+    @ManyToOne
     private String platformCode;
 
     @Display("名称")
