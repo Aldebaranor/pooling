@@ -4,6 +4,7 @@ package com.soul.pooling.entity;
 import com.egova.model.BaseEntity;
 import com.egova.model.annotation.Display;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.soul.pooling.model.PlatformMoveData;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -56,6 +57,10 @@ public class Platform extends BaseEntity{
     @Column(name = "status")
     private int status;
 
+    @Transient
+    @Display("位置信息")
+    @Column(name = "moveData")
+    private PlatformMoveData platformMoveData;
 
     @Transient
     @JoinColumn(name = "code")
@@ -66,5 +71,7 @@ public class Platform extends BaseEntity{
     @JoinColumn(name = "code")
     @OneToMany(targetEntity = Weapon.class,mappedBy = "platformCode")
     private List<Weapon> weapons;
+
+
 
 }

@@ -102,4 +102,14 @@ public class PlatformController {
     public int batchDelete(@RequestBody List<String> ids){
         return platformService.deleteByIds(ids);
     }
+
+    /**
+     * 根据id查询
+     * @return
+     */
+    @Api
+    @PostMapping(value = "/platform/{id}")
+    public Platform getById(@PathVariable("id") String id){
+        return platformService.getById(id);
+    }
 }

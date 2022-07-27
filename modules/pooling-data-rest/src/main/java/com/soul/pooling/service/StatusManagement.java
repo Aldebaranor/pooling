@@ -24,6 +24,8 @@ public class StatusManagement {
     private final ConcurrentMap<String, PlatformStatus> forceStatusData = new ConcurrentHashMap();
 
 
+
+
     public Map<String, PlatformStatus> getAll() {
         return forceStatusData;
     }
