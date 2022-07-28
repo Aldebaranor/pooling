@@ -28,6 +28,7 @@ public class StatusManagement {
     @Autowired
     private PlatformService platformService;
 
+
     private final ConcurrentMap<String, PlatformStatus> forceStatusData = new ConcurrentHashMap();
 
     private final ConcurrentMap<String, Platform> platformPool = new ConcurrentHashMap<>();
@@ -35,6 +36,7 @@ public class StatusManagement {
     private final ConcurrentMap<String, Sensor> sensorPool = new ConcurrentHashMap<>();
 
     private final ConcurrentMap<String, Weapon> weaponPool = new ConcurrentHashMap<>();
+
     public Map<String, PlatformStatus> getAll() {
         return forceStatusData;
     }
@@ -92,7 +94,7 @@ public class StatusManagement {
     }
 
     /**
-     * 资源注册
+     * 资源池注册
      * @param id
      */
     public void activeSource(String id){
@@ -100,10 +102,10 @@ public class StatusManagement {
             Platform platform = platformService.seekById(id);
             platformPool.put(id, platform);
             for (Sensor sensor : platform.getSensors()) {
-                sensorPool.put(id, sensor);
+                sensorPool.put(sensor.getId(),sensor);
             }
             for (Weapon weapon : platform.getWeapons()) {
-                weaponPool.put(id, weapon);
+                weaponPool.put(weapon.getId(), weapon);
             }
         }else{
             throw ExceptionUtils.api(String.format("该兵力未初始化"));
@@ -133,14 +135,19 @@ public class StatusManagement {
 
 
     /**
-     * 资源注销
+     * 资源池注销
      * @param id
      */
     public void disActiveSource(String id){
         if(forceStatusData.containsKey(id)) {
-
+            Platform platform = platformService.seekById(id);
+            for (Sensor sensor : platform.getSensors()) {
+                sensorPool.remove(sensor.getId());
+            }
+            for (Weapon weapon : platform.getWeapons()) {
+                weaponPool.remove(weapon.getId());
+            }
             platformPool.remove(id);
-
         }else{
             throw ExceptionUtils.api(String.format("该兵力未初始化"));
         }

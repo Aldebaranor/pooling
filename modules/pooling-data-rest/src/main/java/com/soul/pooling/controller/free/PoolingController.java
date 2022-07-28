@@ -125,7 +125,7 @@ public class PoolingController {
 
         //TODO:
         //进行资源注册
-        management.disActiveSource(platformId);
+        management.activeSource(platformId);
 
         management.activeForce(platformId);
         return true;
