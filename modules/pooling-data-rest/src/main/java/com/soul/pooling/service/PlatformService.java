@@ -64,4 +64,11 @@ public interface PlatformService {
      */
     PageResult<Platform> page(QueryModel<PlatformCondition> model);
 
+    /**
+     * 根据Id获取
+     * @param id
+     * @return
+     */
+    Platform seekById(String id);
+
 }

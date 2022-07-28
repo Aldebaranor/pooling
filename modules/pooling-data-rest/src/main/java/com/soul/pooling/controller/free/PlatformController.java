@@ -110,6 +110,6 @@ public class PlatformController {
     @Api
     @PostMapping(value = "/platform/{id}")
     public Platform getById(@PathVariable("id") String id){
-        return platformService.getById(id);
+        return platformService.seekById(id);
     }
 }

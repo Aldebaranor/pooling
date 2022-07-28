@@ -1,8 +1,12 @@
 package com.soul.pooling.service;
 
 import com.egova.exception.ExceptionUtils;
+import com.soul.pooling.entity.Platform;
+import com.soul.pooling.entity.Sensor;
+import com.soul.pooling.entity.Weapon;
 import com.soul.pooling.model.PlatformStatus;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Priority;
@@ -21,14 +25,21 @@ import java.util.concurrent.ConcurrentMap;
 @Priority(5)
 public class StatusManagement {
 
+    @Autowired
+    private PlatformService platformService;
+
     private final ConcurrentMap<String, PlatformStatus> forceStatusData = new ConcurrentHashMap();
 
+    private final ConcurrentMap<String, Platform> platformPool = new ConcurrentHashMap<>();
 
+    private final ConcurrentMap<String, Sensor> sensorPool = new ConcurrentHashMap<>();
 
-
+    private final ConcurrentMap<String, Weapon> weaponPool = new ConcurrentHashMap<>();
     public Map<String, PlatformStatus> getAll() {
         return forceStatusData;
     }
+
+    public Map<String, Platform> getAllPlatform(){ return platformPool;}
 
     public PlatformStatus getForcesData(String id) {
         return forceStatusData.get(id);
@@ -46,6 +57,7 @@ public class StatusManagement {
             status.setActiveStatus(false);
             forceStatusData.put(id,status);
             log.info("--->兵力"+id+"初始化成功");
+
         }else{
             PlatformStatus forcesStatus = forceStatusData.get(id);
             if(forcesStatus.getInitStatus()){
@@ -73,6 +85,26 @@ public class StatusManagement {
             forcesStatus.setActiveStatus(true);
             forceStatusData.put(id,forcesStatus);
             log.info("--->兵力"+id+"激活成功");
+
+        }else{
+            throw ExceptionUtils.api(String.format("该兵力未初始化"));
+        }
+    }
+
+    /**
+     * 资源注册
+     * @param id
+     */
+    public void activeSource(String id){
+        if(forceStatusData.containsKey(id)) {
+            Platform platform = platformService.seekById(id);
+            platformPool.put(id, platform);
+            for (Sensor sensor : platform.getSensors()) {
+                sensorPool.put(id, sensor);
+            }
+            for (Weapon weapon : platform.getWeapons()) {
+                weaponPool.put(id, weapon);
+            }
         }else{
             throw ExceptionUtils.api(String.format("该兵力未初始化"));
         }
@@ -99,6 +131,21 @@ public class StatusManagement {
         }
     }
 
+
+    /**
+     * 资源注销
+     * @param id
+     */
+    public void disActiveSource(String id){
+        if(forceStatusData.containsKey(id)) {
+
+            platformPool.remove(id);
+
+        }else{
+            throw ExceptionUtils.api(String.format("该兵力未初始化"));
+        }
+    }
+
     /**
      * 兵力删除
      * @param id
@@ -116,13 +163,16 @@ public class StatusManagement {
     }
 
     /**
-     * 清楚资源库
+     * 清除资源库
      */
     public void cleanForce(){
         forceStatusData.clear();
+        platformPool.clear();
+        sensorPool.clear();
+        weaponPool.clear();
     }
 
-    public boolean IsInited(String id){
+    public boolean isInited(String id){
         return forceStatusData.containsKey(id);
     }
 

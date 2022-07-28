@@ -6,6 +6,7 @@ import com.egova.web.annotation.Api;
 import com.flagwind.commons.StringUtils;
 import com.soul.pooling.config.Constants;
 import com.soul.pooling.config.PoolingConfig;
+import com.soul.pooling.entity.Platform;
 import com.soul.pooling.model.ActivatedModel;
 import com.soul.pooling.model.PlatformStatus;
 import com.soul.pooling.mqtt.producer.MqttMsgProducer;
@@ -124,6 +125,8 @@ public class PoolingController {
 
         //TODO:
         //进行资源注册
+        management.disActiveSource(platformId);
+
         management.activeForce(platformId);
         return true;
     }
@@ -154,8 +157,20 @@ public class PoolingController {
 
         //TODO:
         //进行资源注册
+        management.disActiveSource(platformId);
+
         management.disActiveForce(platformId);
         return true;
+    }
+
+    /**
+     * 获取所有上电的平台信息
+     * @return
+     */
+    @Api
+    @GetMapping(value = "/pool/platform")
+    public Map<String, Platform> platformPool() {
+        return management.getAllPlatform();
     }
 
 

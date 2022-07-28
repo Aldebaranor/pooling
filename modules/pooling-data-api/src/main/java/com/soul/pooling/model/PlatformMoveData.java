@@ -32,10 +32,10 @@ public class PlatformMoveData implements Serializable {
     @Display("9速度")
     private Double speed;
 
-    @Display("生命值")
+    @Display("10生命值")
     private Double life;
 
-    @Display("更新时间")
+    @Display("11更新时间")
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Timestamp updateTime;

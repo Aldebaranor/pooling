@@ -46,7 +46,7 @@ public class PingJob {
         try {
             boolean status = InetAddress.getByName(host[0]).isReachable(3000);
             if(status){
-                if(!management.IsInited(host[1])){
+                if(!management.isInited(host[1])){
                     management.initForce(host[1]);
                 }
             }
