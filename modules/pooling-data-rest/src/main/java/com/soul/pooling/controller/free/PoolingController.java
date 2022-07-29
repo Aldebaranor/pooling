@@ -164,13 +164,13 @@ public class PoolingController {
     }
 
     /**
-     * 获取所有上电的平台信息
+     * 获取资源池的平台信息
      * @return
      */
     @Api
     @GetMapping(value = "/pool/platform")
     public Map<String, Platform> platformPool() {
-        return management.getAllPlatform();
+        return management.getPlatformPool();
     }
 
 
