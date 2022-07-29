@@ -41,7 +41,9 @@ public class StatusManagement {
         return forceStatusData;
     }
 
-    public Map<String, Platform> getAllPlatform(){ return platformPool;}
+    public Map<String, Platform> getPlatformPool(){
+        return platformPool;
+    }
 
     public PlatformStatus getForcesData(String id) {
         return forceStatusData.get(id);
