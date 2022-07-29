@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Priority;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
@@ -43,6 +45,26 @@ public class StatusManagement {
 
     public Map<String, Platform> getPlatformPool(){
         return platformPool;
+    }
+
+    public List<Sensor> getSensorsByPlatform(String code){
+        List<Sensor> list = new ArrayList<>();
+        for(String id:sensorPool.keySet()){
+            if(sensorPool.get(id).getPlatformCode()==code){
+                list.add(sensorPool.get(id));
+            }
+        }
+        return list;
+    }
+
+    public List<Weapon> getWeaponsByPlatform(String code){
+        List<Weapon> list = new ArrayList<>();
+        for(String id:weaponPool.keySet()){
+            if(weaponPool.get(id).getPlatformCode()==code){
+                list.add(weaponPool.get(id));
+            }
+        }
+        return list;
     }
 
     public PlatformStatus getForcesData(String id) {

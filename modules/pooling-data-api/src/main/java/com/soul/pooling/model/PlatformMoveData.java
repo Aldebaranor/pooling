@@ -31,18 +31,12 @@ public class PlatformMoveData implements Serializable {
     private Double pitch;
     @Display("9速度")
     private Double speed;
-
     @Display("10生命值")
     private Double life;
 
-    @Display("11更新时间")
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
-    private Timestamp updateTime;
-
     @Override
     public String toString() {
-        return String.format("%s_%s_%s_%s_%s_%s_%s_%s_%", lon, lat, alt, heading, roll, pitch, speed, life, updateTime);
+        return String.format("%s_%s_%s_%s_%s_%s_%s_%s", lon, lat, alt, heading, roll, pitch, speed, life);
     }
 
 }
