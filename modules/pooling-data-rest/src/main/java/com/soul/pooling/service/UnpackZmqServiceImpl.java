@@ -1,6 +1,7 @@
 package com.soul.pooling.service;
 
 import com.egova.json.utils.JsonUtils;
+import com.flagwind.commons.StringUtils;
 import com.soul.pooling.entity.Platform;
 import com.soul.pooling.facade.UnpackMessageService;
 import com.soul.pooling.model.PlatformMoveData;
@@ -11,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Author: Song
@@ -26,13 +28,15 @@ public class UnpackZmqServiceImpl implements UnpackMessageService {
 
     @Override
     public void unpackZmq(String s) {
-        List<SituationMovedata> situationMovedataList = JsonUtils.deserializeList(s, PlatformMoveData.class);;
-        for(SituationMovedata situationMovedata : situationMovedataList) {
-            String id = situationMovedata.getId();
-            Platform platform = management.getPlatformPool().get(id);
-            PlatformMoveData moveData = situationMovedata.getMove();
-            platform.setPlatformMoveData(moveData);
-            management.getPlatformPool().put(id, platform);
+        List<SituationMovedata> situationMovedataList = JsonUtils.deserializeList(s, SituationMovedata.class);
+        for(Map.Entry<String , Platform> map:management.getPlatformPool().entrySet()){
+
+            SituationMovedata situationMovedata = situationMovedataList.stream().filter(q -> StringUtils.equals(q.getId(), map.getKey())).findFirst().orElse(null);
+            if(situationMovedata == null){
+                continue;
+            }
+            map.getValue().setPlatformMoveData(situationMovedata.getMove());
+            
         }
 
     }

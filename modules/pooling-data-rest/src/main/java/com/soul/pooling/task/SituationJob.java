@@ -23,18 +23,18 @@ import java.util.Map;
 @Component
 public class SituationJob {
 
-    @Autowired
-    private StatusManagement management;
-
-    @Autowired(required = false)
-    private ZeroMqPublisher publisher;
-
-    @Scheduled(fixedDelayString = "1000" )
-    public void zmqSend(){
-
+//    @Autowired
+//    private StatusManagement management;
+//
+//    @Autowired(required = false)
+//    private ZeroMqPublisher publisher;
+//
+//    @Scheduled(fixedDelayString = "1000" )
+//    public void zmqSend(){
+//
 //        publisher.setTopic("platSituation");
-        publisher.publish("wzsZMQTest");
-
+//        publisher.publish("wzsZMQTest");
+//
 //        Map<String, Platform> platformPool = management.getPlatformPool();
 //        for(String id: platformPool.keySet()){
 //            Platform platform = platformPool.get(id);
@@ -42,6 +42,6 @@ public class SituationJob {
 //
 //            publisher.publish(s);
 //        }
-
-    }
+//
+//    }
 }
