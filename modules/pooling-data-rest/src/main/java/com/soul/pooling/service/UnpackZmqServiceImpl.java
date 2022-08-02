@@ -26,7 +26,7 @@ public class UnpackZmqServiceImpl implements UnpackMessageService {
 
     @Override
     public void unpackZmq(String s) {
-        List<SituationMovedata> situationMovedataList = JsonUtils.deserialize(s, PlatformMoveData.class);;
+        List<SituationMovedata> situationMovedataList = JsonUtils.deserializeList(s, PlatformMoveData.class);;
         for(SituationMovedata situationMovedata : situationMovedataList) {
             String id = situationMovedata.getId();
             Platform platform = management.getPlatformPool().get(id);
@@ -34,25 +34,6 @@ public class UnpackZmqServiceImpl implements UnpackMessageService {
             platform.setPlatformMoveData(moveData);
             management.getPlatformPool().put(id, platform);
         }
-
-
-//        int lastIndex = s.lastIndexOf("@");
-//        String substring = s.substring(0, lastIndex);
-//        String[] split = substring.split("@");
-//        log.info("移动数据：" + Arrays.toString(split));
-//        String id = split[1];
-//        PlatformMoveData moveData = new PlatformMoveData();
-//        moveData.setLon(Double.valueOf(split[2]));
-//        moveData.setLat(Double.valueOf(split[3]));
-//        moveData.setAlt(Double.valueOf(split[4]));
-//        moveData.setHeading(Double.valueOf(split[5]));
-//        moveData.setRoll(Double.valueOf(split[6]));
-//        moveData.setPitch(Double.valueOf(split[7]));
-//        moveData.setSpeed(Double.valueOf(split[8]));
-//        moveData.setLife(Double.valueOf(split[9]));
-//        moveData.setUpdateTime(Timestamp.valueOf(split[10]));
-
-
 
     }
 }

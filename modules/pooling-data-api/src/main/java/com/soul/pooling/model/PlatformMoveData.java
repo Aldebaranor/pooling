@@ -34,9 +34,4 @@ public class PlatformMoveData implements Serializable {
     @Display("10生命值")
     private Double life;
 
-    @Override
-    public String toString() {
-        return String.format("%s_%s_%s_%s_%s_%s_%s_%s", lon, lat, alt, heading, roll, pitch, speed, life);
-    }
-
 }

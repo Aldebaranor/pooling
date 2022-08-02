@@ -46,8 +46,8 @@ public class ZeroMqPublisher {
     @PostConstruct
     public void start()  {
         zContext = new ZContext();
-        zAuth = new ZAuth(zContext);
-        zAuth.configureCurve(ZAuth.CURVE_ALLOW_ANY);
+        //zAuth = new ZAuth(zContext);
+        //zAuth.configureCurve(ZAuth.CURVE_ALLOW_ANY);
 
         zmqSocket = zContext.createSocket(SocketType.PUB);
 //        ZCert zCert = new ZCert();
