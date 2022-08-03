@@ -4,8 +4,7 @@ import com.egova.json.utils.JsonUtils;
 import com.flagwind.commons.StringUtils;
 import com.soul.pooling.entity.Platform;
 import com.soul.pooling.facade.UnpackMessageService;
-import com.soul.pooling.model.PlatformMoveData;
-import com.soul.pooling.model.SituationMovedata;
+import com.soul.pooling.model.SituationMoveData;
 import lombok.extern.slf4j.Slf4j;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,10 +27,10 @@ public class UnpackZmqServiceImpl implements UnpackMessageService {
 
     @Override
     public void unpackZmq(String s) {
-        List<SituationMovedata> situationMovedataList = JsonUtils.deserializeList(s, SituationMovedata.class);
+        List<SituationMoveData> situationMoveDataList = JsonUtils.deserializeList(s, SituationMoveData.class);
         for(Map.Entry<String , Platform> map:management.getPlatformPool().entrySet()){
 
-            SituationMovedata situationMovedata = situationMovedataList.stream().filter(q -> StringUtils.equals(q.getId(), map.getKey())).findFirst().orElse(null);
+            SituationMoveData situationMovedata = situationMoveDataList.stream().filter(q -> StringUtils.equals(q.getId(), map.getKey())).findFirst().orElse(null);
             if(situationMovedata == null){
                 continue;
             }

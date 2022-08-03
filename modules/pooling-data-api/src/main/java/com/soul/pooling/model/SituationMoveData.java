@@ -10,7 +10,7 @@ import java.io.Serializable;
  * @Date 2022/7/29 14:47
  */
 @Data
-public class SituationMovedata implements Serializable {
+public class SituationMoveData implements Serializable {
 
     private static final long serialVersionUID = -7494104868647116439L;
 
