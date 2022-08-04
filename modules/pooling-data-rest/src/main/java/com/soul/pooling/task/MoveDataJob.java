@@ -73,18 +73,13 @@ public class MoveDataJob {
             situationMoveData.setTime(Long.parseLong(s));
             situationMoveData.setMove(initMoveData(split));
             forces.add(situationMoveData);
-        }
-
-
-        for(Map.Entry<String , Platform> map:management.getPlatformPool().entrySet()){
-
-            SituationMoveData situationMovedata = forces.stream().filter(q -> com.flagwind.commons.StringUtils.equals(q.getId(), map.getKey())).findFirst().orElse(null);
-            if(situationMovedata == null){
-                continue;
+            Platform platform = management.getPlatformPool().get(situationMoveData.getId());
+            if(platform != null){
+                platform.setPlatformMoveData(situationMoveData.getMove());
             }
-            map.getValue().setPlatformMoveData(situationMovedata.getMove());
 
         }
+
 
 
     }
