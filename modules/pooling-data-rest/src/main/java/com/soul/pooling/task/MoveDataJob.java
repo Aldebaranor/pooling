@@ -29,7 +29,7 @@ import java.util.Map;
 @Component
 @Slf4j
 @RequiredArgsConstructor
-public class MqJob {
+public class MoveDataJob {
     @Autowired
     private MetaConfig metaConfig;
 
@@ -37,7 +37,7 @@ public class MqJob {
     private StatusManagement management;
 
     @Scheduled(fixedDelayString = "500")
-    public void sendMq() {
+    public void updateMoveData() {
 
         if(StringUtils.isBlank(metaConfig.getScenarioCode())){
             return;
