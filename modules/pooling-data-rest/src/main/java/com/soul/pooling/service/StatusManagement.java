@@ -43,24 +43,24 @@ public class StatusManagement {
         return forceStatusData;
     }
 
-    public Map<String, Platform> getPlatformPool(){
+    public Map<String, Platform> getPlatformPool() {
         return platformPool;
     }
 
-    public List<Sensor> getSensorsByPlatform(String code){
+    public List<Sensor> getSensorsByPlatform(String code) {
         List<Sensor> list = new ArrayList<>();
-        for(String id:sensorPool.keySet()){
-            if(sensorPool.get(id).getPlatformCode()==code){
+        for (String id : sensorPool.keySet()) {
+            if (sensorPool.get(id).getPlatformCode().equals(code)) {
                 list.add(sensorPool.get(id));
             }
         }
         return list;
     }
 
-    public List<Weapon> getWeaponsByPlatform(String code){
+    public List<Weapon> getWeaponsByPlatform(String code) {
         List<Weapon> list = new ArrayList<>();
-        for(String id:weaponPool.keySet()){
-            if(weaponPool.get(id).getPlatformCode()==code){
+        for (String id : weaponPool.keySet()) {
+            if (weaponPool.get(id).getPlatformCode().equals(code)) {
                 list.add(weaponPool.get(id));
             }
         }
@@ -73,86 +73,90 @@ public class StatusManagement {
 
     /**
      * 初始化兵力
+     *
      * @param id
      */
-    public void initForce(String id){
-        if(!forceStatusData.containsKey(id)){
+    public void initForce(String id) {
+        if (!forceStatusData.containsKey(id)) {
             PlatformStatus status = new PlatformStatus();
             status.setPlatformId(id);
             status.setInitStatus(true);
             status.setActiveStatus(false);
-            forceStatusData.put(id,status);
-            log.info("--->兵力"+id+"初始化成功");
+            forceStatusData.put(id, status);
+            log.info("--->兵力" + id + "初始化成功");
 
-        }else{
+        } else {
             PlatformStatus forcesStatus = forceStatusData.get(id);
-            if(forcesStatus.getInitStatus()){
-                log.info("--->兵力"+id+"已经初始化成功，无需重新初始化");
+            if (forcesStatus.getInitStatus()) {
+                log.info("--->兵力" + id + "已经初始化成功，无需重新初始化");
                 return;
-            }else{
+            } else {
                 forcesStatus.setInitStatus(true);
                 forcesStatus.setActiveStatus(false);
-                forceStatusData.put(id,forcesStatus);
-                log.info("--->兵力"+id+"初始化成功");
+                forceStatusData.put(id, forcesStatus);
+                log.info("--->兵力" + id + "初始化成功");
             }
         }
     }
 
     /**
      * 向资源中心注册
+     *
      * @param id
      */
-    public void activeForce(String id){
-        if(forceStatusData.containsKey(id)){
+    public void activeForce(String id) {
+        if (forceStatusData.containsKey(id)) {
             PlatformStatus forcesStatus = forceStatusData.get(id);
-            if(!forcesStatus.getInitStatus()){
+            if (!forcesStatus.getInitStatus()) {
                 throw ExceptionUtils.api(String.format("该兵力未初始化"));
             }
             forcesStatus.setActiveStatus(true);
-            forceStatusData.put(id,forcesStatus);
-            log.info("--->兵力"+id+"激活成功");
+            forceStatusData.put(id, forcesStatus);
+            log.info("--->兵力" + id + "激活成功");
 
-        }else{
+        } else {
             throw ExceptionUtils.api(String.format("该兵力未初始化"));
         }
     }
 
     /**
      * 资源池注册
+     *
      * @param id
      */
-    public void activeSource(String id){
-        if(forceStatusData.containsKey(id)) {
+    public void activeSource(String id) {
+        if (forceStatusData.containsKey(id)) {
             Platform platform = platformService.seekById(id);
             platformPool.put(id, platform);
             for (Sensor sensor : platform.getSensors()) {
-                sensorPool.put(sensor.getId(),sensor);
+                sensorPool.put(sensor.getId(), sensor);
             }
             for (Weapon weapon : platform.getWeapons()) {
                 weaponPool.put(weapon.getId(), weapon);
             }
-        }else{
+        } else {
             throw ExceptionUtils.api(String.format("该兵力未初始化"));
         }
     }
 
     /**
      * 从资源中心注销
+     *
      * @param id
      */
-    public void disActiveForce(String id){
-        if(forceStatusData.containsKey(id)){
+    public void disActiveForce(String id) {
+        if (forceStatusData.containsKey(id)) {
             PlatformStatus forcesStatus = forceStatusData.get(id);
-            if(!forcesStatus.getInitStatus()){
+            if (!forcesStatus.getInitStatus()) {
                 throw ExceptionUtils.api(String.format("该兵力未初始化"));
             }
-            if(!forcesStatus.getActiveStatus()){
+            if (!forcesStatus.getActiveStatus()) {
                 throw ExceptionUtils.api(String.format("该兵力已经注销"));
             }
             forcesStatus.setActiveStatus(false);
-            forceStatusData.put(id,forcesStatus);
-            log.info("--->兵力"+id+"注销成功");
-        }else{
+            forceStatusData.put(id, forcesStatus);
+            log.info("--->兵力" + id + "注销成功");
+        } else {
             throw ExceptionUtils.api(String.format("该兵力未初始化"));
         }
     }
@@ -160,10 +164,11 @@ public class StatusManagement {
 
     /**
      * 资源池注销
+     *
      * @param id
      */
-    public void disActiveSource(String id){
-        if(forceStatusData.containsKey(id)) {
+    public void disActiveSource(String id) {
+        if (forceStatusData.containsKey(id)) {
             Platform platform = platformService.seekById(id);
             for (Sensor sensor : platform.getSensors()) {
                 sensorPool.remove(sensor.getId());
@@ -172,41 +177,41 @@ public class StatusManagement {
                 weaponPool.remove(weapon.getId());
             }
             platformPool.remove(id);
-        }else{
+        } else {
             throw ExceptionUtils.api(String.format("该兵力未初始化"));
         }
     }
 
     /**
      * 兵力删除
+     *
      * @param id
      */
-    public void deleteForce(String id){
-        if(!forceStatusData.containsKey(id)){
+    public void deleteForce(String id) {
+        if (!forceStatusData.containsKey(id)) {
             throw ExceptionUtils.api(String.format("该兵力未初始化"));
-        }else{
+        } else {
             PlatformStatus forcesStatus = forceStatusData.get(id);
             forcesStatus.setInitStatus(false);
             forcesStatus.setActiveStatus(false);
-            forceStatusData.put(id,forcesStatus);
-            log.info("--->兵力"+id+"注销成功");
+            forceStatusData.put(id, forcesStatus);
+            log.info("--->兵力" + id + "注销成功");
         }
     }
 
     /**
      * 清除资源库
      */
-    public void cleanForce(){
+    public void cleanForce() {
         forceStatusData.clear();
         platformPool.clear();
         sensorPool.clear();
         weaponPool.clear();
     }
 
-    public boolean isInited(String id){
+    public boolean isInited(String id) {
         return forceStatusData.containsKey(id);
     }
-
 
 
 }

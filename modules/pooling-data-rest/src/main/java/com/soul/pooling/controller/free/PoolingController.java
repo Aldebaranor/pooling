@@ -7,6 +7,8 @@ import com.flagwind.commons.StringUtils;
 import com.soul.pooling.config.Constants;
 import com.soul.pooling.config.PoolingConfig;
 import com.soul.pooling.entity.Platform;
+import com.soul.pooling.entity.Sensor;
+import com.soul.pooling.entity.Weapon;
 import com.soul.pooling.model.ActivatedModel;
 import com.soul.pooling.model.PlatformStatus;
 import com.soul.pooling.mqtt.producer.MqttMsgProducer;
@@ -19,6 +21,7 @@ import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -98,7 +101,20 @@ public class PoolingController {
     @PostMapping(value = "/activate/platform")
     public Boolean forcesActivate(@RequestBody List<String> forces) {
         //通知仿真节点（resources）执行激活
-        mqttMsgProducer.producerMsg(poolingConfig.getActivateTopic(),JsonUtils.serialize(forces));
+
+        //分组大小10个一组发送MQTT
+        int groupSize = 10;
+        //分组数量
+        int arrSize = forces.size()%groupSize==0?forces.size()/groupSize:forces.size()/groupSize+1;
+        for(int i =0;i<arrSize;i++){
+            List<String> sub = new ArrayList<>();
+            for(int j =i*arrSize;j<=(i+1)*arrSize-1;j++){
+                if(j<=forces.size()-1){
+                    sub.add(forces.get(j));
+                }
+            }
+            mqttMsgProducer.producerMsg(poolingConfig.getActivateTopic(),JsonUtils.serialize(sub));
+        }
         return true;
     }
 
@@ -156,7 +172,7 @@ public class PoolingController {
         sendDisActivated(platformId);
 
         //TODO:
-        //进行资源注册
+        //进行资源注销
         management.disActiveSource(platformId);
 
         management.disActiveForce(platformId);
@@ -172,6 +188,8 @@ public class PoolingController {
     public Map<String, Platform> platformPool() {
         return management.getPlatformPool();
     }
+
+
 
 
     private Boolean sendActivated(String id){

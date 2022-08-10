@@ -64,11 +64,10 @@ public class MoveDataJob {
                 log.error( "-数据不合法-" + entry.getValue());
             }
             SituationMoveData situationMoveData = new SituationMoveData();
-            if(situationTemArmy.getIff() == 1 && !StringUtils.isBlank(situationTemArmy.getCode())){
+            if(situationTemArmy.getIff() == 3 && !StringUtils.isBlank(situationTemArmy.getCode())){
                 situationMoveData.setId(situationTemArmy.getCode());
             }else{
                 situationMoveData.setId(situationTemArmy.getId());
-
             }
             situationMoveData.setTime(Long.parseLong(s));
             situationMoveData.setMove(initMoveData(split));
