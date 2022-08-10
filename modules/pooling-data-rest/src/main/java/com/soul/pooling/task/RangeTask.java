@@ -1,6 +1,6 @@
 package com.soul.pooling.task;
 
-import com.alibaba.fastjson.JSON;
+import com.alibaba.druid.support.json.JSONUtils;
 import com.egova.redis.RedisUtils;
 import com.soul.pooling.entity.Sensor;
 import com.soul.pooling.entity.Weapon;
@@ -31,7 +31,7 @@ public class RangeTask {
             int platformNum = 100;
             for (int i = 1; i <= platformNum; i++) {
 
-                RedisUtils.getService().opsForHash().put(SCENARIO_RANGE, JSON.toJSONString(i), JSON.toJSONString(platformRange(String.valueOf(i))));
+                RedisUtils.getService().opsForHash().put(SCENARIO_RANGE, JSONUtils.toJSONString(i), JSONUtils.toJSONString(platformRange(String.valueOf(i))));
             }
 
         } catch (Exception e) {
