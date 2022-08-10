@@ -1,12 +1,12 @@
 package com.soul.pooling.task;
 
 import com.alibaba.fastjson.JSON;
+import com.egova.redis.RedisUtils;
 import com.soul.pooling.entity.Sensor;
 import com.soul.pooling.entity.Weapon;
 import com.soul.pooling.service.StatusManagement;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -23,10 +23,7 @@ public class RangeTask {
     @Autowired
     private StatusManagement management;
 
-    @Autowired
-    private StringRedisTemplate redisTemplate;
-
-    public static String SCENARIO_RANGE = "scenario:range:route";
+    public static String SCENARIO_RANGE = "scenario:txy:range";
 
     @Scheduled(fixedDelayString = "10000")
     public void execute() {
@@ -34,7 +31,7 @@ public class RangeTask {
             int platformNum = 100;
             for (int i = 1; i <= platformNum; i++) {
 
-                redisTemplate.opsForHash().put(SCENARIO_RANGE, JSON.toJSONString(i), JSON.toJSONString(platformRange(String.valueOf(i))));
+                RedisUtils.getService().opsForHash().put(SCENARIO_RANGE, JSON.toJSONString(i), JSON.toJSONString(platformRange(String.valueOf(i))));
             }
 
         } catch (Exception e) {
