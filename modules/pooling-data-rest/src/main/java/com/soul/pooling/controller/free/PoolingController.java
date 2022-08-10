@@ -7,8 +7,6 @@ import com.flagwind.commons.StringUtils;
 import com.soul.pooling.config.Constants;
 import com.soul.pooling.config.PoolingConfig;
 import com.soul.pooling.entity.Platform;
-import com.soul.pooling.entity.Sensor;
-import com.soul.pooling.entity.Weapon;
 import com.soul.pooling.model.ActivatedModel;
 import com.soul.pooling.model.PlatformStatus;
 import com.soul.pooling.mqtt.producer.MqttMsgProducer;
@@ -27,10 +25,10 @@ import java.util.Map;
 
 
 /**
-* @Description:
-* @Author: nemo
-* @Date: 2022/6/22
-*/
+ * @Description:
+ * @Author: nemo
+ * @Date: 2022/6/22
+ */
 @Slf4j
 @RestController
 @RequestMapping("/free/pooling")
@@ -55,6 +53,7 @@ public class PoolingController {
 
     /**
      * 开始试验，清楚缓存
+     *
      * @param experiment
      * @return
      */
@@ -70,6 +69,7 @@ public class PoolingController {
 
     /**
      * 获取所有上电的节点信息
+     *
      * @return
      */
     @Api
@@ -80,13 +80,14 @@ public class PoolingController {
 
     /**
      * 接收resource的初始化
+     *
      * @param forces
      * @return
      */
     @Api
     @PostMapping(value = "/init/platform")
     public Boolean forcesInit(@RequestBody List<String> forces) {
-        for (String id:forces){
+        for (String id : forces) {
             management.initForce(id);
         }
         return true;
@@ -94,6 +95,7 @@ public class PoolingController {
 
     /**
      * 接收试验管理的注册指令，通知节点进行入云注册
+     *
      * @param forces
      * @return
      */
@@ -105,21 +107,22 @@ public class PoolingController {
         //分组大小10个一组发送MQTT
         int groupSize = 10;
         //分组数量
-        int arrSize = forces.size()%groupSize==0?forces.size()/groupSize:forces.size()/groupSize+1;
-        for(int i =0;i<arrSize;i++){
+        int arrSize = forces.size() % groupSize == 0 ? forces.size() / groupSize : forces.size() / groupSize + 1;
+        for (int i = 0; i < arrSize; i++) {
             List<String> sub = new ArrayList<>();
-            for(int j =i*arrSize;j<=(i+1)*arrSize-1;j++){
-                if(j<=forces.size()-1){
+            for (int j = i * arrSize; j <= (i + 1) * arrSize - 1; j++) {
+                if (j <= forces.size() - 1) {
                     sub.add(forces.get(j));
                 }
             }
-            mqttMsgProducer.producerMsg(poolingConfig.getActivateTopic(),JsonUtils.serialize(sub));
+            mqttMsgProducer.producerMsg(poolingConfig.getActivateTopic(), JsonUtils.serialize(sub));
         }
         return true;
     }
 
     /**
-     *接收resource的入云注册
+     * 接收resource的入云注册
+     *
      * @param platformId
      * @return
      */
@@ -127,10 +130,10 @@ public class PoolingController {
     @GetMapping(value = "/activated/{platformId}")
     public Boolean forcesActivated(@PathVariable String platformId) {
         PlatformStatus forcesData = management.getForcesData(platformId);
-        if(forcesData == null){
+        if (forcesData == null) {
             throw ExceptionUtils.api(String.format("该兵力未注册"));
         }
-        if(!forcesData.getInitStatus()){
+        if (!forcesData.getInitStatus()) {
             throw ExceptionUtils.api(String.format("该兵力未初始化"));
         }
 
@@ -149,6 +152,7 @@ public class PoolingController {
 
     /**
      * 接收resource的注销
+     *
      * @param platformId
      * @return
      */
@@ -157,13 +161,13 @@ public class PoolingController {
     @GetMapping(value = "/dis-activated/{platformId}")
     public Boolean forcesDisActivated(@PathVariable String platformId) {
         PlatformStatus forcesData = management.getForcesData(platformId);
-        if(forcesData == null){
+        if (forcesData == null) {
             throw ExceptionUtils.api(String.format("该兵力未注册"));
         }
-        if(!forcesData.getInitStatus()){
+        if (!forcesData.getInitStatus()) {
             throw ExceptionUtils.api(String.format("该兵力未初始化"));
         }
-        if(!forcesData.getActiveStatus()){
+        if (!forcesData.getActiveStatus()) {
             throw ExceptionUtils.api(String.format("该兵力未被激活"));
         }
         forcesData.setActiveStatus(false);
@@ -181,6 +185,7 @@ public class PoolingController {
 
     /**
      * 获取资源池的平台信息
+     *
      * @return
      */
     @Api
@@ -190,40 +195,38 @@ public class PoolingController {
     }
 
 
-
-
-    private Boolean sendActivated(String id){
+    private Boolean sendActivated(String id) {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         ActivatedModel model = new ActivatedModel();
         model.setId(id);
         model.setType("1");
         HttpEntity<Object> request = new HttpEntity<>(model, headers);
-        try{
+        try {
             ResponseEntity<String> response = restTemplate.postForEntity(poolingConfig.getSimulationUrlHead() + Constants.OPERATE_FORCE_URL, request, String.class);
-            if(response.getStatusCode() != HttpStatus.OK){
+            if (response.getStatusCode() != HttpStatus.OK) {
                 throw ExceptionUtils.api("仿真引擎未开启");
             }
-        }catch (Exception ex){
+        } catch (Exception ex) {
             throw ExceptionUtils.api("仿真引擎未开启");
         }
         return true;
 
     }
 
-    private Boolean sendDisActivated(String id){
+    private Boolean sendDisActivated(String id) {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         ActivatedModel model = new ActivatedModel();
         model.setId(id);
         model.setType("0");
         HttpEntity<Object> request = new HttpEntity<>(model, headers);
-        try{
+        try {
             ResponseEntity<String> response = restTemplate.postForEntity(poolingConfig.getSimulationUrlHead() + Constants.OPERATE_FORCE_URL, request, String.class);
-            if(response.getStatusCode() != HttpStatus.OK){
+            if (response.getStatusCode() != HttpStatus.OK) {
                 throw ExceptionUtils.api("仿真引擎未开启");
             }
-        }catch (Exception ex){
+        } catch (Exception ex) {
             throw ExceptionUtils.api("仿真引擎未开启");
         }
         return true;

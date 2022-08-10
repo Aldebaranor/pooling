@@ -6,22 +6,26 @@ import com.egova.model.annotation.Display;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 
 /**
-* @Description: 
-* @Author: nemo
-* @Date: 2022/6/22
-*/
+ * @Description:
+ * @Author: nemo
+ * @Date: 2022/6/22
+ */
 @Data
 @Entity
 @Table(name = "pooling_sensor")
 @Display("传感器")
 @EqualsAndHashCode(callSuper = true)
-public class Sensor extends BaseEntity{
+public class Sensor extends BaseEntity {
 
     public static final String NAME = "pooling:sensor";
+    private static final long serialVersionUID = 2436267303321952970L;
 
     @Id
     @Display("主键")
@@ -39,6 +43,10 @@ public class Sensor extends BaseEntity{
     @Display("类型")
     @Column(name = "type")
     private String type;
+
+    @Display("对太空探测能力")
+    @Column(name = "detectionSpace")
+    private float detectionSpace;
 
     @Display("对空探测能力（公里）")
     @Column(name = "detectionAir")
@@ -59,7 +67,6 @@ public class Sensor extends BaseEntity{
     @Display("状态")
     @Column(name = "status")
     private int status;
-
 
 
 }

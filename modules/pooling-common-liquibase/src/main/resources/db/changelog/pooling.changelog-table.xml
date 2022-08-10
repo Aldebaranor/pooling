@@ -69,7 +69,7 @@
         </createTable>
     </changeSet>
 
-    <changeSet  author="41656 (generated)" id="1647400803042-38">
+    <changeSet author="41656 (generated)" id="1647400803042-38">
         <preConditions>
             <not>
                 <columnExists tableName="pooling_sensor" columnName="detectionLand"/>
@@ -80,7 +80,7 @@
         </addColumn>
     </changeSet>
 
-    <changeSet  author="41656 (generated)" id="1647400803042-39">
+    <changeSet author="41656 (generated)" id="1647400803042-39">
         <preConditions>
             <not>
                 <columnExists tableName="pooling_weapon" columnName="fireLand"/>
@@ -91,6 +91,27 @@
         </addColumn>
     </changeSet>
 
+    <changeSet author="41656 (generated)" id="1647400803042-40">
+        <preConditions>
+            <not>
+                <columnExists tableName="pooling_sensor" columnName="detectionSpace"/>
+            </not>
+        </preConditions>
+        <addColumn tableName="pooling_sensor">
+            <column name="detectionSpace" remarks="对太空探测能力（公里）" type="FLOAT"></column>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="41656 (generated)" id="1647400803042-41">
+        <preConditions>
+            <not>
+                <columnExists tableName="pooling_weapon" columnName="fireSpace"/>
+            </not>
+        </preConditions>
+        <addColumn tableName="pooling_weapon">
+            <column name="fireSpace" remarks="对太空作战能力（公里）" type="FLOAT"></column>
+        </addColumn>
+    </changeSet>
 
 
 </databaseChangeLog>

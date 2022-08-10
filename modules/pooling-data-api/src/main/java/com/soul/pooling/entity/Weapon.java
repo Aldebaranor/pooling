@@ -13,18 +13,19 @@ import javax.persistence.Table;
 
 
 /**
-* @Description: 
-* @Author: nemo
-* @Date: 2022/6/22
-*/
+ * @Description:
+ * @Author: nemo
+ * @Date: 2022/6/22
+ */
 @Data
 @Entity
 @Table(name = "pooling_weapon")
 @Display("武器")
 @EqualsAndHashCode(callSuper = true)
-public class Weapon extends BaseEntity{
+public class Weapon extends BaseEntity {
 
     public static final String NAME = "pooling:weapon";
+    private static final long serialVersionUID = 1771810429769970902L;
 
     @Id
     @Display("主键")
@@ -46,6 +47,10 @@ public class Weapon extends BaseEntity{
     @Display("数量")
     @Column(name = "number")
     private String number;
+
+    @Display("对太空作战能力")
+    @Column(name = "fireSpace")
+    private float fireSpace;
 
     @Display("对空作战能力（公里）")
     @Column(name = "fireAir")
