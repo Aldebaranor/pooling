@@ -1,6 +1,5 @@
 package com.soul.pooling.task;
 
-import com.egova.json.utils.JsonUtils;
 import com.egova.redis.RedisUtils;
 import com.soul.pooling.entity.Platform;
 import com.soul.pooling.entity.Sensor;
@@ -39,7 +38,7 @@ public class RangeTask {
         List<Platform> platformList = platformService.getAll();
         for (Platform platform : platformList) {
             String platformId = platform.getId();
-            RedisUtils.getService().opsForHash().put(SCENARIO_RANGE, platformId, JsonUtils.serialize(platformRange(platformId)));
+            RedisUtils.getService().opsForHash().put(SCENARIO_RANGE, platformId, platformRange(platformId));
         }
     }
 
