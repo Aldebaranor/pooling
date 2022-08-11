@@ -1,10 +1,13 @@
 package com.soul.pooling.task;
 
-import com.alibaba.druid.support.json.JSONUtils;
+import com.egova.json.utils.JsonUtils;
 import com.egova.redis.RedisUtils;
+import com.soul.pooling.entity.Platform;
 import com.soul.pooling.entity.Sensor;
 import com.soul.pooling.entity.Weapon;
-import com.soul.pooling.service.StatusManagement;
+import com.soul.pooling.service.PlatformService;
+import com.soul.pooling.service.SensorService;
+import com.soul.pooling.service.WeaponService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -21,21 +24,22 @@ import java.util.List;
 public class RangeTask {
 
     @Autowired
-    private StatusManagement management;
+    private PlatformService platformService;
+
+    @Autowired
+    private SensorService sensorService;
+
+    @Autowired
+    private WeaponService weaponService;
 
     public static String SCENARIO_RANGE = "scenario:txy:range";
 
     @Scheduled(fixedDelayString = "10000")
     public void execute() {
-        try {
-            int platformNum = 100;
-            for (int i = 1; i <= platformNum; i++) {
-
-                RedisUtils.getService().opsForHash().put(SCENARIO_RANGE, JSONUtils.toJSONString(i), JSONUtils.toJSONString(platformRange(String.valueOf(i))));
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
+        List<Platform> platformList = platformService.getAll();
+        for (Platform platform : platformList) {
+            String platformId = platform.getId();
+            RedisUtils.getService().opsForHash().put(SCENARIO_RANGE, platformId, JsonUtils.serialize(platformRange(platformId)));
         }
     }
 
@@ -53,7 +57,7 @@ public class RangeTask {
         float maxDetectionRangeLand = 0;
         float maxDetectionRangeUnderSea = 0;
 
-        List<Weapon> weapons = management.getWeaponsByPlatform(platformId);
+        List<Weapon> weapons = weaponService.getByPlatformCode(platformId);
         for (Weapon weapon : weapons) {
             //获取最大对太空火力范围
             maxFireRangeSpace = (maxFireRangeSpace >
@@ -72,7 +76,7 @@ public class RangeTask {
                     weapon.getFireUnderSea()) ? maxFireRangeUnderSea : weapon.getFireUnderSea();
         }
 
-        List<Sensor> sensors = management.getSensorsByPlatform(platformId);
+        List<Sensor> sensors = sensorService.getByPlatformCode(platformId);
         for (Sensor sensor : sensors) {
             //获取最大对太空探测范围
             maxDetectionRangeSpace = (maxDetectionRangeSpace >

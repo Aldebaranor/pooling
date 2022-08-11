@@ -4,21 +4,20 @@ import com.egova.model.PageResult;
 import com.egova.model.QueryModel;
 import com.soul.pooling.condition.PlatformCondition;
 import com.soul.pooling.entity.Platform;
-import com.soul.pooling.entity.Sensor;
-import com.soul.pooling.entity.Weapon;
+import org.springframework.cache.annotation.Cacheable;
 
 import java.util.List;
-import java.util.Map;
 
 /**
- * @Description:
  * @author Administrator
+ * @Description:
  * @date 2022/7/21 10:45
  */
 public interface PlatformService {
 
     /**
      * 查找
+     *
      * @param id
      * @return
      */
@@ -26,12 +25,15 @@ public interface PlatformService {
 
     /**
      * 获取所有平台
+     *
      * @return
      */
+    @Cacheable
     List<Platform> getAll();
 
     /**
      * 插入
+     *
      * @param platform
      * @return
      */
@@ -39,12 +41,14 @@ public interface PlatformService {
 
     /**
      * 更新
+     *
      * @param platform
      */
     void update(Platform platform);
 
     /**
      * 主键删除
+     *
      * @param id
      * @return
      */
@@ -52,6 +56,7 @@ public interface PlatformService {
 
     /**
      * 主键批量删除
+     *
      * @param ids
      * @return
      */
@@ -59,6 +64,7 @@ public interface PlatformService {
 
     /**
      * 分页查询
+     *
      * @param model
      * @return
      */
@@ -66,6 +72,7 @@ public interface PlatformService {
 
     /**
      * 根据Id获取
+     *
      * @param id
      * @return
      */

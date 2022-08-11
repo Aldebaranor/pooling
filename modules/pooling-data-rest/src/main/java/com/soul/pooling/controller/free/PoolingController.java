@@ -101,22 +101,17 @@ public class PoolingController {
      */
     @Api
     @PostMapping(value = "/activate/platform")
-    public Boolean forcesActivate(@RequestBody List<String> forces) {
+    public Boolean forcesActivate(@RequestBody List<String> forces) throws InterruptedException {
         //通知仿真节点（resources）执行激活
 
-        //分组大小10个一组发送MQTT
-        int groupSize = 10;
-        //分组数量
-        int arrSize = forces.size() % groupSize == 0 ? forces.size() / groupSize : forces.size() / groupSize + 1;
-        for (int i = 0; i < arrSize; i++) {
-            List<String> sub = new ArrayList<>();
-            for (int j = i * arrSize; j <= (i + 1) * arrSize - 1; j++) {
-                if (j <= forces.size() - 1) {
-                    sub.add(forces.get(j));
-                }
-            }
-            mqttMsgProducer.producerMsg(poolingConfig.getActivateTopic(), JsonUtils.serialize(sub));
+        for (String s : forces) {
+            List<String> list = new ArrayList<>();
+            list.add(s);
+            mqttMsgProducer.producerMsg(poolingConfig.getActivateTopic(), JsonUtils.serialize(list));
+            Thread.sleep(1);
         }
+
+
         return true;
     }
 
