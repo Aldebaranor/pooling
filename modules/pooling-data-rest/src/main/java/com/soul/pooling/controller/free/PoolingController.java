@@ -4,10 +4,8 @@ import com.egova.exception.ExceptionUtils;
 import com.egova.json.utils.JsonUtils;
 import com.egova.web.annotation.Api;
 import com.flagwind.commons.StringUtils;
-import com.soul.pooling.config.Constants;
 import com.soul.pooling.config.PoolingConfig;
 import com.soul.pooling.entity.Platform;
-import com.soul.pooling.model.ActivatedModel;
 import com.soul.pooling.model.PlatformStatus;
 import com.soul.pooling.mqtt.producer.MqttMsgProducer;
 import com.soul.pooling.netty.NettyUdpClient;
@@ -15,9 +13,7 @@ import com.soul.pooling.service.StatusManagement;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,7 +43,6 @@ public class PoolingController {
 
     @Autowired(required = false)
     private NettyUdpClient nettyUdpClient;
-
 
 
     /**
@@ -110,7 +105,6 @@ public class PoolingController {
             Thread.sleep(1);
         }
 
-
         return true;
     }
 
@@ -135,10 +129,6 @@ public class PoolingController {
 
         //通知上线
         management.sendActivated(platformId);
-
-        //TODO:
-        //进行资源注册
-        management.activeSource(platformId);
 
         management.activeForce(platformId);
         return true;
@@ -169,10 +159,6 @@ public class PoolingController {
         //通知下线
         management.sendDisActivated(platformId);
 
-        //TODO:
-        //进行资源注销
-        management.disActiveSource(platformId);
-
         management.disActiveForce(platformId);
         return true;
     }
@@ -187,8 +173,6 @@ public class PoolingController {
     public Map<String, Platform> platformPool() {
         return management.getPlatformPool();
     }
-
-
 
 
 }

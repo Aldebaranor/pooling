@@ -124,31 +124,24 @@ public class StatusManagement {
             forcesStatus.setActiveStatus(true);
             forceStatusData.put(id, forcesStatus);
             log.info("--->兵力" + id + "激活成功");
-
-        } else {
-            throw ExceptionUtils.api(String.format("该兵力未初始化"));
-        }
-    }
-
-    /**
-     * 资源池注册
-     *
-     * @param id
-     */
-    public void activeSource(String id) {
-        if (forceStatusData.containsKey(id)) {
             Platform platform = platformService.seekById(id);
-            platformPool.put(id, platform);
-            for (Sensor sensor : platform.getSensors()) {
-                sensorPool.put(sensor.getId(), sensor);
+            if (platform == null) {
+                throw ExceptionUtils.api(String.format("数据库没有平台数据"));
+            } else {
+                platformPool.put(id, platform);
+                for (Sensor sensor : platform.getSensors()) {
+                    sensorPool.put(sensor.getId(), sensor);
+                }
+                for (Weapon weapon : platform.getWeapons()) {
+                    weaponPool.put(weapon.getId(), weapon);
+                }
             }
-            for (Weapon weapon : platform.getWeapons()) {
-                weaponPool.put(weapon.getId(), weapon);
-            }
+
         } else {
             throw ExceptionUtils.api(String.format("该兵力未初始化"));
         }
     }
+
 
     /**
      * 从资源中心注销
@@ -167,31 +160,24 @@ public class StatusManagement {
             forcesStatus.setActiveStatus(false);
             forceStatusData.put(id, forcesStatus);
             log.info("--->兵力" + id + "注销成功");
-        } else {
-            throw ExceptionUtils.api(String.format("该兵力未初始化"));
-        }
-    }
-
-
-    /**
-     * 资源池注销
-     *
-     * @param id
-     */
-    public void disActiveSource(String id) {
-        if (forceStatusData.containsKey(id)) {
             Platform platform = platformService.seekById(id);
-            for (Sensor sensor : platform.getSensors()) {
-                sensorPool.remove(sensor.getId());
+            if (platform == null) {
+                throw ExceptionUtils.api(String.format("数据库没有平台数据"));
+            } else {
+                for (Sensor sensor : platform.getSensors()) {
+                    sensorPool.remove(sensor.getId());
+                }
+                for (Weapon weapon : platform.getWeapons()) {
+                    weaponPool.remove(weapon.getId());
+                }
+                platformPool.remove(id);
             }
-            for (Weapon weapon : platform.getWeapons()) {
-                weaponPool.remove(weapon.getId());
-            }
-            platformPool.remove(id);
+
         } else {
             throw ExceptionUtils.api(String.format("该兵力未初始化"));
         }
     }
+
 
     /**
      * 兵力删除
@@ -207,6 +193,18 @@ public class StatusManagement {
             forcesStatus.setActiveStatus(false);
             forceStatusData.put(id, forcesStatus);
             log.info("--->兵力" + id + "注销成功");
+            Platform platform = platformService.seekById(id);
+            if (platform == null) {
+                throw ExceptionUtils.api(String.format("数据库没有平台数据"));
+            } else {
+                for (Sensor sensor : platform.getSensors()) {
+                    sensorPool.remove(sensor.getId());
+                }
+                for (Weapon weapon : platform.getWeapons()) {
+                    weaponPool.remove(weapon.getId());
+                }
+                platformPool.remove(id);
+            }
         }
     }
 
