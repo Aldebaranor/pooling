@@ -1,13 +1,18 @@
 package com.soul.pooling.service;
 
 import com.egova.exception.ExceptionUtils;
+import com.soul.pooling.config.Constants;
+import com.soul.pooling.config.PoolingConfig;
 import com.soul.pooling.entity.Platform;
 import com.soul.pooling.entity.Sensor;
 import com.soul.pooling.entity.Weapon;
+import com.soul.pooling.model.ActivatedModel;
 import com.soul.pooling.model.PlatformStatus;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.*;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import javax.annotation.Priority;
 import java.util.ArrayList;
@@ -29,6 +34,12 @@ public class StatusManagement {
 
     @Autowired
     private PlatformService platformService;
+
+    @Autowired
+    private RestTemplate restTemplate;
+
+    @Autowired
+    private PoolingConfig poolingConfig;
 
 
     private final ConcurrentMap<String, PlatformStatus> forceStatusData = new ConcurrentHashMap();
@@ -211,6 +222,44 @@ public class StatusManagement {
 
     public boolean isInited(String id) {
         return forceStatusData.containsKey(id);
+    }
+
+    public Boolean sendActivated(String id) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        ActivatedModel model = new ActivatedModel();
+        model.setId(id);
+        model.setType("1");
+        HttpEntity<Object> request = new HttpEntity<>(model, headers);
+        try {
+            ResponseEntity<String> response = restTemplate.postForEntity(poolingConfig.getSimulationUrlHead() + Constants.OPERATE_FORCE_URL, request, String.class);
+            if (response.getStatusCode() != HttpStatus.OK) {
+                throw ExceptionUtils.api("仿真引擎未开启");
+            }
+        } catch (Exception ex) {
+            throw ExceptionUtils.api("仿真引擎未开启");
+        }
+        return true;
+
+    }
+
+    public Boolean sendDisActivated(String id) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        ActivatedModel model = new ActivatedModel();
+        model.setId(id);
+        model.setType("0");
+        HttpEntity<Object> request = new HttpEntity<>(model, headers);
+        try {
+            ResponseEntity<String> response = restTemplate.postForEntity(poolingConfig.getSimulationUrlHead() + Constants.OPERATE_FORCE_URL, request, String.class);
+            if (response.getStatusCode() != HttpStatus.OK) {
+                throw ExceptionUtils.api("仿真引擎未开启");
+            }
+        } catch (Exception ex) {
+            throw ExceptionUtils.api("仿真引擎未开启");
+        }
+        return true;
+
     }
 
 

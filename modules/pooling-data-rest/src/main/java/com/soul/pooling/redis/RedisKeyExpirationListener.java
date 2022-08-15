@@ -37,6 +37,7 @@ public class RedisKeyExpirationListener extends KeyExpirationEventMessageListene
         if (expiredKey.contains( Constants.FORCE_HEAR)) {
             //有兵力注销，通知仿真引擎将对应的仿真节点退出
             String id = expiredKey.replace(Constants.FORCE_HEAR, "");
+            management.sendDisActivated(id);
             management.deleteForce(id);
         }
 

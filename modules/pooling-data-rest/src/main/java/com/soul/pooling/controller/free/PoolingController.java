@@ -48,8 +48,7 @@ public class PoolingController {
     @Autowired(required = false)
     private NettyUdpClient nettyUdpClient;
 
-    @Autowired
-    private RestTemplate restTemplate;
+
 
     /**
      * 开始试验，清楚缓存
@@ -135,7 +134,7 @@ public class PoolingController {
         forcesData.setActiveStatus(true);
 
         //通知上线
-        sendActivated(platformId);
+        management.sendActivated(platformId);
 
         //TODO:
         //进行资源注册
@@ -168,7 +167,7 @@ public class PoolingController {
         forcesData.setActiveStatus(false);
 
         //通知下线
-        sendDisActivated(platformId);
+        management.sendDisActivated(platformId);
 
         //TODO:
         //进行资源注销
@@ -190,43 +189,7 @@ public class PoolingController {
     }
 
 
-    private Boolean sendActivated(String id) {
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        ActivatedModel model = new ActivatedModel();
-        model.setId(id);
-        model.setType("1");
-        HttpEntity<Object> request = new HttpEntity<>(model, headers);
-        try {
-            ResponseEntity<String> response = restTemplate.postForEntity(poolingConfig.getSimulationUrlHead() + Constants.OPERATE_FORCE_URL, request, String.class);
-            if (response.getStatusCode() != HttpStatus.OK) {
-                throw ExceptionUtils.api("仿真引擎未开启");
-            }
-        } catch (Exception ex) {
-            throw ExceptionUtils.api("仿真引擎未开启");
-        }
-        return true;
 
-    }
-
-    private Boolean sendDisActivated(String id) {
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        ActivatedModel model = new ActivatedModel();
-        model.setId(id);
-        model.setType("0");
-        HttpEntity<Object> request = new HttpEntity<>(model, headers);
-        try {
-            ResponseEntity<String> response = restTemplate.postForEntity(poolingConfig.getSimulationUrlHead() + Constants.OPERATE_FORCE_URL, request, String.class);
-            if (response.getStatusCode() != HttpStatus.OK) {
-                throw ExceptionUtils.api("仿真引擎未开启");
-            }
-        } catch (Exception ex) {
-            throw ExceptionUtils.api("仿真引擎未开启");
-        }
-        return true;
-
-    }
 
 }
 
