@@ -113,5 +113,27 @@
         </addColumn>
     </changeSet>
 
+    <changeSet author="41656 (generated)" id="1647400803042-42">
+        <preConditions>
+            <not>
+                <columnExists tableName="pooling_sensor" columnName="sensorCode"/>
+            </not>
+        </preConditions>
+        <addColumn tableName="pooling_sensor">
+            <column name="sensorCode" remarks="传感器编号" type="VARCHAR(50)"></column>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="41656 (generated)" id="1647400803042-43">
+        <preConditions>
+            <not>
+                <columnExists tableName="pooling_weapon" columnName="weaponCode"/>
+            </not>
+        </preConditions>
+        <addColumn tableName="pooling_weapon">
+            <column name="weaponCode" remarks="武器编号" type="VARCHAR(50)"></column>
+        </addColumn>
+    </changeSet>
+
 
 </databaseChangeLog>

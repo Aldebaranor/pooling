@@ -76,4 +76,8 @@ public class Weapon extends BaseEntity {
     @Column(name = "status")
     private int status;
 
+    @Display("武器编号")
+    @Column(name = "weaponCode")
+    private String weaponCode;
+
 }

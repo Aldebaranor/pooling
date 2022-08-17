@@ -68,5 +68,8 @@ public class Sensor extends BaseEntity {
     @Column(name = "status")
     private int status;
 
+    @Display("传感器编号")
+    @Column(name = "sensorCode")
+    private String sensorCode;
 
 }
