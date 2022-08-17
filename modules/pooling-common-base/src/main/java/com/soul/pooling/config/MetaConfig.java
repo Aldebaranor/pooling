@@ -7,9 +7,9 @@ import org.springframework.stereotype.Component;
 
 
 /**
-* @Author: 王质松
-* @Date: 2022/8/3 10:29
-*/
+ * @Author: 王质松
+ * @Date: 2022/8/3 10:29
+ */
 @Data
 @Component
 @Configuration
@@ -21,6 +21,8 @@ public class MetaConfig {
     private String simulationUrlHead;
 
     private String scenarioCode;
+
+    private Integer situationDb;
 
 
 }

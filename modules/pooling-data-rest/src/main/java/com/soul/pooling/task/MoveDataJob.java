@@ -1,6 +1,6 @@
 package com.soul.pooling.task;
 
-import com.egova.json.utils.JsonUtils;
+
 import com.egova.redis.RedisUtils;
 import com.soul.pooling.config.Constants;
 import com.soul.pooling.config.MetaConfig;
@@ -39,15 +39,15 @@ public class MoveDataJob {
     @Scheduled(fixedDelayString = "500")
     public void updateMoveData() {
 
-        if(StringUtils.isBlank(metaConfig.getScenarioCode())){
+        if (StringUtils.isBlank(metaConfig.getScenarioCode())) {
             return;
         }
-        String armyKey = String.format(Constants.SCENARIO_FORCES,metaConfig.getScenarioCode());
-        Map<String, SituationTemArmy> army = RedisUtils.getService().extrasForHash().hgetall(armyKey, SituationTemArmy.class);
+        String armyKey = String.format(Constants.SCENARIO_FORCES, metaConfig.getScenarioCode());
+        Map<String, SituationTemArmy> army = RedisUtils.getService(metaConfig.getSituationDb()).extrasForHash().hgetall(armyKey, SituationTemArmy.class);
         String moveKey = String.format(Constants.SCENARIO_MOVE, metaConfig.getScenarioCode());
-        Map<String, String> moveMap = RedisUtils.getService().extrasForHash().hgetall(moveKey);
-        String timeKey = String.format(Constants.SCENARIO_TIME,  metaConfig.getScenarioCode());
-        String s = RedisUtils.getService().getTemplate().opsForValue().get(timeKey);
+        Map<String, String> moveMap = RedisUtils.getService(metaConfig.getSituationDb()).extrasForHash().hgetall(moveKey);
+        String timeKey = String.format(Constants.SCENARIO_TIME, metaConfig.getScenarioCode());
+        String s = RedisUtils.getService(metaConfig.getSituationDb()).getTemplate().opsForValue().get(timeKey);
 
 
         if (CollectionUtils.isEmpty(moveMap)) {
@@ -56,29 +56,28 @@ public class MoveDataJob {
         List<SituationMoveData> forces = new ArrayList<>();
         for (Map.Entry<String, String> entry : moveMap.entrySet()) {
             SituationTemArmy situationTemArmy = army.get((entry.getKey()));
-            if(situationTemArmy == null){
+            if (situationTemArmy == null) {
                 return;
             }
             String[] split = entry.getValue().split("@");
             if (split.length < 8) {
-                log.error( "-数据不合法-" + entry.getValue());
+                log.error("-数据不合法-" + entry.getValue());
             }
             SituationMoveData situationMoveData = new SituationMoveData();
-            if(situationTemArmy.getIff() == 3 && !StringUtils.isBlank(situationTemArmy.getCode())){
+            if (situationTemArmy.getIff() == 3 && !StringUtils.isBlank(situationTemArmy.getCode())) {
                 situationMoveData.setId(situationTemArmy.getCode());
-            }else{
+            } else {
                 situationMoveData.setId(situationTemArmy.getId());
             }
             situationMoveData.setTime(Long.parseLong(s));
             situationMoveData.setMove(initMoveData(split));
             forces.add(situationMoveData);
             Platform platform = management.getPlatformPool().get(situationMoveData.getId());
-            if(platform != null){
+            if (platform != null) {
                 platform.setPlatformMoveData(situationMoveData.getMove());
             }
 
         }
-
 
 
     }

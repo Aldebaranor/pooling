@@ -6,6 +6,7 @@ import com.egova.web.annotation.Api;
 import com.flagwind.commons.StringUtils;
 import com.soul.pooling.config.PoolingConfig;
 import com.soul.pooling.entity.Platform;
+import com.soul.pooling.model.PlatformMoveData;
 import com.soul.pooling.model.PlatformStatus;
 import com.soul.pooling.mqtt.producer.MqttMsgProducer;
 import com.soul.pooling.netty.NettyUdpClient;
@@ -174,6 +175,11 @@ public class PoolingController {
         return management.getPlatformPool();
     }
 
+    @Api
+    @GetMapping(value = "/platform/moveData/{platformId}")
+    public PlatformMoveData platformMoveData(@PathVariable String platformId) {
+        return management.getPlatformPool().get(platformId).getPlatformMoveData();
+    }
 
 }
 
