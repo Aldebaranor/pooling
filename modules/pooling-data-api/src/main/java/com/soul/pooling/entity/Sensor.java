@@ -72,171 +72,171 @@ public class Sensor extends BaseEntity {
     @Column(name = "sensorCode")
     private String sensorCode;
 
-    
+
     //陆
     @Display("最大作用距离_陆")
-    @Column(name = "maxDetectLandRange")
-    private String maxDetectLandRange;
+    @Column(name = "maxDetectRangeLand")
+    private String maxDetectRange;
 
     @Display("最大作用高度_陆")
-    @Column(name = "maxDetectLandHeight")
-    private String maxDetectLandHeight;
+    @Column(name = "maxDetectHeightLand")
+    private String maxDetectHeightLand;
 
     @Display("最小作用高度_陆")
-    @Column(name = "minDetectLandHeight")
-    private String minDetectLandHeight;
+    @Column(name = "minDetectHeightLand")
+    private String minDetectHeightLand;
 
     @Display("最小目标特性_陆")
-    @Column(name = "minTargetLandFeature")
-    private String minTargetLandFeature;
+    @Column(name = "minTargetFeatureLand")
+    private String minTargetFeatureLand;
 
     @Display("情报周期_陆")
-    @Column(name = "landIntelligenceCycle")
-    private String landIntelligenceCycle;
+    @Column(name = "intelligenceCycleLand")
+    private String intelligenceCycleLand;
 
     @Display("处理目标数_陆")
-    @Column(name = "landHandleTargetNum")
-    private String landHandleTargetNum;
+    @Column(name = "handleTargetNumLand")
+    private String handleTargetNumLand;
 
     @Display("方位角_陆")
-    @Column(name = "landAzimuth")
-    private String landAzimuth;
+    @Column(name = "azimuthLand")
+    private String azimuthLand;
 
     @Display("精度_陆")
-    @Column(name = "landPrecision")
-    private String landPrecision;
+    @Column(name = "precisionLand")
+    private String precisionLand;
 
 
     //海
     @Display("最大作用距离_海")
-    @Column(name = "maxDetectSeaRange")
-    private String maxDetectSeaRange;
+    @Column(name = "maxDetectRangeSea")
+    private String maxDetectRangeSea;
 
     @Display("最大作用高度_海")
-    @Column(name = "maxDetectSeaHeight")
-    private String maxDetectSeaHeight;
+    @Column(name = "maxDetectHeightSea")
+    private String maxDetectHeightSea;
 
     @Display("最小作用高度_海")
-    @Column(name = "minDetectSeaHeight")
-    private String minDetectSeaHeight;
+    @Column(name = "minDetectHeightSea")
+    private String minDetectHeightSea;
 
     @Display("最小目标特性_海")
-    @Column(name = "minSeaTargetFeature")
-    private String minSeaTargetFeature;
+    @Column(name = "minTargetFeatureSea")
+    private String minTargetFeature;
 
     @Display("情报周期_海")
-    @Column(name = "seaIntelligenceCycle")
-    private String seaIntelligenceCycle;
+    @Column(name = "intelligenceCycleSea")
+    private String intelligenceCycleSea;
 
     @Display("处理目标数_海")
-    @Column(name = "seaHandleTargetNum")
-    private String seaHandleTargetNum;
+    @Column(name = "handleTargetNumSea")
+    private String handleTargetNumSea;
 
     @Display("方位角_海")
-    @Column(name = "seaAzimuth")
-    private String seaAzimuth;
+    @Column(name = "azimuthSea")
+    private String azimuthSea;
 
     @Display("精度_海")
-    @Column(name = "seaPrecision")
-    private String seaPrecision;
+    @Column(name = "precisionSea")
+    private String precisionSea;
 
     //空
     @Display("最大作用距离_空")
-    @Column(name = "maxDetectAirRange")
-    private String maxDetectAirRange;
+    @Column(name = "maxDetectRangeAir")
+    private String maxDetectRangeAir;
 
     @Display("最大作用高度_空")
-    @Column(name = "maxDetectAirHeight")
-    private String maxDetectAirHeight;
+    @Column(name = "maxDetectHeightAir")
+    private String maxDetectHeightAir;
 
     @Display("最小作用高度_空")
-    @Column(name = "minDetectAirHeight")
-    private String minDetectAirHeight;
+    @Column(name = "minDetectHeightAir")
+    private String minDetectHeightAir;
 
     @Display("最小目标特性_空")
-    @Column(name = "minAirTargetFeature")
-    private String minAirTargetFeature;
+    @Column(name = "minTargetFeatureAir")
+    private String minTargetFeatureAir;
 
     @Display("情报周期_空")
-    @Column(name = "AirIntelligenceCycle")
-    private String AirIntelligenceCycle;
+    @Column(name = "intelligenceCycleAir")
+    private String intelligenceCycleAir;
 
     @Display("处理目标数_空")
-    @Column(name = "airHandleTargetNum")
-    private String airHandleTargetNum;
+    @Column(name = "handleTargetNumAir")
+    private String handleTargetNumAir;
 
     @Display("方位角_空")
-    @Column(name = "airAzimuth")
-    private String airAzimuth;
+    @Column(name = "azimuthAir")
+    private String azimuthAir;
 
     @Display("精度_空")
-    @Column(name = "airPrecision")
-    private String airPrecision;
+    @Column(name = "precisionAir")
+    private String precisionAir;
 
     //天
     @Display("最大作用距离_天")
-    @Column(name = "maxDetectSpaceRange")
-    private String maxDetectSpaceRange;
+    @Column(name = "maxDetectRangeSpace")
+    private String maxDetectRangeSpace;
 
     @Display("最大作用高度_天")
-    @Column(name = "maxDetectSpaceHeight")
-    private String maxDetectSpaceHeight;
+    @Column(name = "maxDetectHeightSpace")
+    private String maxDetectHeightSpace;
 
     @Display("最小作用高度_天")
-    @Column(name = "minDetectSpaceHeight")
-    private String minDetectSpaceHeight;
+    @Column(name = "minDetectHeightSpace")
+    private String minDetectHeightSpace;
 
     @Display("最小目标特性_天")
-    @Column(name = "minSpaceTargetFeature")
-    private String minSpaceTargetFeature;
+    @Column(name = "minTargetFeatureSpace")
+    private String minTargetFeatureSpace;
 
     @Display("情报周期_天")
-    @Column(name = "spaceIntelligenceCycle")
-    private String spaceIntelligenceCycle;
+    @Column(name = "intelligenceCycleSpace")
+    private String intelligenceCycleSpace;
 
     @Display("处理目标数_天")
-    @Column(name = "spaceHandleTargetNum")
-    private String spaceHandleTargetNum;
+    @Column(name = "handleTargetNumSpace")
+    private String handleTargetNumSpace;
 
     @Display("方位角_天")
-    @Column(name = "spaceAzimuth")
-    private String spaceAzimuth;
+    @Column(name = "azimuthSpace")
+    private String azimuthSpace;
 
     @Display("精度_天")
-    @Column(name = "spacePrecision")
-    private String spacePrecision;
+    @Column(name = "precisionSpace")
+    private String precisionSpace;
 
     //潜
     @Display("最大作用距离_潜")
-    @Column(name = "maxDetectUnderSeaRange")
-    private String maxDetectUnderSeaRange;
+    @Column(name = "maxDetectRangeUnderSea")
+    private String maxDetectRangeUnderSea;
 
     @Display("最大作用深度_潜")
-    @Column(name = "maxDetectUnderSeaDepth")
-    private String maxDetectUnderSeaDepth;
+    @Column(name = "maxDetectDepthUnderSea")
+    private String maxDetectDepthUnderSea;
 
-    @Display("最小作用高度_潜")
-    @Column(name = "minDetectUnderSeaDepth")
-    private String minDetectUnderSeaDepth;
+    @Display("最小作用深度_潜")
+    @Column(name = "minDetectDepthUnderSea")
+    private String minDetectDepthUnderSea;
 
     @Display("最小目标特性_潜")
-    @Column(name = "minUnderSeaTargetFeature")
-    private String minUnderSeaTargetFeature;
+    @Column(name = "minTargetFeatureUnderSea")
+    private String minTargetFeatureUnderSea;
 
     @Display("情报周期_潜")
-    @Column(name = "underSeaIntelligenceCycle")
-    private String underSeaIntelligenceCycle;
+    @Column(name = "intelligenceCycleUnderSea")
+    private String intelligenceCycleUnderSea;
 
     @Display("处理目标数_潜")
-    @Column(name = "underSeaHandleTargetNum")
-    private String underSeaHandleTargetNum;
+    @Column(name = "handleTargetNumUnderSea")
+    private String handleTargetNumUnderSea;
 
     @Display("方位角_潜")
-    @Column(name = "underSeaAzimuth")
-    private String underSeaAzimuth;
+    @Column(name = "azimuthUnderSea")
+    private String azimuthUnderSea;
 
     @Display("精度_潜")
-    @Column(name = "underSeaPrecision")
-    private String underSeaPrecision;
+    @Column(name = "precisionUnderSea")
+    private String precisionUnderSea;
 
 }

@@ -182,679 +182,653 @@
     <changeSet author="41656 (generated)" id="1647400803042-48">
         <preConditions>
             <not>
-                <columnExists tableName="pooling_weapon" columnName="maxFireLandRange"/>
+                <columnExists tableName="pooling_weapon" columnName="maxFireRangeLand"/>
             </not>
         </preConditions>
         <addColumn tableName="pooling_weapon">
-            <column name="maxFireLandRange" remarks="最大射程_陆" type="VARCHAR(50)"></column>
+            <column name="maxFireRangeLand" remarks="最大射程_陆" type="VARCHAR(50)"></column>
         </addColumn>
     </changeSet>
-
     <changeSet author="41656 (generated)" id="1647400803042-49">
         <preConditions>
             <not>
-                <columnExists tableName="pooling_weapon" columnName="minFireLandRange"/>
+                <columnExists tableName="pooling_weapon" columnName="minFireRangeLand"/>
             </not>
         </preConditions>
         <addColumn tableName="pooling_weapon">
-            <column name="minFireLandRange" remarks="最小射程_陆" type="VARCHAR(50)"></column>
+            <column name="minFireRangeLand" remarks="最小射程_陆" type="VARCHAR(50)"></column>
         </addColumn>
     </changeSet>
-
     <changeSet author="41656 (generated)" id="1647400803042-50">
         <preConditions>
             <not>
-                <columnExists tableName="pooling_weapon" columnName="maxFireLandHeight"/>
+                <columnExists tableName="pooling_weapon" columnName="maxFireHeightLand"/>
             </not>
         </preConditions>
         <addColumn tableName="pooling_weapon">
-            <column name="maxFireLandHeight" remarks="最大射高_陆" type="VARCHAR(50)"></column>
+            <column name="maxFireHeightLand" remarks="最大射高_陆" type="VARCHAR(50)"></column>
         </addColumn>
     </changeSet>
-
     <changeSet author="41656 (generated)" id="1647400803042-51">
         <preConditions>
             <not>
-                <columnExists tableName="pooling_weapon" columnName="minFireLandHeight"/>
+                <columnExists tableName="pooling_weapon" columnName="minFireHeightLand"/>
             </not>
         </preConditions>
         <addColumn tableName="pooling_weapon">
-            <column name="minFireLandHeight" remarks="最小射高_陆" type="VARCHAR(50)"></column>
+            <column name="minFireHeightLand" remarks="最小射高_陆" type="VARCHAR(50)"></column>
         </addColumn>
     </changeSet>
-
     <changeSet author="41656 (generated)" id="1647400803042-52">
         <preConditions>
             <not>
-                <columnExists tableName="pooling_weapon" columnName="landHitRate"/>
+                <columnExists tableName="pooling_weapon" columnName="hitRateLand"/>
             </not>
         </preConditions>
         <addColumn tableName="pooling_weapon">
-            <column name="landHitRate" remarks="命中概率_陆" type="VARCHAR(50)"></column>
+            <column name="hitRateLand" remarks="命中概率_陆" type="VARCHAR(50)"></column>
         </addColumn>
     </changeSet>
-
     <changeSet author="41656 (generated)" id="1647400803042-53">
         <preConditions>
             <not>
-                <columnExists tableName="pooling_weapon" columnName="maxFireSeaRange"/>
+                <columnExists tableName="pooling_weapon" columnName="maxFireRangeSea"/>
             </not>
         </preConditions>
         <addColumn tableName="pooling_weapon">
-            <column name="maxFireSeaRange" remarks="最大射程_海" type="VARCHAR(50)"></column>
+            <column name="maxFireRangeSea" remarks="最大射程_海" type="VARCHAR(50)"></column>
         </addColumn>
     </changeSet>
-
     <changeSet author="41656 (generated)" id="1647400803042-54">
         <preConditions>
             <not>
-                <columnExists tableName="pooling_weapon" columnName="minFireSeaRange"/>
+                <columnExists tableName="pooling_weapon" columnName="minFireRangeSea"/>
             </not>
         </preConditions>
         <addColumn tableName="pooling_weapon">
-            <column name="minFireSeaRange" remarks="最小射程_海" type="VARCHAR(50)"></column>
+            <column name="minFireRangeSea" remarks="最小射程_海" type="VARCHAR(50)"></column>
         </addColumn>
     </changeSet>
-
     <changeSet author="41656 (generated)" id="1647400803042-55">
         <preConditions>
             <not>
-                <columnExists tableName="pooling_weapon" columnName="maxFireSeaHeight"/>
+                <columnExists tableName="pooling_weapon" columnName="maxFireHeightSea"/>
             </not>
         </preConditions>
         <addColumn tableName="pooling_weapon">
-            <column name="maxFireSeaHeight" remarks="最大射高_海" type="VARCHAR(50)"></column>
+            <column name="maxFireHeightSea" remarks="最大射高_海" type="VARCHAR(50)"></column>
         </addColumn>
     </changeSet>
-
     <changeSet author="41656 (generated)" id="1647400803042-56">
         <preConditions>
             <not>
-                <columnExists tableName="pooling_weapon" columnName="minFireSeaHeight"/>
+                <columnExists tableName="pooling_weapon" columnName="minFireHeightSea"/>
             </not>
         </preConditions>
         <addColumn tableName="pooling_weapon">
-            <column name="minFireSeaHeight" remarks="最小射高_海" type="VARCHAR(50)"></column>
+            <column name="minFireHeightSea" remarks="最小射高_海" type="VARCHAR(50)"></column>
         </addColumn>
     </changeSet>
-
     <changeSet author="41656 (generated)" id="1647400803042-57">
         <preConditions>
             <not>
-                <columnExists tableName="pooling_weapon" columnName="seaHitRate"/>
+                <columnExists tableName="pooling_weapon" columnName="hitRateSea"/>
             </not>
         </preConditions>
         <addColumn tableName="pooling_weapon">
-            <column name="seaHitRate" remarks="命中概率_海" type="VARCHAR(50)"></column>
+            <column name="hitRateSea" remarks="命中概率_海" type="VARCHAR(50)"></column>
         </addColumn>
     </changeSet>
-
     <changeSet author="41656 (generated)" id="1647400803042-58">
         <preConditions>
             <not>
-                <columnExists tableName="pooling_weapon" columnName="maxFireAirRange"/>
+                <columnExists tableName="pooling_weapon" columnName="maxFireRangeAir"/>
             </not>
         </preConditions>
         <addColumn tableName="pooling_weapon">
-            <column name="maxFireAirRange" remarks="最大射程_空" type="VARCHAR(50)"></column>
+            <column name="maxFireRangeAir" remarks="最大射程_空" type="VARCHAR(50)"></column>
         </addColumn>
     </changeSet>
-
     <changeSet author="41656 (generated)" id="1647400803042-59">
         <preConditions>
             <not>
-                <columnExists tableName="pooling_weapon" columnName="minFireAirRange"/>
+                <columnExists tableName="pooling_weapon" columnName="minFireRangeAir"/>
             </not>
         </preConditions>
         <addColumn tableName="pooling_weapon">
-            <column name="minFireAirRange" remarks="最小射程_空" type="VARCHAR(50)"></column>
+            <column name="minFireRangeAir" remarks="最小射程_空" type="VARCHAR(50)"></column>
         </addColumn>
     </changeSet>
-
     <changeSet author="41656 (generated)" id="1647400803042-60">
         <preConditions>
             <not>
-                <columnExists tableName="pooling_weapon" columnName="maxFireAirHeight"/>
+                <columnExists tableName="pooling_weapon" columnName="maxFireHeightAir"/>
             </not>
         </preConditions>
         <addColumn tableName="pooling_weapon">
-            <column name="maxFireAirHeight" remarks="最大射高_空" type="VARCHAR(50)"></column>
+            <column name="maxFireHeightAir" remarks="最大射高_空" type="VARCHAR(50)"></column>
         </addColumn>
     </changeSet>
-
     <changeSet author="41656 (generated)" id="1647400803042-61">
         <preConditions>
             <not>
-                <columnExists tableName="pooling_weapon" columnName="minFireAirHeight"/>
+                <columnExists tableName="pooling_weapon" columnName="minFireHeightAir"/>
             </not>
         </preConditions>
         <addColumn tableName="pooling_weapon">
-            <column name="minFireAirHeight" remarks="最小射高_空" type="VARCHAR(50)"></column>
+            <column name="minFireHeightAir" remarks="最小射高_空" type="VARCHAR(50)"></column>
         </addColumn>
     </changeSet>
-
     <changeSet author="41656 (generated)" id="1647400803042-62">
         <preConditions>
             <not>
-                <columnExists tableName="pooling_weapon" columnName="airHitRate"/>
+                <columnExists tableName="pooling_weapon" columnName="hitRateAir"/>
             </not>
         </preConditions>
         <addColumn tableName="pooling_weapon">
-            <column name="airHitRate" remarks="命中概率_空" type="VARCHAR(50)"></column>
+            <column name="hitRateAir" remarks="命中概率_空" type="VARCHAR(50)"></column>
         </addColumn>
     </changeSet>
-
     <changeSet author="41656 (generated)" id="1647400803042-63">
         <preConditions>
             <not>
-                <columnExists tableName="pooling_weapon" columnName="maxFireSpaceRange"/>
+                <columnExists tableName="pooling_weapon" columnName="maxFireRangeSpace"/>
             </not>
         </preConditions>
         <addColumn tableName="pooling_weapon">
-            <column name="maxFireSpaceRange" remarks="最大射程_天" type="VARCHAR(50)"></column>
+            <column name="maxFireRangeSpace" remarks="最大射程_天" type="VARCHAR(50)"></column>
         </addColumn>
     </changeSet>
-
     <changeSet author="41656 (generated)" id="1647400803042-64">
         <preConditions>
             <not>
-                <columnExists tableName="pooling_weapon" columnName="minFireSpaceRange"/>
+                <columnExists tableName="pooling_weapon" columnName="minFireRangeSpace"/>
             </not>
         </preConditions>
         <addColumn tableName="pooling_weapon">
-            <column name="minFireSpaceRange" remarks="最小射程_天" type="VARCHAR(50)"></column>
+            <column name="minFireRangeSpace" remarks="最小射程_天" type="VARCHAR(50)"></column>
         </addColumn>
     </changeSet>
-
     <changeSet author="41656 (generated)" id="1647400803042-65">
         <preConditions>
             <not>
-                <columnExists tableName="pooling_weapon" columnName="maxFireSpaceHeight"/>
+                <columnExists tableName="pooling_weapon" columnName="maxFireHeightSpace"/>
             </not>
         </preConditions>
         <addColumn tableName="pooling_weapon">
-            <column name="maxFireSpaceHeight" remarks="最大射高_天" type="VARCHAR(50)"></column>
+            <column name="maxFireHeightSpace" remarks="最大射高_天" type="VARCHAR(50)"></column>
         </addColumn>
     </changeSet>
-
     <changeSet author="41656 (generated)" id="1647400803042-66">
         <preConditions>
             <not>
-                <columnExists tableName="pooling_weapon" columnName="minFireSpaceHeight"/>
+                <columnExists tableName="pooling_weapon" columnName="minFireHeightSpace"/>
             </not>
         </preConditions>
         <addColumn tableName="pooling_weapon">
-            <column name="minFireSpaceHeight" remarks="最小射高_天" type="VARCHAR(50)"></column>
+            <column name="minFireHeightSpace" remarks="最小射高_天" type="VARCHAR(50)"></column>
         </addColumn>
     </changeSet>
-
     <changeSet author="41656 (generated)" id="1647400803042-67">
         <preConditions>
             <not>
-                <columnExists tableName="pooling_weapon" columnName="spaceHitRate"/>
+                <columnExists tableName="pooling_weapon" columnName="hitRateSpace"/>
             </not>
         </preConditions>
         <addColumn tableName="pooling_weapon">
-            <column name="spaceHitRate" remarks="命中概率_天" type="VARCHAR(50)"></column>
+            <column name="hitRateSpace" remarks="命中概率_天" type="VARCHAR(50)"></column>
         </addColumn>
     </changeSet>
-
     <changeSet author="41656 (generated)" id="1647400803042-68">
         <preConditions>
             <not>
-                <columnExists tableName="pooling_weapon" columnName="maxFireUnderSeaRange"/>
+                <columnExists tableName="pooling_weapon" columnName="maxFireRangeUnderSea"/>
             </not>
         </preConditions>
         <addColumn tableName="pooling_weapon">
-            <column name="maxFireUnderSeaRange" remarks="最大射程_潜" type="VARCHAR(50)"></column>
+            <column name="maxFireRangeUnderSea" remarks="最大射程_潜" type="VARCHAR(50)"></column>
         </addColumn>
     </changeSet>
-
     <changeSet author="41656 (generated)" id="1647400803042-69">
         <preConditions>
             <not>
-                <columnExists tableName="pooling_weapon" columnName="minFireUnderSeaRange"/>
+                <columnExists tableName="pooling_weapon" columnName="minFireRangeUnderSea"/>
             </not>
         </preConditions>
         <addColumn tableName="pooling_weapon">
-            <column name="minFireUnderSeaRange" remarks="最小射程_潜" type="VARCHAR(50)"></column>
+            <column name="minFireRangeUnderSea" remarks="最小射程_潜" type="VARCHAR(50)"></column>
         </addColumn>
     </changeSet>
-
     <changeSet author="41656 (generated)" id="1647400803042-70">
         <preConditions>
             <not>
-                <columnExists tableName="pooling_weapon" columnName="maxFireUnderSeaDepth"/>
+                <columnExists tableName="pooling_weapon" columnName="maxFireDepthUnderSea"/>
             </not>
         </preConditions>
         <addColumn tableName="pooling_weapon">
-            <column name="maxFireUnderSeaDepth" remarks="最大深度_潜" type="VARCHAR(50)"></column>
+            <column name="maxFireDepthUnderSea" remarks="最大深度_潜" type="VARCHAR(50)"></column>
         </addColumn>
     </changeSet>
-
     <changeSet author="41656 (generated)" id="1647400803042-71">
         <preConditions>
             <not>
-                <columnExists tableName="pooling_weapon" columnName="minFireUnderSeaDepth"/>
+                <columnExists tableName="pooling_weapon" columnName="minFireDepthUnderSea"/>
             </not>
         </preConditions>
         <addColumn tableName="pooling_weapon">
-            <column name="minFireUnderSeaDepth" remarks="最小深度_潜" type="VARCHAR(50)"></column>
+            <column name="minFireDepthUnderSea" remarks="最小深度_潜" type="VARCHAR(50)"></column>
         </addColumn>
     </changeSet>
-
     <changeSet author="41656 (generated)" id="1647400803042-72">
         <preConditions>
             <not>
-                <columnExists tableName="pooling_weapon" columnName="underSeaHitRate"/>
+                <columnExists tableName="pooling_weapon" columnName="hitRateUnderSea"/>
             </not>
         </preConditions>
         <addColumn tableName="pooling_weapon">
-            <column name="underSeaHitRate" remarks="命中概率_潜" type="VARCHAR(50)"></column>
+            <column name="hitRateUnderSea" remarks="命中概率_潜" type="VARCHAR(50)"></column>
         </addColumn>
     </changeSet>
-
 
     <changeSet author="41656 (generated)" id="1647400803042-73">
         <preConditions>
             <not>
-                <columnExists tableName="pooling_sensor" columnName="maxDetectLandRange"/>
+                <columnExists tableName="pooling_sensor" columnName="maxDetectRangeLand"/>
             </not>
         </preConditions>
         <addColumn tableName="pooling_sensor">
-            <column name="maxDetectLandRange" remarks="最大作用距离_陆" type="VARCHAR(50)"></column>
+            <column name="maxDetectRangeLand" remarks="最大作用距离_陆" type="VARCHAR(50)"></column>
         </addColumn>
     </changeSet>
     <changeSet author="41656 (generated)" id="1647400803042-74">
         <preConditions>
             <not>
-                <columnExists tableName="pooling_sensor" columnName="maxDetectLandHeight"/>
+                <columnExists tableName="pooling_sensor" columnName="maxDetectHeightLand"/>
             </not>
         </preConditions>
         <addColumn tableName="pooling_sensor">
-            <column name="maxDetectLandHeight" remarks="最大作用高度_陆" type="VARCHAR(50)"></column>
+            <column name="maxDetectHeightLand" remarks="最大作用高度_陆" type="VARCHAR(50)"></column>
         </addColumn>
     </changeSet>
     <changeSet author="41656 (generated)" id="1647400803042-75">
         <preConditions>
             <not>
-                <columnExists tableName="pooling_sensor" columnName="minDetectLandHeight"/>
+                <columnExists tableName="pooling_sensor" columnName="minDetectHeightLand"/>
             </not>
         </preConditions>
         <addColumn tableName="pooling_sensor">
-            <column name="minDetectLandHeight" remarks="最小作用高度_陆" type="VARCHAR(50)"></column>
+            <column name="minDetectHeightLand" remarks="最小作用高度_陆" type="VARCHAR(50)"></column>
         </addColumn>
     </changeSet>
     <changeSet author="41656 (generated)" id="1647400803042-76">
         <preConditions>
             <not>
-                <columnExists tableName="pooling_sensor" columnName="minTargetLandFeature"/>
+                <columnExists tableName="pooling_sensor" columnName="minTargetFeatureLand"/>
             </not>
         </preConditions>
         <addColumn tableName="pooling_sensor">
-            <column name="minTargetLandFeature" remarks="最小目标特性_陆" type="VARCHAR(50)"></column>
+            <column name="minTargetFeatureLand" remarks="最小目标特性_陆" type="VARCHAR(50)"></column>
         </addColumn>
     </changeSet>
     <changeSet author="41656 (generated)" id="1647400803042-77">
         <preConditions>
             <not>
-                <columnExists tableName="pooling_sensor" columnName="landIntelligenceCycle"/>
+                <columnExists tableName="pooling_sensor" columnName="intelligenceCycleLand"/>
             </not>
         </preConditions>
         <addColumn tableName="pooling_sensor">
-            <column name="landIntelligenceCycle" remarks="情报周期_陆" type="VARCHAR(50)"></column>
+            <column name="intelligenceCycleLand" remarks="情报周期_陆" type="VARCHAR(50)"></column>
         </addColumn>
     </changeSet>
     <changeSet author="41656 (generated)" id="1647400803042-78">
         <preConditions>
             <not>
-                <columnExists tableName="pooling_sensor" columnName="landHandleTargetNum"/>
+                <columnExists tableName="pooling_sensor" columnName="handleTargetNumLand"/>
             </not>
         </preConditions>
         <addColumn tableName="pooling_sensor">
-            <column name="landHandleTargetNum" remarks="处理目标数_陆" type="VARCHAR(50)"></column>
+            <column name="handleTargetNumLand" remarks="处理目标数_陆" type="VARCHAR(50)"></column>
         </addColumn>
     </changeSet>
     <changeSet author="41656 (generated)" id="1647400803042-79">
         <preConditions>
             <not>
-                <columnExists tableName="pooling_sensor" columnName="landAzimuth"/>
+                <columnExists tableName="pooling_sensor" columnName="azimuthLand"/>
             </not>
         </preConditions>
         <addColumn tableName="pooling_sensor">
-            <column name="landAzimuth" remarks="方位角_陆" type="VARCHAR(50)"></column>
+            <column name="azimuthLand" remarks="方位角_陆" type="VARCHAR(50)"></column>
         </addColumn>
     </changeSet>
     <changeSet author="41656 (generated)" id="1647400803042-80">
         <preConditions>
             <not>
-                <columnExists tableName="pooling_sensor" columnName="landPrecision"/>
+                <columnExists tableName="pooling_sensor" columnName="precisionLand"/>
             </not>
         </preConditions>
         <addColumn tableName="pooling_sensor">
-            <column name="landPrecision" remarks="精度_陆" type="VARCHAR(50)"></column>
+            <column name="precisionLand" remarks="精度_陆" type="VARCHAR(50)"></column>
         </addColumn>
     </changeSet>
     <changeSet author="41656 (generated)" id="1647400803042-78">
         <preConditions>
             <not>
-                <columnExists tableName="pooling_sensor" columnName="maxDetectSeaRange"/>
+                <columnExists tableName="pooling_sensor" columnName="maxDetectRangeSea"/>
             </not>
         </preConditions>
         <addColumn tableName="pooling_sensor">
-            <column name="maxDetectSeaRange" remarks="最大作用距离_海" type="VARCHAR(50)"></column>
+            <column name="maxDetectRangeSea" remarks="最大作用距离_海" type="VARCHAR(50)"></column>
         </addColumn>
     </changeSet>
     <changeSet author="41656 (generated)" id="1647400803042-79">
         <preConditions>
             <not>
-                <columnExists tableName="pooling_sensor" columnName="maxDetectSeaHeight"/>
+                <columnExists tableName="pooling_sensor" columnName="maxDetectHeightSea"/>
             </not>
         </preConditions>
         <addColumn tableName="pooling_sensor">
-            <column name="maxDetectSeaHeight" remarks="最大作用高度_海" type="VARCHAR(50)"></column>
+            <column name="maxDetectHeightSea" remarks="最大作用高度_海" type="VARCHAR(50)"></column>
         </addColumn>
     </changeSet>
     <changeSet author="41656 (generated)" id="1647400803042-80">
         <preConditions>
             <not>
-                <columnExists tableName="pooling_sensor" columnName="minDetectSeaHeight"/>
+                <columnExists tableName="pooling_sensor" columnName="minDetectHeightSea"/>
             </not>
         </preConditions>
         <addColumn tableName="pooling_sensor">
-            <column name="minDetectSeaHeight" remarks="最小作用高度_海" type="VARCHAR(50)"></column>
+            <column name="minDetectHeightSea" remarks="最小作用高度_海" type="VARCHAR(50)"></column>
         </addColumn>
     </changeSet>
     <changeSet author="41656 (generated)" id="1647400803042-81">
         <preConditions>
             <not>
-                <columnExists tableName="pooling_sensor" columnName="minTargetSeaFeature"/>
+                <columnExists tableName="pooling_sensor" columnName="minTargetFeatureSea"/>
             </not>
         </preConditions>
         <addColumn tableName="pooling_sensor">
-            <column name="minTargetSeaFeature" remarks="最小目标特性_海" type="VARCHAR(50)"></column>
+            <column name="minTargetFeatureSea" remarks="最小目标特性_海" type="VARCHAR(50)"></column>
         </addColumn>
     </changeSet>
     <changeSet author="41656 (generated)" id="1647400803042-82">
         <preConditions>
             <not>
-                <columnExists tableName="pooling_sensor" columnName="seaIntelligenceCycle"/>
+                <columnExists tableName="pooling_sensor" columnName="intelligenceCycleSea"/>
             </not>
         </preConditions>
         <addColumn tableName="pooling_sensor">
-            <column name="seaIntelligenceCycle" remarks="情报周期_海" type="VARCHAR(50)"></column>
+            <column name="intelligenceCycleSea" remarks="情报周期_海" type="VARCHAR(50)"></column>
         </addColumn>
     </changeSet>
     <changeSet author="41656 (generated)" id="1647400803042-83">
         <preConditions>
             <not>
-                <columnExists tableName="pooling_sensor" columnName="seaHandleTargetNum"/>
+                <columnExists tableName="pooling_sensor" columnName="handleTargetNumSea"/>
             </not>
         </preConditions>
         <addColumn tableName="pooling_sensor">
-            <column name="seaHandleTargetNum" remarks="处理目标数_海" type="VARCHAR(50)"></column>
+            <column name="handleTargetNumSea" remarks="处理目标数_海" type="VARCHAR(50)"></column>
         </addColumn>
     </changeSet>
     <changeSet author="41656 (generated)" id="1647400803042-84">
         <preConditions>
             <not>
-                <columnExists tableName="pooling_sensor" columnName="seaAzimuth"/>
+                <columnExists tableName="pooling_sensor" columnName="azimuthSea"/>
             </not>
         </preConditions>
         <addColumn tableName="pooling_sensor">
-            <column name="seaAzimuth" remarks="方位角_海" type="VARCHAR(50)"></column>
+            <column name="azimuthSea" remarks="方位角_海" type="VARCHAR(50)"></column>
         </addColumn>
     </changeSet>
     <changeSet author="41656 (generated)" id="1647400803042-85">
         <preConditions>
             <not>
-                <columnExists tableName="pooling_sensor" columnName="Azimuth海"/>
+                <columnExists tableName="pooling_sensor" columnName="precisionSea"/>
             </not>
         </preConditions>
         <addColumn tableName="pooling_sensor">
-            <column name="seaPrecision" remarks="精度_海" type="VARCHAR(50)"></column>
+            <column name="precisionSea" remarks="精度_海" type="VARCHAR(50)"></column>
         </addColumn>
     </changeSet>
     <changeSet author="41656 (generated)" id="1647400803042-83">
         <preConditions>
             <not>
-                <columnExists tableName="pooling_sensor" columnName="maxDetectAirRange"/>
+                <columnExists tableName="pooling_sensor" columnName="maxDetectRangeAir"/>
             </not>
         </preConditions>
         <addColumn tableName="pooling_sensor">
-            <column name="maxDetectAirRange" remarks="最大作用距离_空" type="VARCHAR(50)"></column>
+            <column name="maxDetectRangeAir" remarks="最大作用距离_空" type="VARCHAR(50)"></column>
         </addColumn>
     </changeSet>
     <changeSet author="41656 (generated)" id="1647400803042-84">
         <preConditions>
             <not>
-                <columnExists tableName="pooling_sensor" columnName="maxDetectAirHeight"/>
+                <columnExists tableName="pooling_sensor" columnName="maxDetectHeightAir"/>
             </not>
         </preConditions>
         <addColumn tableName="pooling_sensor">
-            <column name="maxDetectAirHeight" remarks="最大作用高度_空" type="VARCHAR(50)"></column>
+            <column name="maxDetectHeightAir" remarks="最大作用高度_空" type="VARCHAR(50)"></column>
         </addColumn>
     </changeSet>
     <changeSet author="41656 (generated)" id="1647400803042-85">
         <preConditions>
             <not>
-                <columnExists tableName="pooling_sensor" columnName="minDetectAirHeight"/>
+                <columnExists tableName="pooling_sensor" columnName="minDetectHeightAir"/>
             </not>
         </preConditions>
         <addColumn tableName="pooling_sensor">
-            <column name="minDetectAirHeight" remarks="最小作用高度_空" type="VARCHAR(50)"></column>
+            <column name="minDetectHeightAir" remarks="最小作用高度_空" type="VARCHAR(50)"></column>
         </addColumn>
     </changeSet>
     <changeSet author="41656 (generated)" id="1647400803042-86">
         <preConditions>
             <not>
-                <columnExists tableName="pooling_sensor" columnName="minTargetAirFeature"/>
+                <columnExists tableName="pooling_sensor" columnName="minTargetFeatureAir"/>
             </not>
         </preConditions>
         <addColumn tableName="pooling_sensor">
-            <column name="minTargetAirFeature" remarks="最小目标特性_空" type="VARCHAR(50)"></column>
+            <column name="minTargetFeatureAir" remarks="最小目标特性_空" type="VARCHAR(50)"></column>
         </addColumn>
     </changeSet>
     <changeSet author="41656 (generated)" id="1647400803042-87">
         <preConditions>
             <not>
-                <columnExists tableName="pooling_sensor" columnName="airIntelligenceCycle"/>
+                <columnExists tableName="pooling_sensor" columnName="intelligenceCycleAir"/>
             </not>
         </preConditions>
         <addColumn tableName="pooling_sensor">
-            <column name="airIntelligenceCycle" remarks="情报周期_空" type="VARCHAR(50)"></column>
+            <column name="intelligenceCycleAir" remarks="情报周期_空" type="VARCHAR(50)"></column>
         </addColumn>
     </changeSet>
     <changeSet author="41656 (generated)" id="1647400803042-88">
         <preConditions>
             <not>
-                <columnExists tableName="pooling_sensor" columnName="airHandleTargetNum"/>
+                <columnExists tableName="pooling_sensor" columnName="handleTargetNumAir"/>
             </not>
         </preConditions>
         <addColumn tableName="pooling_sensor">
-            <column name="airHandleTargetNum" remarks="处理目标数_空" type="VARCHAR(50)"></column>
+            <column name="handleTargetNumAir" remarks="处理目标数_空" type="VARCHAR(50)"></column>
         </addColumn>
     </changeSet>
     <changeSet author="41656 (generated)" id="1647400803042-89">
         <preConditions>
             <not>
-                <columnExists tableName="pooling_sensor" columnName="airAzimuth"/>
+                <columnExists tableName="pooling_sensor" columnName="azimuthAir"/>
             </not>
         </preConditions>
         <addColumn tableName="pooling_sensor">
-            <column name="airAzimuth" remarks="方位角_空" type="VARCHAR(50)"></column>
+            <column name="azimuthAir" remarks="方位角_空" type="VARCHAR(50)"></column>
         </addColumn>
     </changeSet>
     <changeSet author="41656 (generated)" id="1647400803042-90">
         <preConditions>
             <not>
-                <columnExists tableName="pooling_sensor" columnName="airPrecision"/>
+                <columnExists tableName="pooling_sensor" columnName="precisionAir"/>
             </not>
         </preConditions>
         <addColumn tableName="pooling_sensor">
-            <column name="airPrecision" remarks="精度_空" type="VARCHAR(50)"></column>
+            <column name="precisionAir" remarks="精度_空" type="VARCHAR(50)"></column>
         </addColumn>
     </changeSet>
     <changeSet author="41656 (generated)" id="1647400803042-88">
         <preConditions>
             <not>
-                <columnExists tableName="pooling_sensor" columnName="maxDetectSpaceRange"/>
+                <columnExists tableName="pooling_sensor" columnName="maxDetectRangeSpace"/>
             </not>
         </preConditions>
         <addColumn tableName="pooling_sensor">
-            <column name="maxDetectSpaceRange" remarks="最大作用距离_天" type="VARCHAR(50)"></column>
+            <column name="maxDetectRangeSpace" remarks="最大作用距离_天" type="VARCHAR(50)"></column>
         </addColumn>
     </changeSet>
     <changeSet author="41656 (generated)" id="1647400803042-89">
         <preConditions>
             <not>
-                <columnExists tableName="pooling_sensor" columnName="maxDetectSpaceHeight"/>
+                <columnExists tableName="pooling_sensor" columnName="maxDetectHeightSpace"/>
             </not>
         </preConditions>
         <addColumn tableName="pooling_sensor">
-            <column name="maxDetectSpaceHeight" remarks="最大作用高度_天" type="VARCHAR(50)"></column>
+            <column name="maxDetectHeightSpace" remarks="最大作用高度_天" type="VARCHAR(50)"></column>
         </addColumn>
     </changeSet>
     <changeSet author="41656 (generated)" id="1647400803042-90">
         <preConditions>
             <not>
-                <columnExists tableName="pooling_sensor" columnName="minDetectSpaceHeight"/>
+                <columnExists tableName="pooling_sensor" columnName="minDetectHeightSpace"/>
             </not>
         </preConditions>
         <addColumn tableName="pooling_sensor">
-            <column name="minDetectSpaceHeight" remarks="最小作用高度_天" type="VARCHAR(50)"></column>
+            <column name="minDetectHeightSpace" remarks="最小作用高度_天" type="VARCHAR(50)"></column>
         </addColumn>
     </changeSet>
     <changeSet author="41656 (generated)" id="1647400803042-91">
         <preConditions>
             <not>
-                <columnExists tableName="pooling_sensor" columnName="minTargetSpaceFeature"/>
+                <columnExists tableName="pooling_sensor" columnName="minTargetFeatureSpace"/>
             </not>
         </preConditions>
         <addColumn tableName="pooling_sensor">
-            <column name="minTargetSpaceFeature" remarks="最小目标特性_天" type="VARCHAR(50)"></column>
+            <column name="minTargetFeatureSpace" remarks="最小目标特性_天" type="VARCHAR(50)"></column>
         </addColumn>
     </changeSet>
     <changeSet author="41656 (generated)" id="1647400803042-92">
         <preConditions>
             <not>
-                <columnExists tableName="pooling_sensor" columnName="spaceIntelligenceCycle"/>
+                <columnExists tableName="pooling_sensor" columnName="intelligenceCycleSpace"/>
             </not>
         </preConditions>
         <addColumn tableName="pooling_sensor">
-            <column name="spaceIntelligenceCycle" remarks="情报周期_天" type="VARCHAR(50)"></column>
+            <column name="intelligenceCycleSpace" remarks="情报周期_天" type="VARCHAR(50)"></column>
         </addColumn>
     </changeSet>
     <changeSet author="41656 (generated)" id="1647400803042-93">
         <preConditions>
             <not>
-                <columnExists tableName="pooling_sensor" columnName="spaceHandleTargetNum"/>
+                <columnExists tableName="pooling_sensor" columnName="handleTargetNumSpace"/>
             </not>
         </preConditions>
         <addColumn tableName="pooling_sensor">
-            <column name="spaceHandleTargetNum" remarks="处理目标数_天" type="VARCHAR(50)"></column>
+            <column name="handleTargetNumSpace" remarks="处理目标数_天" type="VARCHAR(50)"></column>
         </addColumn>
     </changeSet>
     <changeSet author="41656 (generated)" id="1647400803042-94">
         <preConditions>
             <not>
-                <columnExists tableName="pooling_sensor" columnName="spaceAzimuth"/>
+                <columnExists tableName="pooling_sensor" columnName="azimuthSpace"/>
             </not>
         </preConditions>
         <addColumn tableName="pooling_sensor">
-            <column name="spaceAzimuth" remarks="方位角_天" type="VARCHAR(50)"></column>
+            <column name="azimuthSpace" remarks="方位角_天" type="VARCHAR(50)"></column>
         </addColumn>
     </changeSet>
     <changeSet author="41656 (generated)" id="1647400803042-95">
         <preConditions>
             <not>
-                <columnExists tableName="pooling_sensor" columnName="spacePrecision"/>
+                <columnExists tableName="pooling_sensor" columnName="precisionSpace"/>
             </not>
         </preConditions>
         <addColumn tableName="pooling_sensor">
-            <column name="spacePrecision" remarks="精度_天" type="VARCHAR(50)"></column>
+            <column name="precisionSpace" remarks="精度_天" type="VARCHAR(50)"></column>
         </addColumn>
     </changeSet>
     <changeSet author="41656 (generated)" id="1647400803042-93">
         <preConditions>
             <not>
-                <columnExists tableName="pooling_sensor" columnName="maxDetectUnderSeaRange"/>
+                <columnExists tableName="pooling_sensor" columnName="maxDetectRangeUnderSea"/>
             </not>
         </preConditions>
         <addColumn tableName="pooling_sensor">
-            <column name="maxDetectUnderSeaRange" remarks="最大作用距离_潜" type="VARCHAR(50)"></column>
+            <column name="maxDetectRangeUnderSea" remarks="最大作用距离_潜" type="VARCHAR(50)"></column>
         </addColumn>
     </changeSet>
     <changeSet author="41656 (generated)" id="1647400803042-94">
         <preConditions>
             <not>
-                <columnExists tableName="pooling_sensor" columnName="maxDetectUnderSeaDepth"/>
+                <columnExists tableName="pooling_sensor" columnName="maxDetectDepthUnderSea"/>
             </not>
         </preConditions>
         <addColumn tableName="pooling_sensor">
-            <column name="maxDetectUnderSeaDepth" remarks="最大作用深度_潜" type="VARCHAR(50)"></column>
+            <column name="maxDetectDepthUnderSea" remarks="最大作用深度_潜" type="VARCHAR(50)"></column>
         </addColumn>
     </changeSet>
     <changeSet author="41656 (generated)" id="1647400803042-95">
         <preConditions>
             <not>
-                <columnExists tableName="pooling_sensor" columnName="minDetectUnderSeaDepth"/>
+                <columnExists tableName="pooling_sensor" columnName="minDetectDepthUnderSea"/>
             </not>
         </preConditions>
         <addColumn tableName="pooling_sensor">
-            <column name="minDetectUnderSeaDepth" remarks="最小作用深度_潜" type="VARCHAR(50)"></column>
+            <column name="minDetectDepthUnderSea" remarks="最小作用深度_潜" type="VARCHAR(50)"></column>
         </addColumn>
     </changeSet>
     <changeSet author="41656 (generated)" id="1647400803042-96">
         <preConditions>
             <not>
-                <columnExists tableName="pooling_sensor" columnName="minTargetUnderSeaFeature"/>
+                <columnExists tableName="pooling_sensor" columnName="minTargetFeatureUnderSea"/>
             </not>
         </preConditions>
         <addColumn tableName="pooling_sensor">
-            <column name="minTargetUnderSeaFeature" remarks="最小目标特性_潜" type="VARCHAR(50)"></column>
+            <column name="minTargetFeatureUnderSea" remarks="最小目标特性_潜" type="VARCHAR(50)"></column>
         </addColumn>
     </changeSet>
     <changeSet author="41656 (generated)" id="1647400803042-97">
         <preConditions>
             <not>
-                <columnExists tableName="pooling_sensor" columnName="underSeaIntelligenceCycle"/>
+                <columnExists tableName="pooling_sensor" columnName="intelligenceCycleUnderSea"/>
             </not>
         </preConditions>
         <addColumn tableName="pooling_sensor">
-            <column name="underSeaIntelligenceCycle" remarks="情报周期_潜" type="VARCHAR(50)"></column>
+            <column name="intelligenceCycleUnderSea" remarks="情报周期_潜" type="VARCHAR(50)"></column>
         </addColumn>
     </changeSet>
     <changeSet author="41656 (generated)" id="1647400803042-98">
         <preConditions>
             <not>
-                <columnExists tableName="pooling_sensor" columnName="underSeaHandleTargetNum"/>
+                <columnExists tableName="pooling_sensor" columnName="handleTargetNumUnderSea"/>
             </not>
         </preConditions>
         <addColumn tableName="pooling_sensor">
-            <column name="underSeaHandleTargetNum" remarks="处理目标数_潜" type="VARCHAR(50)"></column>
+            <column name="handleTargetNumUnderSea" remarks="处理目标数_潜" type="VARCHAR(50)"></column>
         </addColumn>
     </changeSet>
     <changeSet author="41656 (generated)" id="1647400803042-99">
         <preConditions>
             <not>
-                <columnExists tableName="pooling_sensor" columnName="underSeaAzimuth"/>
+                <columnExists tableName="pooling_sensor" columnName="azimuthUnderSea"/>
             </not>
         </preConditions>
         <addColumn tableName="pooling_sensor">
-            <column name="underSeaAzimuth" remarks="方位角_潜" type="VARCHAR(50)"></column>
+            <column name="azimuthUnderSea" remarks="方位角_潜" type="VARCHAR(50)"></column>
         </addColumn>
     </changeSet>
     <changeSet author="41656 (generated)" id="1647400803042-100">
         <preConditions>
             <not>
-                <columnExists tableName="pooling_sensor" columnName="underSeaPrecision"/>
+                <columnExists tableName="pooling_sensor" columnName="precisionUnderSea"/>
             </not>
         </preConditions>
         <addColumn tableName="pooling_sensor">
-            <column name="underSeaPrecision" remarks="精度_潜" type="VARCHAR(50)"></column>
+            <column name="precisionUnderSea" remarks="精度_潜" type="VARCHAR(50)"></column>
         </addColumn>
     </changeSet>
-
 
 </databaseChangeLog>

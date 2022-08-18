@@ -98,106 +98,106 @@ public class Weapon extends BaseEntity {
     @Column(name = "salvoMinTime")
     private String salvoMinTime;
 
-    
+
     //陆
     @Display("最大射程_陆")
-    @Column(name = "maxFireLandRange")
-    private String maxFireLandRange;
+    @Column(name = "maxFireRangeLand")
+    private String maxFireRangeLand;
 
     @Display("最小射程_陆")
-    @Column(name = "minFireLandRange")
-    private String minFireLandRange;
+    @Column(name = "minFireRangeLand")
+    private String minFireRangeLand;
 
     @Display("最大射高_陆")
-    @Column(name = "maxFireLandHeight")
-    private String maxFireLandHeight;
+    @Column(name = "maxFireHeightLand")
+    private String maxFireHeightLand;
 
     @Display("最小射高_陆")
-    @Column(name = "minFireLandHeight")
-    private String minFireLandHeight;
+    @Column(name = "minFireHeightLand")
+    private String minFireHeightLand;
 
     @Display("命中概率_陆")
-    @Column(name = "landHitRate")
-    private float landHitRate;
+    @Column(name = "hitRateLand")
+    private float hitRateLand;
     //海
     @Display("最大射程_海")
-    @Column(name = "maxFireSeaRange")
-    private String maxFireSeaRange;
+    @Column(name = "maxFireRangeSea")
+    private String maxFireRangeSea;
 
     @Display("最小射程_海")
-    @Column(name = "minFireSeaRange")
-    private String minFireSeaRange;
+    @Column(name = "minFireRangeSea")
+    private String minFireRangeSea;
 
     @Display("最大射高_海")
-    @Column(name = "maxFireSeaHeight")
-    private String maxFireSeaHeight;
+    @Column(name = "maxFireHeightSea")
+    private String maxFireHeightSea;
 
     @Display("最小射高_海")
-    @Column(name = "minFireSeaHeight")
-    private String minFireSeaHeight;
+    @Column(name = "minFireHeightSea")
+    private String minFireHeightSea;
 
     @Display("命中概率_海")
-    @Column(name = "seaHitRate")
-    private float seaHitRate;
+    @Column(name = "hitRateSea")
+    private float hitRateSea;
     //空
     @Display("最大射程_空")
-    @Column(name = "maxFireAirRange")
-    private String maxFireAirRange;
+    @Column(name = "maxFireRangeAir")
+    private String maxFireRangeAir;
 
     @Display("最小射程_空")
-    @Column(name = "minFireAirRange")
-    private String minFireAirRange;
+    @Column(name = "minFireRangeAir")
+    private String minFireRangeAir;
 
     @Display("最大射高_空")
-    @Column(name = "maxFireAirHeight")
-    private String maxFireAirHeight;
+    @Column(name = "maxFireHeightAir")
+    private String maxFireHeightAir;
 
     @Display("最小射高_空")
-    @Column(name = "minFireAirHeight")
-    private String minFireAirHeight;
+    @Column(name = "minFireHeightAir")
+    private String minFireHeightAir;
 
     @Display("命中概率_空")
-    @Column(name = "airHitRate")
-    private float airHitRate;
+    @Column(name = "hitRateAir")
+    private float hitRateAir;
     //天
     @Display("最大射程_天")
-    @Column(name = "maxFireSpaceRange")
-    private String maxFireSpaceRange;
+    @Column(name = "maxFireRangeSpace")
+    private String maxFireRangeSpace;
 
     @Display("最小射程_天")
-    @Column(name = "minFireSpaceRange")
-    private String minFireSpaceRange;
+    @Column(name = "minFireRangeSpace")
+    private String minFireRangeSpace;
 
     @Display("最大射高_天")
-    @Column(name = "maxFireSpaceHeight")
-    private String maxFireSpaceHeight;
+    @Column(name = "maxFireHeightSpace")
+    private String maxFireHeightSpace;
 
     @Display("最小射高_天")
-    @Column(name = "minFireSpaceHeight")
-    private String minFireSpaceHeight;
+    @Column(name = "minFireHeightSpace")
+    private String minFireHeightSpace;
 
     @Display("命中概率_天")
-    @Column(name = "spaceHitRate")
-    private float spaceHitRate;
+    @Column(name = "hitRateSpace")
+    private float hitRateSpace;
     //潜
     @Display("最大射程_潜")
-    @Column(name = "maxFireUnderSeaRange")
-    private String maxFireUnderSeaRange;
+    @Column(name = "maxFireRangeUnderSea")
+    private String maxFireRangeUnderSea;
 
     @Display("最小射程_潜")
-    @Column(name = "minFireUnderSeaRange")
-    private String minFireUnderSeaRange;
+    @Column(name = "minFireRangeUnderSea")
+    private String minFireRange;
 
     @Display("最大深度_潜")
-    @Column(name = "maxFireUnderSeaDepth")
-    private String maxFireUnderSeaDepth;
+    @Column(name = "maxFireDepthUnderSea")
+    private String maxFireDepthUnderSea;
 
     @Display("最小深度_潜")
-    @Column(name = "minFireUnderSeaDepth")
-    private String minFireUnderSeaDepth;
+    @Column(name = "minFireDepthUnderSea")
+    private String minFireDepthUnderSea;
 
     @Display("命中概率_潜")
-    @Column(name = "underSeaHitRate")
-    private float underSeaHitRate;
+    @Column(name = "hitRateUnderSea")
+    private float hitRateUnderSea;
 
 }
