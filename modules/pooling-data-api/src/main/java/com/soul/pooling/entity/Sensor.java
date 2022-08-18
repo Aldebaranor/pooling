@@ -72,6 +72,7 @@ public class Sensor extends BaseEntity {
     @Column(name = "sensorCode")
     private String sensorCode;
 
+    
     //陆
     @Display("最大作用距离_陆")
     @Column(name = "maxDetectLandRange")

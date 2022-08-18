@@ -98,7 +98,7 @@ public class Weapon extends BaseEntity {
     @Column(name = "salvoMinTime")
     private String salvoMinTime;
 
-
+    
     //陆
     @Display("最大射程_陆")
     @Column(name = "maxFireLandRange")
