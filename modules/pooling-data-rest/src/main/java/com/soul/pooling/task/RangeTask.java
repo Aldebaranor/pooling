@@ -1,12 +1,10 @@
 package com.soul.pooling.task;
 
 import com.egova.redis.RedisUtils;
+import com.soul.pooling.entity.Engage;
+import com.soul.pooling.entity.Find;
 import com.soul.pooling.entity.Platform;
-import com.soul.pooling.entity.Sensor;
-import com.soul.pooling.entity.Weapon;
-import com.soul.pooling.service.PlatformService;
-import com.soul.pooling.service.SensorService;
-import com.soul.pooling.service.WeaponService;
+import com.soul.pooling.service.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -30,6 +28,12 @@ public class RangeTask {
 
     @Autowired
     private WeaponService weaponService;
+
+    @Autowired
+    private FindService findService;
+
+    @Autowired
+    private EngageService engageService;
 
     public static String SCENARIO_RANGE = "scenario:txy:range";
 
@@ -56,8 +60,8 @@ public class RangeTask {
         float maxDetectionRangeLand = 0;
         float maxDetectionRangeUnderSea = 0;
 
-        List<Weapon> weapons = weaponService.getByPlatformCode(platformId);
-        for (Weapon weapon : weapons) {
+        List<Engage> weapons = engageService.getByPlatformCode(platformId);
+        for (Engage weapon : weapons) {
             //获取最大对太空火力范围
             maxFireRangeSpace = (maxFireRangeSpace >
                     weapon.getFireSpace()) ? maxFireRangeSpace : weapon.getFireSpace();
@@ -75,8 +79,8 @@ public class RangeTask {
                     weapon.getFireUnderSea()) ? maxFireRangeUnderSea : weapon.getFireUnderSea();
         }
 
-        List<Sensor> sensors = sensorService.getByPlatformCode(platformId);
-        for (Sensor sensor : sensors) {
+        List<Find> sensors = findService.getByPlatformCode(platformId);
+        for (Find sensor : sensors) {
             //获取最大对太空探测范围
             maxDetectionRangeSpace = (maxDetectionRangeSpace >
                     sensor.getDetectionSpace()) ? maxDetectionRangeSpace : sensor.getDetectionSpace();

@@ -3,30 +3,28 @@ package com.soul.pooling.entity;
 
 import com.egova.model.BaseEntity;
 import com.egova.model.annotation.Display;
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.soul.pooling.model.PlatformMoveData;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
-import java.sql.Timestamp;
 import java.util.List;
 
 
 /**
-* @Description: 
-* @Author: nemo
-* @Date: 2022/6/22
-*/
+ * @Description:
+ * @Author: nemo
+ * @Date: 2022/6/22
+ */
 @Data
 @Entity
 @Table(name = "pooling_platform")
 @Display("平台")
 @EqualsAndHashCode(callSuper = true)
-public class Platform extends BaseEntity{
+public class Platform extends BaseEntity {
 
     public static final String NAME = "pooling:platform";
+    private static final long serialVersionUID = 5661780821831581581L;
 
     @Id
     @Display("主键")
@@ -64,14 +62,45 @@ public class Platform extends BaseEntity{
 
     @Transient
     @JoinColumn(name = "code")
-    @OneToMany(targetEntity = Sensor.class,mappedBy = "platformCode")
+    @OneToMany(targetEntity = Sensor.class, mappedBy = "platformCode")
     private List<Sensor> sensors;
 
     @Transient
     @JoinColumn(name = "code")
-    @OneToMany(targetEntity = Weapon.class,mappedBy = "platformCode")
+    @OneToMany(targetEntity = Weapon.class, mappedBy = "platformCode")
     private List<Weapon> weapons;
 
+    //2F2TEA
+
+    @Transient
+    @JoinColumn(name = "code")
+    @OneToMany(targetEntity = Find.class, mappedBy = "platformCode")
+    private List<Find> finds;
+
+    @Transient
+    @JoinColumn(name = "code")
+    @OneToMany(targetEntity = Fix.class, mappedBy = "platformCode")
+    private List<Fix> fixes;
+
+    @Transient
+    @JoinColumn(name = "code")
+    @OneToMany(targetEntity = Track.class, mappedBy = "platformCode")
+    private List<Track> tracks;
+
+    @Transient
+    @JoinColumn(name = "code")
+    @OneToMany(targetEntity = Target.class, mappedBy = "platformCode")
+    private List<Target> targets;
+
+    @Transient
+    @JoinColumn(name = "code")
+    @OneToMany(targetEntity = Engage.class, mappedBy = "platformCode")
+    private List<Engage> engages;
+
+    @Transient
+    @JoinColumn(name = "code")
+    @OneToMany(targetEntity = Asses.class, mappedBy = "platformCode")
+    private List<Asses> asses;
 
 
 }

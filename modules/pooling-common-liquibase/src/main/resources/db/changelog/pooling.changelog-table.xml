@@ -848,4 +848,296 @@
                       columnDataType="VARCHAR(50)"/>
     </changeSet>
 
+    <changeSet author="41656 (generated)" id="1647400803042-115">
+        <createTable remarks="探测" tableName="pooling_find">
+            <column name="id" type="VARCHAR(50)">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="platformCode" remarks="平台编号" type="VARCHAR(50)"/>
+            <column name="name" remarks="名称" type="VARCHAR(50)"/>
+            <column name="type" remarks="类型" type="VARCHAR(50)"/>
+            <column name="detectionSpace" remarks="对太空探测能力（公里）" type="FLOAT"/>
+            <column name="detectionAir" remarks="对空探测能力（公里）" type="FLOAT"/>
+            <column name="detectionSea" remarks="对海探测能力（公里）" type="FLOAT"/>
+            <column name="detectionUnderSea" remarks="对水下探测能力（公里）" type="FLOAT"/>
+            <column name="status" remarks="状态" type="INT"/>
+            <column name="sensorCode" remarks="传感器编号" type="VARCHAR(50)"/>
+            <column name="maxDetectRangeLand" remarks="最大作用距离_陆" type="VARCHAR(50)"/>
+            <column name="maxDetectHeightLand" remarks="最大作用高度_陆" type="VARCHAR(50)"/>
+            <column name="minDetectHeightLand" remarks="最小作用高度_陆" type="VARCHAR(50)"/>
+            <column name="minTargetFeatureLand" remarks="最小目标特性_陆" type="VARCHAR(50)"/>
+            <column name="intelligenceCycleLand" remarks="情报周期_陆" type="VARCHAR(50)"/>
+            <column name="handleTargetNumLand" remarks="处理目标数_陆" type="VARCHAR(50)"/>
+            <column name="azimuthLand" remarks="方位角_陆" type="VARCHAR(50)"/>
+            <column name="precisionLand" remarks="精度_陆" type="VARCHAR(50)"/>
+            <column name="maxDetectRangeSea" remarks="最大作用距离_海" type="VARCHAR(50)"/>
+            <column name="maxDetectHeightSea" remarks="最大作用高度_海" type="VARCHAR(50)"/>
+            <column name="minDetectHeightSea" remarks="最小作用高度_海" type="VARCHAR(50)"/>
+            <column name="minTargetFeatureSea" remarks="最小目标特性_海" type="VARCHAR(50)"/>
+            <column name="intelligenceCycleSea" remarks="情报周期_海" type="VARCHAR(50)"/>
+            <column name="handleTargetNumSea" remarks="处理目标数_海" type="VARCHAR(50)"/>
+            <column name="azimuthSea" remarks="方位角_海" type="VARCHAR(50)"/>
+            <column name="precisionSea" remarks="精度_海" type="VARCHAR(50)"/>
+            <column name="maxDetectRangeAir" remarks="最大作用距离_空" type="VARCHAR(50)"/>
+            <column name="maxDetectHeightAir" remarks="最大作用高度_空" type="VARCHAR(50)"/>
+            <column name="minDetectHeightAir" remarks="最小作用高度_空" type="VARCHAR(50)"/>
+            <column name="minTargetFeatureAir" remarks="最小目标特性_空" type="VARCHAR(50)"/>
+            <column name="intelligenceCycleAir" remarks="情报周期_空" type="VARCHAR(50)"/>
+            <column name="handleTargetNumAir" remarks="处理目标数_空" type="VARCHAR(50)"/>
+            <column name="azimuthAir" remarks="方位角_空" type="VARCHAR(50)"/>
+            <column name="precisionAir" remarks="精度_空" type="VARCHAR(50)"/>
+            <column name="maxDetectRangeSpace" remarks="最大作用距离_天" type="VARCHAR(50)"/>
+            <column name="maxDetectHeightSpace" remarks="最大作用高度_天" type="VARCHAR(50)"/>
+            <column name="minDetectHeightSpace" remarks="最小作用高度_天" type="VARCHAR(50)"/>
+            <column name="minTargetFeatureSpace" remarks="最小目标特性_天" type="VARCHAR(50)"/>
+            <column name="intelligenceCycleSpace" remarks="情报周期_天" type="VARCHAR(50)"/>
+            <column name="handleTargetNumSpace" remarks="处理目标数_天" type="VARCHAR(50)"/>
+            <column name="azimuthSpace" remarks="方位角_天" type="VARCHAR(50)"/>
+            <column name="precisionSpace" remarks="精度_天" type="VARCHAR(50)"/>
+            <column name="maxDetectRangeUnderSea" remarks="最大作用距离_潜" type="VARCHAR(50)"/>
+            <column name="maxDetectDepthUnderSea" remarks="最大作用深度_潜" type="VARCHAR(50)"/>
+            <column name="minDetectDepthUnderSea" remarks="最小作用深度_潜" type="VARCHAR(50)"/>
+            <column name="minTargetFeatureUnderSea" remarks="最小目标特性_潜" type="VARCHAR(50)"/>
+            <column name="intelligenceCycleUnderSea" remarks="情报周期_潜" type="VARCHAR(50)"/>
+            <column name="handleTargetNumUnderSea" remarks="处理目标数_潜" type="VARCHAR(50)"/>
+            <column name="azimuthUnderSea" remarks="方位角_潜" type="VARCHAR(50)"/>
+            <column name="precisionUnderSea" remarks="精度_潜" type="VARCHAR(50)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="41656 (generated)" id="1647400803042-116">
+        <createTable remarks="定位" tableName="pooling_fix">
+            <column name="id" type="VARCHAR(50)">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="platformCode" remarks="平台编号" type="VARCHAR(50)"/>
+            <column name="name" remarks="名称" type="VARCHAR(50)"/>
+            <column name="type" remarks="类型" type="VARCHAR(50)"/>
+            <column name="detectionSpace" remarks="对太空探测能力（公里）" type="FLOAT"/>
+            <column name="detectionAir" remarks="对空探测能力（公里）" type="FLOAT"/>
+            <column name="detectionSea" remarks="对海探测能力（公里）" type="FLOAT"/>
+            <column name="detectionUnderSea" remarks="对水下探测能力（公里）" type="FLOAT"/>
+            <column name="status" remarks="状态" type="INT"/>
+            <column name="sensorCode" remarks="传感器编号" type="VARCHAR(50)"/>
+            <column name="maxDetectRangeLand" remarks="最大作用距离_陆" type="VARCHAR(50)"/>
+            <column name="maxDetectHeightLand" remarks="最大作用高度_陆" type="VARCHAR(50)"/>
+            <column name="minDetectHeightLand" remarks="最小作用高度_陆" type="VARCHAR(50)"/>
+            <column name="minTargetFeatureLand" remarks="最小目标特性_陆" type="VARCHAR(50)"/>
+            <column name="intelligenceCycleLand" remarks="情报周期_陆" type="VARCHAR(50)"/>
+            <column name="handleTargetNumLand" remarks="处理目标数_陆" type="VARCHAR(50)"/>
+            <column name="azimuthLand" remarks="方位角_陆" type="VARCHAR(50)"/>
+            <column name="precisionLand" remarks="精度_陆" type="VARCHAR(50)"/>
+            <column name="maxDetectRangeSea" remarks="最大作用距离_海" type="VARCHAR(50)"/>
+            <column name="maxDetectHeightSea" remarks="最大作用高度_海" type="VARCHAR(50)"/>
+            <column name="minDetectHeightSea" remarks="最小作用高度_海" type="VARCHAR(50)"/>
+            <column name="minTargetFeatureSea" remarks="最小目标特性_海" type="VARCHAR(50)"/>
+            <column name="intelligenceCycleSea" remarks="情报周期_海" type="VARCHAR(50)"/>
+            <column name="handleTargetNumSea" remarks="处理目标数_海" type="VARCHAR(50)"/>
+            <column name="azimuthSea" remarks="方位角_海" type="VARCHAR(50)"/>
+            <column name="precisionSea" remarks="精度_海" type="VARCHAR(50)"/>
+            <column name="maxDetectRangeAir" remarks="最大作用距离_空" type="VARCHAR(50)"/>
+            <column name="maxDetectHeightAir" remarks="最大作用高度_空" type="VARCHAR(50)"/>
+            <column name="minDetectHeightAir" remarks="最小作用高度_空" type="VARCHAR(50)"/>
+            <column name="minTargetFeatureAir" remarks="最小目标特性_空" type="VARCHAR(50)"/>
+            <column name="intelligenceCycleAir" remarks="情报周期_空" type="VARCHAR(50)"/>
+            <column name="handleTargetNumAir" remarks="处理目标数_空" type="VARCHAR(50)"/>
+            <column name="azimuthAir" remarks="方位角_空" type="VARCHAR(50)"/>
+            <column name="precisionAir" remarks="精度_空" type="VARCHAR(50)"/>
+            <column name="maxDetectRangeSpace" remarks="最大作用距离_天" type="VARCHAR(50)"/>
+            <column name="maxDetectHeightSpace" remarks="最大作用高度_天" type="VARCHAR(50)"/>
+            <column name="minDetectHeightSpace" remarks="最小作用高度_天" type="VARCHAR(50)"/>
+            <column name="minTargetFeatureSpace" remarks="最小目标特性_天" type="VARCHAR(50)"/>
+            <column name="intelligenceCycleSpace" remarks="情报周期_天" type="VARCHAR(50)"/>
+            <column name="handleTargetNumSpace" remarks="处理目标数_天" type="VARCHAR(50)"/>
+            <column name="azimuthSpace" remarks="方位角_天" type="VARCHAR(50)"/>
+            <column name="precisionSpace" remarks="精度_天" type="VARCHAR(50)"/>
+            <column name="maxDetectRangeUnderSea" remarks="最大作用距离_潜" type="VARCHAR(50)"/>
+            <column name="maxDetectDepthUnderSea" remarks="最大作用深度_潜" type="VARCHAR(50)"/>
+            <column name="minDetectDepthUnderSea" remarks="最小作用深度_潜" type="VARCHAR(50)"/>
+            <column name="minTargetFeatureUnderSea" remarks="最小目标特性_潜" type="VARCHAR(50)"/>
+            <column name="intelligenceCycleUnderSea" remarks="情报周期_潜" type="VARCHAR(50)"/>
+            <column name="handleTargetNumUnderSea" remarks="处理目标数_潜" type="VARCHAR(50)"/>
+            <column name="azimuthUnderSea" remarks="方位角_潜" type="VARCHAR(50)"/>
+            <column name="precisionUnderSea" remarks="精度_潜" type="VARCHAR(50)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="41656 (generated)" id="1647400803042-117">
+        <createTable remarks="跟踪" tableName="pooling_track">
+            <column name="id" type="VARCHAR(50)">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="platformCode" remarks="平台编号" type="VARCHAR(50)"/>
+            <column name="name" remarks="名称" type="VARCHAR(50)"/>
+            <column name="type" remarks="类型" type="VARCHAR(50)"/>
+            <column name="detectionSpace" remarks="对太空探测能力（公里）" type="FLOAT"/>
+            <column name="detectionAir" remarks="对空探测能力（公里）" type="FLOAT"/>
+            <column name="detectionSea" remarks="对海探测能力（公里）" type="FLOAT"/>
+            <column name="detectionLand" remarks="对陆地探测能力（公里）" type="FLOAT"/>
+            <column name="detectionUnderSea" remarks="对水下探测能力（公里）" type="FLOAT"/>
+            <column name="status" remarks="状态" type="INT"/>
+            <column name="sensorCode" remarks="传感器编号" type="VARCHAR(50)"/>
+            <column name="maxDetectRangeLand" remarks="最大作用距离_陆" type="VARCHAR(50)"/>
+            <column name="maxDetectHeightLand" remarks="最大作用高度_陆" type="VARCHAR(50)"/>
+            <column name="minDetectHeightLand" remarks="最小作用高度_陆" type="VARCHAR(50)"/>
+            <column name="minTargetFeatureLand" remarks="最小目标特性_陆" type="VARCHAR(50)"/>
+            <column name="intelligenceCycleLand" remarks="情报周期_陆" type="VARCHAR(50)"/>
+            <column name="handleTargetNumLand" remarks="处理目标数_陆" type="VARCHAR(50)"/>
+            <column name="azimuthLand" remarks="方位角_陆" type="VARCHAR(50)"/>
+            <column name="precisionLand" remarks="精度_陆" type="VARCHAR(50)"/>
+            <column name="maxDetectRangeSea" remarks="最大作用距离_海" type="VARCHAR(50)"/>
+            <column name="maxDetectHeightSea" remarks="最大作用高度_海" type="VARCHAR(50)"/>
+            <column name="minDetectHeightSea" remarks="最小作用高度_海" type="VARCHAR(50)"/>
+            <column name="minTargetFeatureSea" remarks="最小目标特性_海" type="VARCHAR(50)"/>
+            <column name="intelligenceCycleSea" remarks="情报周期_海" type="VARCHAR(50)"/>
+            <column name="handleTargetNumSea" remarks="处理目标数_海" type="VARCHAR(50)"/>
+            <column name="azimuthSea" remarks="方位角_海" type="VARCHAR(50)"/>
+            <column name="precisionSea" remarks="精度_海" type="VARCHAR(50)"/>
+            <column name="maxDetectRangeAir" remarks="最大作用距离_空" type="VARCHAR(50)"/>
+            <column name="maxDetectHeightAir" remarks="最大作用高度_空" type="VARCHAR(50)"/>
+            <column name="minDetectHeightAir" remarks="最小作用高度_空" type="VARCHAR(50)"/>
+            <column name="minTargetFeatureAir" remarks="最小目标特性_空" type="VARCHAR(50)"/>
+            <column name="intelligenceCycleAir" remarks="情报周期_空" type="VARCHAR(50)"/>
+            <column name="handleTargetNumAir" remarks="处理目标数_空" type="VARCHAR(50)"/>
+            <column name="azimuthAir" remarks="方位角_空" type="VARCHAR(50)"/>
+            <column name="precisionAir" remarks="精度_空" type="VARCHAR(50)"/>
+            <column name="maxDetectRangeSpace" remarks="最大作用距离_天" type="VARCHAR(50)"/>
+            <column name="maxDetectHeightSpace" remarks="最大作用高度_天" type="VARCHAR(50)"/>
+            <column name="minDetectHeightSpace" remarks="最小作用高度_天" type="VARCHAR(50)"/>
+            <column name="minTargetFeatureSpace" remarks="最小目标特性_天" type="VARCHAR(50)"/>
+            <column name="intelligenceCycleSpace" remarks="情报周期_天" type="VARCHAR(50)"/>
+            <column name="handleTargetNumSpace" remarks="处理目标数_天" type="VARCHAR(50)"/>
+            <column name="azimuthSpace" remarks="方位角_天" type="VARCHAR(50)"/>
+            <column name="precisionSpace" remarks="精度_天" type="VARCHAR(50)"/>
+            <column name="maxDetectRangeUnderSea" remarks="最大作用距离_潜" type="VARCHAR(50)"/>
+            <column name="maxDetectDepthUnderSea" remarks="最大作用深度_潜" type="VARCHAR(50)"/>
+            <column name="minDetectDepthUnderSea" remarks="最小作用深度_潜" type="VARCHAR(50)"/>
+            <column name="minTargetFeatureUnderSea" remarks="最小目标特性_潜" type="VARCHAR(50)"/>
+            <column name="intelligenceCycleUnderSea" remarks="情报周期_潜" type="VARCHAR(50)"/>
+            <column name="handleTargetNumUnderSea" remarks="处理目标数_潜" type="VARCHAR(50)"/>
+            <column name="azimuthUnderSea" remarks="方位角_潜" type="VARCHAR(50)"/>
+            <column name="precisionUnderSea" remarks="精度_潜" type="VARCHAR(50)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="41656 (generated)" id="1647400803042-118">
+        <createTable remarks="指示" tableName="pooling_Target">
+            <column name="id" type="VARCHAR(50)">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="platformCode" remarks="平台编号" type="VARCHAR(50)"/>
+            <column name="name" remarks="名称" type="VARCHAR(50)"/>
+            <column name="type" remarks="类型" type="VARCHAR(50)"/>
+            <column name="status" remarks="状态" type="INT"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="41656 (generated)" id="1647400803042-119">
+        <createTable remarks="交战" tableName="pooling_engage">
+            <column name="id" type="VARCHAR(50)">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="platformCode" remarks="平台编号" type="VARCHAR(50)"/>
+            <column name="name" remarks="名称" type="VARCHAR(50)"/>
+            <column name="type" remarks="类型" type="VARCHAR(50)"/>
+            <column name="number" remarks="数量" type="VARCHAR(50)"/>
+            <column name="fireSpace" remarks="对太空作战能力（公里）" type="FLOAT"/>
+            <column name="fireAir" remarks="对空作战能力（公里）" type="FLOAT"/>
+            <column name="fireSea" remarks="对海作战能力（公里）" type="FLOAT"/>
+            <column name="fireLand" remarks="对陆作战能力（公里）" type="FLOAT"/>
+            <column name="fireUnderSea" remarks="对水下作战能力（公里）" type="FLOAT"/>
+            <column name="hitRate" remarks="命中概率" type="FLOAT"/>
+            <column name="status" remarks="状态" type="INT"/>
+            <column name="weaponCode" remarks="武器编号" type="VARCHAR(50)"/>
+            <column name="guidanceType" remarks="制导方式" type="VARCHAR(50)"/>
+            <column name="reactionTime" remarks="系统反应时间" type="VARCHAR(50)"/>
+            <column name="maxSpeed" remarks="最大飞行速度" type="VARCHAR(50)"/>
+            <column name="salvoMinTime" remarks="齐射最小时间" type="VARCHAR(50)"/>
+            <column name="maxFireRangeLand" remarks="最大射程_陆" type="VARCHAR(50)"/>
+            <column name="minFireRangeLand" remarks="最小射程_陆" type="VARCHAR(50)"/>
+            <column name="maxFireHeightLand" remarks="最大射高_陆" type="VARCHAR(50)"/>
+            <column name="minFireHeightLand" remarks="最小射高_陆" type="VARCHAR(50)"/>
+            <column name="hitRateLand" remarks="命中概率_陆" type="VARCHAR(50)"/>
+            <column name="maxFireRangeSea" remarks="最大射程_海" type="VARCHAR(50)"/>
+            <column name="minFireRangeSea" remarks="最小射程_海" type="VARCHAR(50)"/>
+            <column name="maxFireHeightSea" remarks="最大射高_海" type="VARCHAR(50)"/>
+            <column name="minFireHeightSea" remarks="最小射高_海" type="VARCHAR(50)"/>
+            <column name="hitRateSea" remarks="命中概率_海" type="VARCHAR(50)"/>
+            <column name="maxFireRangeAir" remarks="最大射程_空" type="VARCHAR(50)"/>
+            <column name="minFireRangeAir" remarks="最小射程_空" type="VARCHAR(50)"/>
+            <column name="maxFireHeightAir" remarks="最大射高_空" type="VARCHAR(50)"/>
+            <column name="minFireHeightAir" remarks="最小射高_空" type="VARCHAR(50)"/>
+            <column name="hitRateAir" remarks="命中概率_空" type="VARCHAR(50)"/>
+            <column name="maxFireRangeSpace" remarks="最大射程_天" type="VARCHAR(50)"/>
+            <column name="minFireRangeSpace" remarks="最小射程_天" type="VARCHAR(50)"/>
+            <column name="maxFireHeightSpace" remarks="最大射高_天" type="VARCHAR(50)"/>
+            <column name="minFireHeightSpace" remarks="最小射高_天" type="VARCHAR(50)"/>
+            <column name="hitRateSpace" remarks="命中概率_天" type="VARCHAR(50)"/>
+            <column name="maxFireRangeUnderSea" remarks="最大射程_潜" type="VARCHAR(50)"/>
+            <column name="minFireRangeUnderSea" remarks="最小射程_潜" type="VARCHAR(50)"/>
+            <column name="maxFireDeptUnderSea" remarks="最大深度_潜" type="VARCHAR(50)"/>
+            <column name="minFireDeptUnderSea" remarks="最小深度_潜" type="VARCHAR(50)"/>
+            <column name="hitRateUnderSea" remarks="命中概率_潜" type="VARCHAR(50)"/>
+
+        </createTable>
+    </changeSet>
+
+    <changeSet author="41656 (generated)" id="1647400803042-120">
+        <createTable remarks="评估" tableName="pooling_asses">
+            <column name="id" type="VARCHAR(50)">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="platformCode" remarks="平台编号" type="VARCHAR(50)"/>
+            <column name="name" remarks="名称" type="VARCHAR(50)"/>
+            <column name="type" remarks="类型" type="VARCHAR(50)"/>
+            <column name="detectionSpace" remarks="对太空探测能力（公里）" type="FLOAT"/>
+            <column name="detectionAir" remarks="对空探测能力（公里）" type="FLOAT"/>
+            <column name="detectionSea" remarks="对海探测能力（公里）" type="FLOAT"/>
+            <column name="detectionUnderSea" remarks="对水下探测能力（公里）" type="FLOAT"/>
+            <column name="status" remarks="状态" type="INT"/>
+            <column name="sensorCode" remarks="传感器编号" type="VARCHAR(50)"/>
+            <column name="maxDetectRangeLand" remarks="最大作用距离_陆" type="VARCHAR(50)"/>
+            <column name="maxDetectHeightLand" remarks="最大作用高度_陆" type="VARCHAR(50)"/>
+            <column name="minDetectHeightLand" remarks="最小作用高度_陆" type="VARCHAR(50)"/>
+            <column name="minTargetFeatureLand" remarks="最小目标特性_陆" type="VARCHAR(50)"/>
+            <column name="intelligenceCycleLand" remarks="情报周期_陆" type="VARCHAR(50)"/>
+            <column name="handleTargetNumLand" remarks="处理目标数_陆" type="VARCHAR(50)"/>
+            <column name="azimuthLand" remarks="方位角_陆" type="VARCHAR(50)"/>
+            <column name="precisionLand" remarks="精度_陆" type="VARCHAR(50)"/>
+            <column name="maxDetectRangeSea" remarks="最大作用距离_海" type="VARCHAR(50)"/>
+            <column name="maxDetectHeightSea" remarks="最大作用高度_海" type="VARCHAR(50)"/>
+            <column name="minDetectHeightSea" remarks="最小作用高度_海" type="VARCHAR(50)"/>
+            <column name="minTargetFeatureSea" remarks="最小目标特性_海" type="VARCHAR(50)"/>
+            <column name="intelligenceCycleSea" remarks="情报周期_海" type="VARCHAR(50)"/>
+            <column name="handleTargetNumSea" remarks="处理目标数_海" type="VARCHAR(50)"/>
+            <column name="azimuthSea" remarks="方位角_海" type="VARCHAR(50)"/>
+            <column name="precisionSea" remarks="精度_海" type="VARCHAR(50)"/>
+            <column name="maxDetectRangeAir" remarks="最大作用距离_空" type="VARCHAR(50)"/>
+            <column name="maxDetectHeightAir" remarks="最大作用高度_空" type="VARCHAR(50)"/>
+            <column name="minDetectHeightAir" remarks="最小作用高度_空" type="VARCHAR(50)"/>
+            <column name="minTargetFeatureAir" remarks="最小目标特性_空" type="VARCHAR(50)"/>
+            <column name="intelligenceCycleAir" remarks="情报周期_空" type="VARCHAR(50)"/>
+            <column name="handleTargetNumAir" remarks="处理目标数_空" type="VARCHAR(50)"/>
+            <column name="azimuthAir" remarks="方位角_空" type="VARCHAR(50)"/>
+            <column name="precisionAir" remarks="精度_空" type="VARCHAR(50)"/>
+            <column name="maxDetectRangeSpace" remarks="最大作用距离_天" type="VARCHAR(50)"/>
+            <column name="maxDetectHeightSpace" remarks="最大作用高度_天" type="VARCHAR(50)"/>
+            <column name="minDetectHeightSpace" remarks="最小作用高度_天" type="VARCHAR(50)"/>
+            <column name="minTargetFeatureSpace" remarks="最小目标特性_天" type="VARCHAR(50)"/>
+            <column name="intelligenceCycleSpace" remarks="情报周期_天" type="VARCHAR(50)"/>
+            <column name="handleTargetNumSpace" remarks="处理目标数_天" type="VARCHAR(50)"/>
+            <column name="azimuthSpace" remarks="方位角_天" type="VARCHAR(50)"/>
+            <column name="precisionSpace" remarks="精度_天" type="VARCHAR(50)"/>
+            <column name="maxDetectRangeUnderSea" remarks="最大作用距离_潜" type="VARCHAR(50)"/>
+            <column name="maxDetectDepthUnderSea" remarks="最大作用深度_潜" type="VARCHAR(50)"/>
+            <column name="minDetectDepthUnderSea" remarks="最小作用深度_潜" type="VARCHAR(50)"/>
+            <column name="minTargetFeatureUnderSea" remarks="最小目标特性_潜" type="VARCHAR(50)"/>
+            <column name="intelligenceCycleUnderSea" remarks="情报周期_潜" type="VARCHAR(50)"/>
+            <column name="handleTargetNumUnderSea" remarks="处理目标数_潜" type="VARCHAR(50)"/>
+            <column name="azimuthUnderSea" remarks="方位角_潜" type="VARCHAR(50)"/>
+            <column name="precisionUnderSea" remarks="精度_潜" type="VARCHAR(50)"/>
+        </createTable>
+    </changeSet>
+
+
 </databaseChangeLog>

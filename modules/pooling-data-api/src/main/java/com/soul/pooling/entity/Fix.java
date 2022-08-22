@@ -75,7 +75,7 @@ public class Fix extends BaseEntity {
     //陆
     @Display("最大作用距离_陆")
     @Column(name = "maxDetectRangeLand")
-    private String maxDetectRange;
+    private String maxDetectRangeLand;
 
     @Display("最大作用高度_陆")
     @Column(name = "maxDetectHeightLand")
