@@ -6,7 +6,6 @@ import com.egova.model.PageResult;
 import com.egova.model.QueryModel;
 import com.flagwind.persistent.model.Sorting;
 import com.soul.pooling.condition.EngageCondition;
-import com.soul.pooling.condition.WeaponCondition;
 import com.soul.pooling.domain.EngageRepository;
 import com.soul.pooling.entity.Engage;
 import com.soul.pooling.service.EngageService;
@@ -51,7 +50,7 @@ public class EngageServiceImpl extends TemplateService<Engage, String> implement
 
     @Override
     public List<Engage> getByPlatformCode(String platformCode) {
-        WeaponCondition weaponCondition = new WeaponCondition();
+        EngageCondition weaponCondition = new EngageCondition();
         weaponCondition.setPlatformCode(platformCode);
         List<Engage> weaponList = super.query(weaponCondition, new Sorting[]{Sorting.descending("id")});
         return weaponList;

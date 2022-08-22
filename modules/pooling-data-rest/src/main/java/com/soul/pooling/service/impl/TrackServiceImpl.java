@@ -5,7 +5,6 @@ import com.egova.data.service.TemplateService;
 import com.egova.model.PageResult;
 import com.egova.model.QueryModel;
 import com.flagwind.persistent.model.Sorting;
-import com.soul.pooling.condition.FindCondition;
 import com.soul.pooling.condition.TrackCondition;
 import com.soul.pooling.domain.TrackRepository;
 import com.soul.pooling.entity.Track;
@@ -51,7 +50,7 @@ public class TrackServiceImpl extends TemplateService<Track, String> implements 
 
     @Override
     public List<Track> getByPlatformCode(String platformCode) {
-        FindCondition sensorCondition = new FindCondition();
+        TrackCondition sensorCondition = new TrackCondition();
         sensorCondition.setPlatformCode(platformCode);
         List<Track> sensorList = super.query(sensorCondition, new Sorting[]{Sorting.descending("id")});
         return sensorList;

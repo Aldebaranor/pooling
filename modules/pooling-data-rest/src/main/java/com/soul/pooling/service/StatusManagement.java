@@ -3,9 +3,7 @@ package com.soul.pooling.service;
 import com.egova.exception.ExceptionUtils;
 import com.soul.pooling.config.Constants;
 import com.soul.pooling.config.PoolingConfig;
-import com.soul.pooling.entity.Platform;
-import com.soul.pooling.entity.Sensor;
-import com.soul.pooling.entity.Weapon;
+import com.soul.pooling.entity.*;
 import com.soul.pooling.model.ActivatedModel;
 import com.soul.pooling.model.PlatformStatus;
 import lombok.extern.slf4j.Slf4j;
@@ -50,6 +48,18 @@ public class StatusManagement {
 
     private final ConcurrentMap<String, Weapon> weaponPool = new ConcurrentHashMap<>();
 
+    private final ConcurrentMap<String, Find> findPool = new ConcurrentHashMap<>();
+
+    private final ConcurrentMap<String, Fix> fixPool = new ConcurrentHashMap<>();
+
+    private final ConcurrentMap<String, Track> trackPool = new ConcurrentHashMap<>();
+
+    private final ConcurrentMap<String, Target> targetPool = new ConcurrentHashMap<>();
+
+    private final ConcurrentMap<String, Engage> engagePool = new ConcurrentHashMap<>();
+
+    private final ConcurrentMap<String, Asses> assesPool = new ConcurrentHashMap<>();
+
     public Map<String, PlatformStatus> getAll() {
         return forceStatusData;
     }
@@ -58,21 +68,86 @@ public class StatusManagement {
         return platformPool;
     }
 
-    public List<Sensor> getSensorsByPlatform(String code) {
-        List<Sensor> list = new ArrayList<>();
-        for (String id : sensorPool.keySet()) {
-            if (sensorPool.get(id).getPlatformCode().equals(code)) {
-                list.add(sensorPool.get(id));
+    public Map<String, Find> getFindPool() {
+        return findPool;
+    }
+
+    public Map<String, Fix> getFixPool() {
+        return fixPool;
+    }
+
+    public Map<String, Track> getTrackPool() {
+        return trackPool;
+    }
+
+    public Map<String, Target> getTargetPool() {
+        return targetPool;
+    }
+
+    public Map<String, Engage> getEngagePool() {
+        return engagePool;
+    }
+
+    public Map<String, Asses> getAssesPool() {
+        return assesPool;
+    }
+
+
+    public List<Find> getFindByPlatform(String code) {
+        List<Find> list = new ArrayList<>();
+        for (String id : findPool.keySet()) {
+            if (findPool.get(id).getPlatformCode().equals(code)) {
+                list.add(findPool.get(id));
             }
         }
         return list;
     }
 
-    public List<Weapon> getWeaponsByPlatform(String code) {
-        List<Weapon> list = new ArrayList<>();
-        for (String id : weaponPool.keySet()) {
-            if (weaponPool.get(id).getPlatformCode().equals(code)) {
-                list.add(weaponPool.get(id));
+    public List<Fix> getFixByPlatform(String code) {
+        List<Fix> list = new ArrayList<>();
+        for (String id : fixPool.keySet()) {
+            if (fixPool.get(id).getPlatformCode().equals(code)) {
+                list.add(fixPool.get(id));
+            }
+        }
+        return list;
+    }
+
+    public List<Track> getTrackByPlatform(String code) {
+        List<Track> list = new ArrayList<>();
+        for (String id : trackPool.keySet()) {
+            if (trackPool.get(id).getPlatformCode().equals(code)) {
+                list.add(trackPool.get(id));
+            }
+        }
+        return list;
+    }
+
+    public List<Target> getTargetByPlatform(String code) {
+        List<Target> list = new ArrayList<>();
+        for (String id : targetPool.keySet()) {
+            if (targetPool.get(id).getPlatformCode().equals(code)) {
+                list.add(targetPool.get(id));
+            }
+        }
+        return list;
+    }
+
+    public List<Engage> getEngageByPlatform(String code) {
+        List<Engage> list = new ArrayList<>();
+        for (String id : engagePool.keySet()) {
+            if (engagePool.get(id).getPlatformCode().equals(code)) {
+                list.add(engagePool.get(id));
+            }
+        }
+        return list;
+    }
+
+    public List<Asses> getAssesByPlatform(String code) {
+        List<Asses> list = new ArrayList<>();
+        for (String id : assesPool.keySet()) {
+            if (assesPool.get(id).getPlatformCode().equals(code)) {
+                list.add(assesPool.get(id));
             }
         }
         return list;
@@ -135,6 +210,24 @@ public class StatusManagement {
                 for (Weapon weapon : platform.getWeapons()) {
                     weaponPool.put(weapon.getId(), weapon);
                 }
+                for (Find find : platform.getFinds()) {
+                    findPool.put(find.getId(), find);
+                }
+                for (Fix fix : platform.getFixes()) {
+                    fixPool.put(fix.getId(), fix);
+                }
+                for (Track track : platform.getTracks()) {
+                    trackPool.put(track.getId(), track);
+                }
+                for (Target target : platform.getTargets()) {
+                    targetPool.put(target.getId(), target);
+                }
+                for (Engage engage : platform.getEngages()) {
+                    engagePool.put(engage.getId(), engage);
+                }
+                for (Asses asses : platform.getAsses()) {
+                    assesPool.put(asses.getId(), asses);
+                }
             }
 
         } else {
@@ -170,6 +263,25 @@ public class StatusManagement {
                 for (Weapon weapon : platform.getWeapons()) {
                     weaponPool.remove(weapon.getId());
                 }
+                for (Find find : platform.getFinds()) {
+                    findPool.remove(find.getId());
+                }
+                for (Fix fix : platform.getFixes()) {
+                    fixPool.remove(fix.getId());
+                }
+                for (Track track : platform.getTracks()) {
+                    trackPool.remove(track.getId());
+                }
+                for (Target target : platform.getTargets()) {
+                    targetPool.remove(target.getId());
+                }
+                for (Engage engage : platform.getEngages()) {
+                    engagePool.remove(engage.getId());
+                }
+                for (Asses asses : platform.getAsses()) {
+                    assesPool.remove(asses.getId());
+                }
+
                 platformPool.remove(id);
             }
 
@@ -202,6 +314,24 @@ public class StatusManagement {
                 }
                 for (Weapon weapon : platform.getWeapons()) {
                     weaponPool.remove(weapon.getId());
+                }
+                for (Find find : platform.getFinds()) {
+                    findPool.remove(find.getId());
+                }
+                for (Fix fix : platform.getFixes()) {
+                    fixPool.remove(fix.getId());
+                }
+                for (Track track : platform.getTracks()) {
+                    trackPool.remove(track.getId());
+                }
+                for (Target target : platform.getTargets()) {
+                    targetPool.remove(target.getId());
+                }
+                for (Engage engage : platform.getEngages()) {
+                    engagePool.remove(engage.getId());
+                }
+                for (Asses asses : platform.getAsses()) {
+                    assesPool.remove(asses.getId());
                 }
                 platformPool.remove(id);
             }

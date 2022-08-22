@@ -66,7 +66,7 @@ public class AssesController {
      * @param asses
      */
     @Api
-    @PutMapping(value = "/sensor/update")
+    @PutMapping(value = "/asses/update")
     public void update(@RequestBody Asses asses) {
         assesService.update(asses);
     }

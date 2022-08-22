@@ -5,7 +5,6 @@ import com.egova.data.service.TemplateService;
 import com.egova.model.PageResult;
 import com.egova.model.QueryModel;
 import com.flagwind.persistent.model.Sorting;
-import com.soul.pooling.condition.FindCondition;
 import com.soul.pooling.condition.TargetCondition;
 import com.soul.pooling.domain.TargetRepository;
 import com.soul.pooling.entity.Target;
@@ -51,7 +50,7 @@ public class TargetServiceImpl extends TemplateService<Target, String> implement
 
     @Override
     public List<Target> getByPlatformCode(String platformCode) {
-        FindCondition sensorCondition = new FindCondition();
+        TargetCondition sensorCondition = new TargetCondition();
         sensorCondition.setPlatformCode(platformCode);
         List<Target> sensorList = super.query(sensorCondition, new Sorting[]{Sorting.descending("id")});
         return sensorList;

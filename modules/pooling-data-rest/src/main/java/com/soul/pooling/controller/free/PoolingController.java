@@ -5,7 +5,8 @@ import com.egova.json.utils.JsonUtils;
 import com.egova.web.annotation.Api;
 import com.flagwind.commons.StringUtils;
 import com.soul.pooling.config.PoolingConfig;
-import com.soul.pooling.entity.Platform;
+import com.soul.pooling.entity.*;
+import com.soul.pooling.model.Command;
 import com.soul.pooling.model.PlatformMoveData;
 import com.soul.pooling.model.PlatformStatus;
 import com.soul.pooling.mqtt.producer.MqttMsgProducer;
@@ -180,6 +181,57 @@ public class PoolingController {
     public PlatformMoveData platformMoveData(@PathVariable String platformId) {
         return management.getPlatformPool().get(platformId).getPlatformMoveData();
     }
+
+    /**
+     * 智能调度
+     *
+     * @param command
+     * @return
+     */
+    @Api
+    @PostMapping(value = "/pooling/command")
+    public List<String> command(@RequestBody Command command) {
+        List<String> list = new ArrayList<>();
+
+        return list;
+    }
+
+    @Api
+    @GetMapping(value = "/pool/find")
+    public Map<String, Find> getAllFinds() {
+        return management.getFindPool();
+    }
+
+    @Api
+    @GetMapping(value = "/pool/fix")
+    public Map<String, Fix> getAllFixes() {
+        return management.getFixPool();
+    }
+
+    @Api
+    @GetMapping(value = "/pool/track")
+    public Map<String, Track> getAllTracks() {
+        return management.getTrackPool();
+    }
+
+    @Api
+    @GetMapping(value = "/pool/target")
+    public Map<String, Target> getAllTargets() {
+        return management.getTargetPool();
+    }
+
+    @Api
+    @GetMapping(value = "/pool/engage")
+    public Map<String, Engage> getAllEngages() {
+        return management.getEngagePool();
+    }
+
+    @Api
+    @GetMapping(value = "/pool/asses")
+    public Map<String, Asses> getAllAsses() {
+        return management.getAssesPool();
+    }
+
 
 }
 

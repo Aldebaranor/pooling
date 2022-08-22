@@ -5,7 +5,6 @@ import com.egova.data.service.TemplateService;
 import com.egova.model.PageResult;
 import com.egova.model.QueryModel;
 import com.flagwind.persistent.model.Sorting;
-import com.soul.pooling.condition.FindCondition;
 import com.soul.pooling.condition.FixCondition;
 import com.soul.pooling.domain.FixRepository;
 import com.soul.pooling.entity.Fix;
@@ -51,7 +50,7 @@ public class FixServiceImpl extends TemplateService<Fix, String> implements FixS
 
     @Override
     public List<Fix> getByPlatformCode(String platformCode) {
-        FindCondition sensorCondition = new FindCondition();
+        FixCondition sensorCondition = new FixCondition();
         sensorCondition.setPlatformCode(platformCode);
         List<Fix> sensorList = super.query(sensorCondition, new Sorting[]{Sorting.descending("id")});
         return sensorList;

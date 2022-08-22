@@ -6,7 +6,6 @@ import com.egova.model.PageResult;
 import com.egova.model.QueryModel;
 import com.flagwind.persistent.model.Sorting;
 import com.soul.pooling.condition.AssesCondition;
-import com.soul.pooling.condition.FindCondition;
 import com.soul.pooling.domain.AssesRepository;
 import com.soul.pooling.entity.Asses;
 import com.soul.pooling.service.AssesService;
@@ -51,7 +50,7 @@ public class AssesServiceImpl extends TemplateService<Asses, String> implements 
 
     @Override
     public List<Asses> getByPlatformCode(String platformCode) {
-        FindCondition sensorCondition = new FindCondition();
+        AssesCondition sensorCondition = new AssesCondition();
         sensorCondition.setPlatformCode(platformCode);
         List<Asses> sensorList = super.query(sensorCondition, new Sorting[]{Sorting.descending("id")});
         return sensorList;
