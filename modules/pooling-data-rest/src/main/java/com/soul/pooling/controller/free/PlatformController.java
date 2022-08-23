@@ -35,23 +35,25 @@ public class PlatformController {
 
     /**
      * 新增平台
+     *
      * @param platform
      */
     @Api
     @GetMapping(value = "/platform/insert")
-    public void insert(@RequestBody Platform platform){
+    public void insert(@RequestBody Platform platform) {
         platformService.insert(platform);
     }
 
     /**
      * 根据主键id删除平台
+     *
      * @param platformId
      * @return
      */
     @Api
     @DeleteMapping(value = "/platform/delete/{platformId}")
-    public Boolean deleteById(@PathVariable("platformId") String platformId){
-        if(StringUtils.isBlank(platformId)){
+    public Boolean deleteById(@PathVariable("platformId") String platformId) {
+        if (StringUtils.isBlank(platformId)) {
             throw ExceptionUtils.api("id can not be null");
         }
         platformService.deleteById(platformId);
@@ -60,56 +62,61 @@ public class PlatformController {
 
     /**
      * 修改平台
+     *
      * @param platform
      */
     @Api
     @PutMapping(value = "/platform/update")
-    public void update(@RequestBody Platform platform){
+    public void update(@RequestBody Platform platform) {
         platformService.update(platform);
     }
 
     /**
      * 获取作战资源池平台列表信息
+     *
      * @return
      */
     @Api
     @GetMapping(value = "/list/platform")
-    public List<Platform> listPlatform(){
+    public List<Platform> listPlatform() {
 
         return platformService.getAll();
     }
 
     /**
      * 模糊查询作战资源池平台列表信息
+     *
      * @param condition
      * @return
      */
     @Api
     @PostMapping(value = "/page/platform")
-    public PageResult<Platform> pagePlatform(@RequestBody PlatformCondition condition){
+    public PageResult<Platform> pagePlatform(@RequestBody QueryModel<PlatformCondition> condition) {
 
-        return platformService.page(new QueryModel<>(condition));
+        return platformService.page(condition);
 
     }
 
     /**
      * 批量主键删除
+     *
      * @param ids
      * @return
      */
     @Api
     @DeleteMapping(value = "/platform/delete/batch")
-    public int batchDelete(@RequestBody List<String> ids){
+    public int batchDelete(@RequestBody List<String> ids) {
         return platformService.deleteByIds(ids);
     }
 
     /**
      * 根据id查询
+     *
      * @return
      */
     @Api
     @PostMapping(value = "/platform/{id}")
-    public Platform getById(@PathVariable("id") String id){
+    public Platform getById(@PathVariable("id") String id) {
         return platformService.seekById(id);
     }
 }

@@ -35,23 +35,25 @@ public class SensorController {
 
     /**
      * 新增传感器
+     *
      * @param sensor
      */
     @Api
     @GetMapping(value = "/sensor/insert")
-    public void insert(@RequestBody Sensor sensor){
+    public void insert(@RequestBody Sensor sensor) {
         sensorService.insert(sensor);
     }
 
     /**
      * 根据主键id删除传感器
+     *
      * @param sensorId
      * @return
      */
     @Api
     @DeleteMapping(value = "/sensor/delete/{sensorId}")
-    public Boolean deleteById(@PathVariable("sensorId") String sensorId){
-        if(StringUtils.isBlank(sensorId)){
+    public Boolean deleteById(@PathVariable("sensorId") String sensorId) {
+        if (StringUtils.isBlank(sensorId)) {
             throw ExceptionUtils.api("id can not be null");
         }
         sensorService.deleteById(sensorId);
@@ -60,56 +62,61 @@ public class SensorController {
 
     /**
      * 修改传感器
+     *
      * @param sensor
      */
     @Api
     @PutMapping(value = "/sensor/update")
-    public void update(@RequestBody Sensor sensor){
+    public void update(@RequestBody Sensor sensor) {
         sensorService.update(sensor);
     }
 
     /**
      * 获取作战资源池传感器列表信息
+     *
      * @return
      */
     @Api
     @GetMapping(value = "/list/sensor")
-    public List <Sensor> listSensor(){
+    public List<Sensor> listSensor() {
 
         return sensorService.getAll();
     }
 
     /**
      * 模糊查询作战资源池传感器列表信息
+     *
      * @param condition
      * @return
      */
     @Api
     @PostMapping(value = "/page/sensor")
-    public PageResult<Sensor> pageSensor(@RequestBody SensorCondition condition){
+    public PageResult<Sensor> pageSensor(@RequestBody QueryModel<SensorCondition> condition) {
 
-        return sensorService.page(new QueryModel<>(condition));
+        return sensorService.page(condition);
     }
 
     /**
      * 查找指定平台下所有武器
+     *
      * @param platformCode
      * @return
      */
     @Api
     @GetMapping(value = "/sensor/queryByPlat/{platformCode}")
-    public List<Sensor> getByPlatformCode(@PathVariable("platformCode") String platformCode){
+    public List<Sensor> getByPlatformCode(@PathVariable("platformCode") String platformCode) {
         return sensorService.getByPlatformCode(platformCode);
     }
 
     /**
      * 批量主键删除
+     *
      * @param ids
      * @return
      */
     @Api
     @DeleteMapping(value = "/sensor/delete/batch")
-    public int batchDelete(@RequestBody List<String> ids){
+    public int batchDelete(@RequestBody List<String> ids) {
         return sensorService.deleteByIds(ids);
     }
 

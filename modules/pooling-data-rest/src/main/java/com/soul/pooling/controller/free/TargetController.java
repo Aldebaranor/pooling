@@ -91,9 +91,9 @@ public class TargetController {
      */
     @Api
     @PostMapping(value = "/page/target")
-    public PageResult<Target> pageTarget(@RequestBody TargetCondition condition) {
+    public PageResult<Target> pageTarget(@RequestBody QueryModel<TargetCondition> condition) {
 
-        return targetService.page(new QueryModel<>(condition));
+        return targetService.page(condition);
     }
 
     /**

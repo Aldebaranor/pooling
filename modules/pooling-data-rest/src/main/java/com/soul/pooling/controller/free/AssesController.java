@@ -91,9 +91,9 @@ public class AssesController {
      */
     @Api
     @PostMapping(value = "/page/asses")
-    public PageResult<Asses> pageAsses(@RequestBody AssesCondition condition) {
+    public PageResult<Asses> pageAsses(@RequestBody QueryModel<AssesCondition> condition) {
 
-        return assesService.page(new QueryModel<>(condition));
+        return assesService.page(condition);
     }
 
     /**

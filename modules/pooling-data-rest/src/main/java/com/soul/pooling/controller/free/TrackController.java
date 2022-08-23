@@ -91,9 +91,9 @@ public class TrackController {
      */
     @Api
     @PostMapping(value = "/page/track")
-    public PageResult<Track> pageTrack(@RequestBody TrackCondition condition) {
+    public PageResult<Track> pageTrack(@RequestBody QueryModel<TrackCondition> condition) {
 
-        return trackService.page(new QueryModel<>(condition));
+        return trackService.page(condition);
     }
 
     /**

@@ -91,9 +91,9 @@ public class FindController {
      */
     @Api
     @PostMapping(value = "/page/find")
-    public PageResult<Find> pageFind(@RequestBody FindCondition condition) {
+    public PageResult<Find> pageFind(@RequestBody QueryModel<FindCondition> condition) {
 
-        return findService.page(new QueryModel<>(condition));
+        return findService.page(condition);
     }
 
     /**

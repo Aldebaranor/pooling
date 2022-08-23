@@ -76,7 +76,7 @@ public class EngageController {
      */
     @Api
     @GetMapping(value = "/list/engage")
-    public List<Engage> listengage() {
+    public List<Engage> listEngage() {
 
         return engageService.getAll();
     }
@@ -89,9 +89,9 @@ public class EngageController {
      */
     @Api
     @PostMapping(value = "/page/engage")
-    public PageResult<Engage> pageengage(@RequestBody EngageCondition condition) {
+    public PageResult<Engage> pageEngage(@RequestBody QueryModel<EngageCondition> condition) {
 
-        return engageService.page(new QueryModel<>(condition));
+        return engageService.page(condition);
     }
 
     /**

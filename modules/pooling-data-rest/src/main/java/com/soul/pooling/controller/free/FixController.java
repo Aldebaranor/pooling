@@ -91,9 +91,9 @@ public class FixController {
      */
     @Api
     @PostMapping(value = "/page/fix")
-    public PageResult<Fix> pageFix(@RequestBody FixCondition condition) {
+    public PageResult<Fix> pageFix(@RequestBody QueryModel<FixCondition> condition) {
 
-        return fixService.page(new QueryModel<>(condition));
+        return fixService.page(condition);
     }
 
     /**
