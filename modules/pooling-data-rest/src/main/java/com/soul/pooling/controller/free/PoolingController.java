@@ -253,47 +253,36 @@ public class PoolingController {
 
         List<Find> collect = management.getFindPool(null);
         List<ResourceModel> list = new ArrayList<>();
+
+        for (Find find : collect) {
+            ResourceModel model = new ResourceModel();
+            model.setId(find.getId());
+            model.setName(find.getName());
+            model.setDeviceCode(find.getDeviceCode());
+            model.setType(find.getType());
+            model.setPlatformCode(find.getPlatformCode());
+            model.setPlatformName(find.getPlatformName());
+            model.setStatus(find.getStatus());
+            list.add(model);
+        }
         if (condition == null) {
-            for (int i = 0; i < collect.size(); i++) {
-                ResourceModel model = new ResourceModel();
-                model.setId(collect.get(i).getId());
-                model.setName(collect.get(i).getName());
-                model.setDeviceCode(collect.get(i).getDeviceCode());
-                model.setType(collect.get(i).getType());
-                model.setPlatformCode(collect.get(i).getPlatformCode());
-                model.setPlatformName(collect.get(i).getPlatformName());
-                model.setStatus(collect.get(i).getStatus());
-                list.add(model);
-            }
             return list;
         }
 
         if (!StringUtils.isBlank(condition.getName())) {
-            collect = collect.stream().filter(q -> q.getName().contains(condition.getName())).collect(Collectors.toList());
+            list = list.stream().filter(q -> q.getName().contains(condition.getName())).collect(Collectors.toList());
         }
         if (!StringUtils.isBlank(condition.getId())) {
-            collect = collect.stream().filter(q -> StringUtils.equals(condition.getId(), q.getId())).collect(Collectors.toList());
+            list = list.stream().filter(q -> StringUtils.equals(condition.getId(), q.getId())).collect(Collectors.toList());
 
         }
         if (!StringUtils.isBlank(condition.getPlatformCode())) {
-            collect = collect.stream().filter(q -> StringUtils.equals(condition.getPlatformCode(), q.getPlatformCode())).collect(Collectors.toList());
+            list = list.stream().filter(q -> StringUtils.equals(condition.getPlatformCode(), q.getPlatformCode())).collect(Collectors.toList());
 
         }
         if (!StringUtils.isBlank(condition.getType())) {
-            collect = collect.stream().filter(q -> StringUtils.equals(condition.getType(), q.getType())).collect(Collectors.toList());
+            list = list.stream().filter(q -> StringUtils.equals(condition.getType(), q.getType())).collect(Collectors.toList());
 
-        }
-        int num = collect.size();
-        for (int i = 0; i < num; i++) {
-            ResourceModel model = new ResourceModel();
-            model.setId(collect.get(i).getId());
-            model.setName(collect.get(i).getName());
-            model.setDeviceCode(collect.get(i).getDeviceCode());
-            model.setType(collect.get(i).getType());
-            model.setPlatformCode(collect.get(i).getPlatformCode());
-            model.setPlatformName(collect.get(i).getPlatformName());
-            model.setStatus(collect.get(i).getStatus());
-            list.add(model);
         }
 
         return list;
@@ -308,15 +297,15 @@ public class PoolingController {
 
         List<Fix> collect = management.getFixPool(null);
         List<ResourceModel> list = new ArrayList<>();
-        for (int i = 0; i < collect.size(); i++) {
+        for (Fix fix : collect) {
             ResourceModel model = new ResourceModel();
-            model.setId(collect.get(i).getId());
-            model.setName(collect.get(i).getName());
-            model.setDeviceCode(collect.get(i).getDeviceCode());
-            model.setType(collect.get(i).getType());
-            model.setPlatformCode(collect.get(i).getPlatformCode());
-            model.setPlatformName(collect.get(i).getPlatformName());
-            model.setStatus(collect.get(i).getStatus());
+            model.setId(fix.getId());
+            model.setName(fix.getName());
+            model.setDeviceCode(fix.getDeviceCode());
+            model.setType(fix.getType());
+            model.setPlatformCode(fix.getPlatformCode());
+            model.setPlatformName(fix.getPlatformName());
+            model.setStatus(fix.getStatus());
             list.add(model);
         }
 
@@ -351,7 +340,7 @@ public class PoolingController {
 
         List<Track> collect = management.getTrackPool(null);
         List<ResourceModel> list = new ArrayList<>();
-        for (Track track:collect){
+        for (Track track : collect) {
             ResourceModel model = new ResourceModel();
             model.setId(track.getId());
             model.setName(track.getName());
@@ -367,31 +356,19 @@ public class PoolingController {
         }
 
         if (!StringUtils.isBlank(condition.getName())) {
-            collect = collect.stream().filter(q -> q.getName().contains(condition.getName())).collect(Collectors.toList());
+            list = list.stream().filter(q -> q.getName().contains(condition.getName())).collect(Collectors.toList());
         }
         if (!StringUtils.isBlank(condition.getId())) {
-            collect = collect.stream().filter(q -> StringUtils.equals(condition.getId(), q.getId())).collect(Collectors.toList());
+            list = list.stream().filter(q -> StringUtils.equals(condition.getId(), q.getId())).collect(Collectors.toList());
 
         }
         if (!StringUtils.isBlank(condition.getPlatformCode())) {
-            collect = collect.stream().filter(q -> StringUtils.equals(condition.getPlatformCode(), q.getPlatformCode())).collect(Collectors.toList());
+            list = list.stream().filter(q -> StringUtils.equals(condition.getPlatformCode(), q.getPlatformCode())).collect(Collectors.toList());
 
         }
         if (!StringUtils.isBlank(condition.getType())) {
-            collect = collect.stream().filter(q -> StringUtils.equals(condition.getType(), q.getType())).collect(Collectors.toList());
+            list = list.stream().filter(q -> StringUtils.equals(condition.getType(), q.getType())).collect(Collectors.toList());
 
-        }
-        int num = collect.size();
-        for (int i = 0; i < num; i++) {
-            ResourceModel model = new ResourceModel();
-            model.setId(collect.get(i).getId());
-            model.setName(collect.get(i).getName());
-            model.setDeviceCode(collect.get(i).getDeviceCode());
-            model.setType(collect.get(i).getType());
-            model.setPlatformCode(collect.get(i).getPlatformCode());
-            model.setPlatformName(collect.get(i).getPlatformName());
-            model.setStatus(collect.get(i).getStatus());
-            list.add(model);
         }
 
         return list;
@@ -404,45 +381,36 @@ public class PoolingController {
 
         List<Target> collect = management.getTargetPool(null);
         List<ResourceModel> list = new ArrayList<>();
+
+        for (Target target : collect) {
+            ResourceModel model = new ResourceModel();
+            model.setId(target.getId());
+            model.setName(target.getName());
+            model.setType(target.getType());
+            model.setPlatformCode(target.getPlatformCode());
+            model.setPlatformName(target.getPlatformName());
+            model.setStatus(target.getStatus());
+            list.add(model);
+        }
+
         if (condition == null) {
-            for (int i = 0; i < collect.size(); i++) {
-                ResourceModel model = new ResourceModel();
-                model.setId(collect.get(i).getId());
-                model.setName(collect.get(i).getName());
-                model.setType(collect.get(i).getType());
-                model.setPlatformCode(collect.get(i).getPlatformCode());
-                model.setPlatformName(collect.get(i).getPlatformName());
-                model.setStatus(collect.get(i).getStatus());
-                list.add(model);
-            }
             return list;
         }
 
         if (!StringUtils.isBlank(condition.getName())) {
-            collect = collect.stream().filter(q -> q.getName().contains(condition.getName())).collect(Collectors.toList());
+            list = list.stream().filter(q -> q.getName().contains(condition.getName())).collect(Collectors.toList());
         }
         if (!StringUtils.isBlank(condition.getId())) {
-            collect = collect.stream().filter(q -> StringUtils.equals(condition.getId(), q.getId())).collect(Collectors.toList());
+            list = list.stream().filter(q -> StringUtils.equals(condition.getId(), q.getId())).collect(Collectors.toList());
 
         }
         if (!StringUtils.isBlank(condition.getPlatformCode())) {
-            collect = collect.stream().filter(q -> StringUtils.equals(condition.getPlatformCode(), q.getPlatformCode())).collect(Collectors.toList());
+            list = list.stream().filter(q -> StringUtils.equals(condition.getPlatformCode(), q.getPlatformCode())).collect(Collectors.toList());
 
         }
         if (!StringUtils.isBlank(condition.getType())) {
-            collect = collect.stream().filter(q -> StringUtils.equals(condition.getType(), q.getType())).collect(Collectors.toList());
+            list = list.stream().filter(q -> StringUtils.equals(condition.getType(), q.getType())).collect(Collectors.toList());
 
-        }
-        int num = collect.size();
-        for (int i = 0; i < num; i++) {
-            ResourceModel model = new ResourceModel();
-            model.setId(collect.get(i).getId());
-            model.setName(collect.get(i).getName());
-            model.setType(collect.get(i).getType());
-            model.setPlatformCode(collect.get(i).getPlatformCode());
-            model.setPlatformName(collect.get(i).getPlatformName());
-            model.setStatus(collect.get(i).getStatus());
-            list.add(model);
         }
 
         return list;
@@ -455,47 +423,37 @@ public class PoolingController {
 
         List<Engage> collect = management.getEngagePool(null);
         List<ResourceModel> list = new ArrayList<>();
+
+        for (Engage engage : collect) {
+            ResourceModel model = new ResourceModel();
+            model.setId(engage.getId());
+            model.setName(engage.getName());
+            model.setType(engage.getType());
+            model.setPlatformCode(engage.getPlatformCode());
+            model.setPlatformName(engage.getPlatformName());
+            model.setStatus(engage.getStatus());
+            list.add(model);
+        }
+
+
         if (condition == null) {
-            for (int i = 0; i < collect.size(); i++) {
-                ResourceModel model = new ResourceModel();
-                model.setId(collect.get(i).getId());
-                model.setName(collect.get(i).getName());
-                model.setDeviceCode(collect.get(i).getDeviceCode());
-                model.setType(collect.get(i).getType());
-                model.setPlatformCode(collect.get(i).getPlatformCode());
-                model.setPlatformName(collect.get(i).getPlatformName());
-                model.setStatus(collect.get(i).getStatus());
-                list.add(model);
-            }
             return list;
         }
 
         if (!StringUtils.isBlank(condition.getName())) {
-            collect = collect.stream().filter(q -> q.getName().contains(condition.getName())).collect(Collectors.toList());
+            list = list.stream().filter(q -> q.getName().contains(condition.getName())).collect(Collectors.toList());
         }
         if (!StringUtils.isBlank(condition.getId())) {
-            collect = collect.stream().filter(q -> StringUtils.equals(condition.getId(), q.getId())).collect(Collectors.toList());
+            list = list.stream().filter(q -> StringUtils.equals(condition.getId(), q.getId())).collect(Collectors.toList());
 
         }
         if (!StringUtils.isBlank(condition.getPlatformCode())) {
-            collect = collect.stream().filter(q -> StringUtils.equals(condition.getPlatformCode(), q.getPlatformCode())).collect(Collectors.toList());
+            list = list.stream().filter(q -> StringUtils.equals(condition.getPlatformCode(), q.getPlatformCode())).collect(Collectors.toList());
 
         }
         if (!StringUtils.isBlank(condition.getType())) {
-            collect = collect.stream().filter(q -> StringUtils.equals(condition.getType(), q.getType())).collect(Collectors.toList());
+            list = list.stream().filter(q -> StringUtils.equals(condition.getType(), q.getType())).collect(Collectors.toList());
 
-        }
-        int num = collect.size();
-        for (int i = 0; i < num; i++) {
-            ResourceModel model = new ResourceModel();
-            model.setId(collect.get(i).getId());
-            model.setName(collect.get(i).getName());
-            model.setDeviceCode(collect.get(i).getDeviceCode());
-            model.setType(collect.get(i).getType());
-            model.setPlatformCode(collect.get(i).getPlatformCode());
-            model.setPlatformName(collect.get(i).getPlatformName());
-            model.setStatus(collect.get(i).getStatus());
-            list.add(model);
         }
 
         return list;
@@ -508,47 +466,36 @@ public class PoolingController {
 
         List<Asses> collect = management.getAssesPool(null);
         List<ResourceModel> list = new ArrayList<>();
+
+        for (Asses asses : collect) {
+            ResourceModel model = new ResourceModel();
+            model.setId(asses.getId());
+            model.setName(asses.getName());
+            model.setType(asses.getType());
+            model.setPlatformCode(asses.getPlatformCode());
+            model.setPlatformName(asses.getPlatformName());
+            model.setStatus(asses.getStatus());
+            list.add(model);
+        }
+
         if (condition == null) {
-            for (int i = 0; i < collect.size(); i++) {
-                ResourceModel model = new ResourceModel();
-                model.setId(collect.get(i).getId());
-                model.setName(collect.get(i).getName());
-                model.setDeviceCode(collect.get(i).getDeviceCode());
-                model.setType(collect.get(i).getType());
-                model.setPlatformCode(collect.get(i).getPlatformCode());
-                model.setPlatformName(collect.get(i).getPlatformName());
-                model.setStatus(collect.get(i).getStatus());
-                list.add(model);
-            }
             return list;
         }
 
         if (!StringUtils.isBlank(condition.getName())) {
-            collect = collect.stream().filter(q -> q.getName().contains(condition.getName())).collect(Collectors.toList());
+            list = list.stream().filter(q -> q.getName().contains(condition.getName())).collect(Collectors.toList());
         }
         if (!StringUtils.isBlank(condition.getId())) {
-            collect = collect.stream().filter(q -> StringUtils.equals(condition.getId(), q.getId())).collect(Collectors.toList());
+            list = list.stream().filter(q -> StringUtils.equals(condition.getId(), q.getId())).collect(Collectors.toList());
 
         }
         if (!StringUtils.isBlank(condition.getPlatformCode())) {
-            collect = collect.stream().filter(q -> StringUtils.equals(condition.getPlatformCode(), q.getPlatformCode())).collect(Collectors.toList());
+            list = list.stream().filter(q -> StringUtils.equals(condition.getPlatformCode(), q.getPlatformCode())).collect(Collectors.toList());
 
         }
         if (!StringUtils.isBlank(condition.getType())) {
-            collect = collect.stream().filter(q -> StringUtils.equals(condition.getType(), q.getType())).collect(Collectors.toList());
+            list = list.stream().filter(q -> StringUtils.equals(condition.getType(), q.getType())).collect(Collectors.toList());
 
-        }
-        int num = collect.size();
-        for (int i = 0; i < num; i++) {
-            ResourceModel model = new ResourceModel();
-            model.setId(collect.get(i).getId());
-            model.setName(collect.get(i).getName());
-            model.setDeviceCode(collect.get(i).getDeviceCode());
-            model.setType(collect.get(i).getType());
-            model.setPlatformCode(collect.get(i).getPlatformCode());
-            model.setPlatformName(collect.get(i).getPlatformName());
-            model.setStatus(collect.get(i).getStatus());
-            list.add(model);
         }
 
         return list;
