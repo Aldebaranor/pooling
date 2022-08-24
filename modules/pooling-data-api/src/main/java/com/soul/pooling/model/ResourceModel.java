@@ -29,5 +29,8 @@ public class ResourceModel implements Serializable {
 
     private ResourceStatus status;
 
+    private Integer num;
+
+
 
 }
