@@ -18,8 +18,8 @@ public class TargetData implements Serializable {
     private String instId;
     //目标类型
     private String type;
-    //当前目标位置
-    private Point point;
+
+    private PlatformMoveData moveDetect;
 
 
 }

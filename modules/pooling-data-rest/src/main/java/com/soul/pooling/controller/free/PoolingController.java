@@ -7,7 +7,6 @@ import com.flagwind.commons.StringUtils;
 import com.soul.pooling.condition.ResourceCondition;
 import com.soul.pooling.config.PoolingConfig;
 import com.soul.pooling.entity.*;
-import com.soul.pooling.model.Command;
 import com.soul.pooling.model.PlatformMoveData;
 import com.soul.pooling.model.PlatformStatus;
 import com.soul.pooling.mqtt.producer.MqttMsgProducer;
@@ -21,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 
 /**
@@ -199,9 +199,6 @@ public class PoolingController {
         return management.getPlatformPool().get(platformId).getPlatformMoveData();
     }
 
-
-
-
     @Api
     @GetMapping(value = "/all/find")
     public Map<String, Find> getAllFinds() {
@@ -213,8 +210,28 @@ public class PoolingController {
     public List<Find> getFindList(@RequestBody ResourceCondition condition) {
 
         Map<String, Find> findPool = management.getFindPool();
-        return null;
-        //findPool.entrySet().stream().filter()
+        List<Find> collect = findPool.values().stream().collect(Collectors.toList());
+        if(condition == null){
+           return  collect;
+        }
+
+        if(!StringUtils.isBlank(condition.getName())){
+            collect = collect.stream().filter(q->q.getName().contains(condition.getName())).collect(Collectors.toList());
+        }
+        if(StringUtils.isBlank(condition.getId())){
+            collect = collect.stream().filter(q->StringUtils.equals(condition.getId(),q.getId())).collect(Collectors.toList());
+
+        }
+        if(StringUtils.isBlank(condition.getPlatformCode())){
+            collect = collect.stream().filter(q->StringUtils.equals(condition.getPlatformCode(),q.getPlatformCode())).collect(Collectors.toList());
+
+        }
+        if(StringUtils.isBlank(condition.getType())){
+            collect = collect.stream().filter(q->StringUtils.equals(condition.getType(),q.getType())).collect(Collectors.toList());
+
+        }
+        return collect;
+
     }
 
     @Api

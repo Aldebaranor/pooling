@@ -4,6 +4,7 @@ import com.egova.web.annotation.Api;
 import com.soul.pooling.entity.Engage;
 import com.soul.pooling.entity.Find;
 import com.soul.pooling.entity.Platform;
+import com.soul.pooling.model.CommandAttack;
 import com.soul.pooling.model.KillingChain;
 import com.soul.pooling.model.Point;
 import com.soul.pooling.service.EngageService;
@@ -39,12 +40,27 @@ public class CommandController {
     private EngageService engageService;
 
 
+    /**
+     * 智能调度
+     * @param command
+     * @return <目标,打击连></>
+     */
     @Api
     @PostMapping(value = "/mission")
-    public KillingChain getKillChain(@RequestBody String test){
-
+    public Map<String,KillingChain> getKillChain(@RequestBody CommandAttack command){
+        return null;
     }
 
+    /**
+     * 资源筛选,根据目标过滤资源池
+     * @param command
+     * @return
+     */
+    @Api
+    @PostMapping(value = "/resource")
+    public KillingChain getTargetResource(@RequestBody CommandAttack command){
+        return null;
+    }
 
     @Api
     @GetMapping(value = "/weapon/{test}")

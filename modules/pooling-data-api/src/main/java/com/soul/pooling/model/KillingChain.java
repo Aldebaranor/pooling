@@ -12,10 +12,6 @@ import java.util.List;
  */
 @Data
 public class KillingChain implements Serializable {
-    /**
-     * 任务编号
-     */
-    private String taskCode;
 
     private List<ResourceModel> find;
 
