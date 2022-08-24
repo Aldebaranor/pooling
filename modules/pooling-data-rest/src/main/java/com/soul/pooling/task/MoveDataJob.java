@@ -17,8 +17,6 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -53,7 +51,7 @@ public class MoveDataJob {
         if (CollectionUtils.isEmpty(moveMap)) {
             return;
         }
-        List<SituationMoveData> forces = new ArrayList<>();
+
         for (Map.Entry<String, String> entry : moveMap.entrySet()) {
             SituationTemArmy situationTemArmy = army.get((entry.getKey()));
             if (situationTemArmy == null) {
@@ -71,7 +69,7 @@ public class MoveDataJob {
             }
             situationMoveData.setTime(Long.parseLong(s));
             situationMoveData.setMove(initMoveData(split));
-            forces.add(situationMoveData);
+
             Platform platform = management.getPlatformPool().get(situationMoveData.getId());
             if (platform != null) {
                 platform.setPlatformMoveData(situationMoveData.getMove());

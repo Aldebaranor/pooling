@@ -156,12 +156,28 @@ public class PoolingController {
         if (!forcesData.getActiveStatus()) {
             throw ExceptionUtils.api(String.format("该兵力未被激活"));
         }
-        forcesData.setActiveStatus(false);
 
         //通知下线
         management.sendDisActivated(platformId);
 
         management.disActiveForce(platformId);
+
+        forcesData.setActiveStatus(false);
+        return true;
+    }
+
+    @Api
+    @PostMapping(value = "/dis-activated/platformIds")
+    public Boolean forcesDisActivatedBatch(@RequestBody List<String> platformIds) {
+        for (String platformId : platformIds) {
+            PlatformStatus forcesData = management.getForcesData(platformId);
+
+            //通知下线
+            management.sendDisActivated(platformId);
+
+            management.disActiveForce(platformId);
+            forcesData.setActiveStatus(false);
+        }
         return true;
     }
 
@@ -189,12 +205,14 @@ public class PoolingController {
      * @return
      */
     @Api
-    @PostMapping(value = "/pooling/command")
+    @PostMapping(value = "/command/test")
     public List<String> command(@RequestBody Command command) {
+
         List<String> list = new ArrayList<>();
 
         return list;
     }
+
 
     @Api
     @GetMapping(value = "/pool/find")

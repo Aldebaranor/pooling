@@ -252,7 +252,6 @@ public class StatusManagement {
             }
             forcesStatus.setActiveStatus(false);
             forceStatusData.put(id, forcesStatus);
-            log.info("--->兵力" + id + "注销成功");
             Platform platform = platformService.seekById(id);
             if (platform == null) {
                 throw ExceptionUtils.api(String.format("数据库没有平台数据"));
@@ -281,8 +280,8 @@ public class StatusManagement {
                 for (Asses asses : platform.getAsses()) {
                     assesPool.remove(asses.getId());
                 }
-
                 platformPool.remove(id);
+                log.info("--->兵力" + id + "注销成功");
             }
 
         } else {
