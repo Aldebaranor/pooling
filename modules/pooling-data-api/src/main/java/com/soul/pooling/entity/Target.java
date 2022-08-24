@@ -3,13 +3,11 @@ package com.soul.pooling.entity;
 
 import com.egova.model.BaseEntity;
 import com.egova.model.annotation.Display;
+import com.soul.pooling.entity.enums.ResourceStatus;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 /**
  * @Author: 王质松
@@ -30,10 +28,6 @@ public class Target extends BaseEntity {
     @Column(name = "id")
     private String id;
 
-    @Display("平台编号")
-    @Column(name = "platformCode")
-    private String platformCode;
-
     @Display("名称")
     @Column(name = "name")
     private String name;
@@ -42,9 +36,17 @@ public class Target extends BaseEntity {
     @Column(name = "type")
     private String type;
 
-    @Display("状态")
-    @Column(name = "status")
-    private int status;
+    @Transient
+    @Display("设备状态")
+    private ResourceStatus status;
+
+    @Display("平台编号")
+    @Column(name = "platformCode")
+    private String platformCode;
+
+    @Display("平台名称")
+    @Column(name = "platformName")
+    private String platformName;
 
 
 }

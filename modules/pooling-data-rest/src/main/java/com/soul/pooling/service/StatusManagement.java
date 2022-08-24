@@ -72,46 +72,114 @@ public class StatusManagement {
 
     public List<Find> getFindPool(CommandType type) {
         List<Find> result = findPool.values().stream().collect(Collectors.toList());
-        if(type == null){
+        if (type == null) {
             return result;
         }
-        if(type == CommandType.ATTACK_AIR){
+        if (type == CommandType.ATTACK_AIR) {
             result = result.stream().filter(q -> q.getMaxDetectRangeAir() > 0).collect(Collectors.toList());
         }
-        if(type == CommandType.ATTACK_SEA){
+        if (type == CommandType.ATTACK_SEA) {
             result = result.stream().filter(q -> q.getMaxDetectRangeSea() > 0).collect(Collectors.toList());
         }
-        if(type == CommandType.ATTACK_LAND){
+        if (type == CommandType.ATTACK_LAND) {
             result = result.stream().filter(q -> q.getMaxDetectRangeLand() > 0).collect(Collectors.toList());
         }
-        if(type == CommandType.ATTACK_UNDERSEA){
+        if (type == CommandType.ATTACK_UNDERSEA) {
             result = result.stream().filter(q -> q.getMaxDetectRangeUnderSea() > 0).collect(Collectors.toList());
         }
         return result;
     }
 
-    public Map<String,Fix> getFixPool() {
-        return fixPool;
+    public List<Fix> getFixPool(CommandType type) {
+        List<Fix> result = fixPool.values().stream().collect(Collectors.toList());
+        if (type == null) {
+            return result;
+        }
+        if (type == CommandType.ATTACK_AIR) {
+            result = result.stream().filter(q -> q.getMaxDetectRangeAir() > 0).collect(Collectors.toList());
+        }
+        if (type == CommandType.ATTACK_SEA) {
+            result = result.stream().filter(q -> q.getMaxDetectRangeSea() > 0).collect(Collectors.toList());
+        }
+        if (type == CommandType.ATTACK_LAND) {
+            result = result.stream().filter(q -> q.getMaxDetectRangeLand() > 0).collect(Collectors.toList());
+        }
+        if (type == CommandType.ATTACK_UNDERSEA) {
+            result = result.stream().filter(q -> q.getMaxDetectRangeUnderSea() > 0).collect(Collectors.toList());
+        }
+        return result;
 
     }
 
-    public Map<String, Track> getTrackPool() {
-        return trackPool;
+    public List<Track> getTrackPool(CommandType type) {
+        List<Track> result = trackPool.values().stream().collect(Collectors.toList());
+        if (type == null) {
+            return result;
+        }
+        if (type == CommandType.ATTACK_AIR) {
+            result = result.stream().filter(q -> q.getMaxDetectRangeAir() > 0).collect(Collectors.toList());
+        }
+        if (type == CommandType.ATTACK_SEA) {
+            result = result.stream().filter(q -> q.getMaxDetectRangeSea() > 0).collect(Collectors.toList());
+        }
+        if (type == CommandType.ATTACK_LAND) {
+            result = result.stream().filter(q -> q.getMaxDetectRangeLand() > 0).collect(Collectors.toList());
+        }
+        if (type == CommandType.ATTACK_UNDERSEA) {
+            result = result.stream().filter(q -> q.getMaxDetectRangeUnderSea() > 0).collect(Collectors.toList());
+        }
+        return result;
     }
 
-    public Map<String, Target> getTargetPool() {
-        return targetPool;
+    public List<Target> getTargetPool(CommandType type) {
+        List<Target> result = targetPool.values().stream().collect(Collectors.toList());
+        if (type == null) {
+            return result;
+        }
+
+        return result;
     }
 
-    public Map<String, Engage> getEngagePool() {
-        return engagePool;
+    public List<Engage> getEngagePool(CommandType type) {
+        List<Engage> result = engagePool.values().stream().collect(Collectors.toList());
+        if (type == null) {
+            return result;
+        }
+        if (type == CommandType.ATTACK_AIR) {
+            result = result.stream().filter(q -> q.getMaxFireRangeAir() > 0).collect(Collectors.toList());
+        }
+        if (type == CommandType.ATTACK_SEA) {
+            result = result.stream().filter(q -> q.getMaxFireRangeSea() > 0).collect(Collectors.toList());
+        }
+        if (type == CommandType.ATTACK_LAND) {
+            result = result.stream().filter(q -> q.getMaxFireRangeLand() > 0).collect(Collectors.toList());
+        }
+        if (type == CommandType.ATTACK_UNDERSEA) {
+            result = result.stream().filter(q -> q.getMaxFireDepthUnderSea() > 0).collect(Collectors.toList());
+        }
+
+        return result;
     }
-
-    public Map<String, Asses> getAssesPool() {
-        return assesPool;
+    
+    public List<Asses> getAssesPool(CommandType type) {
+        List<Asses> result = assesPool.values().stream().collect(Collectors.toList());
+        if (type == null) {
+            return result;
+        }
+        if (type == CommandType.ATTACK_AIR) {
+            result = result.stream().filter(q -> q.getMaxDetectRangeAir() > 0).collect(Collectors.toList());
+        }
+        if (type == CommandType.ATTACK_SEA) {
+            result = result.stream().filter(q -> q.getMaxDetectRangeSea() > 0).collect(Collectors.toList());
+        }
+        if (type == CommandType.ATTACK_LAND) {
+            result = result.stream().filter(q -> q.getMaxDetectRangeLand() > 0).collect(Collectors.toList());
+        }
+        if (type == CommandType.ATTACK_UNDERSEA) {
+            result = result.stream().filter(q -> q.getMaxDetectRangeUnderSea() > 0).collect(Collectors.toList());
+        }
+        return result;
     }
-
-
 
 
     public List<Find> getFindByPlatform(String code) {

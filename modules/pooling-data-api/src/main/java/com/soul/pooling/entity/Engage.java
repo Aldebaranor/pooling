@@ -3,13 +3,11 @@ package com.soul.pooling.entity;
 
 import com.egova.model.BaseEntity;
 import com.egova.model.annotation.Display;
+import com.soul.pooling.entity.enums.ResourceStatus;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 
 /**
@@ -32,9 +30,9 @@ public class Engage extends BaseEntity {
     @Column(name = "id")
     private String id;
 
-    @Display("平台编号")
-    @Column(name = "platformCode")
-    private String platformCode;
+    @Display("武器编号")
+    @Column(name = "deviceCode")
+    private String deviceCode;
 
     @Display("名称")
     @Column(name = "name")
@@ -44,41 +42,21 @@ public class Engage extends BaseEntity {
     @Column(name = "type")
     private String type;
 
+    @Transient
+    @Display("设备状态")
+    private ResourceStatus status;
+
+    @Display("平台名称")
+    @Column(name = "platformName")
+    private String platformName;
+
+    @Display("平台编号")
+    @Column(name = "platformCode")
+    private String platformCode;
+
     @Display("数量")
     @Column(name = "number")
     private String number;
-
-    @Display("对太空作战能力")
-    @Column(name = "fireSpace")
-    private float fireSpace;
-
-    @Display("对空作战能力（公里）")
-    @Column(name = "fireAir")
-    private float fireAir;
-
-    @Display("对海作战能力（公里）")
-    @Column(name = "fireSea")
-    private float fireSea;
-
-    @Display("对陆作战能力（公里）")
-    @Column(name = "fireLand")
-    private float fireLand;
-
-    @Display("对水下作战能力（公里）")
-    @Column(name = "fireUnderSea")
-    private float fireUnderSea;
-
-    @Display("命中概率")
-    @Column(name = "hitRate")
-    private float hitRate;
-
-    @Display("状态")
-    @Column(name = "status")
-    private int status;
-
-    @Display("武器编号")
-    @Column(name = "weaponCode")
-    private String weaponCode;
 
     //2022_08_18新增字段
 
@@ -92,7 +70,7 @@ public class Engage extends BaseEntity {
 
     @Display("最大飞行速度")
     @Column(name = "maxSpeed")
-    private String maxSpeed;
+    private Float maxSpeed;
 
     @Display("齐射最小时间")
     @Column(name = "salvoMinTime")
@@ -102,102 +80,102 @@ public class Engage extends BaseEntity {
     //陆
     @Display("最大射程_陆")
     @Column(name = "maxFireRangeLand")
-    private String maxFireRangeLand;
+    private Float maxFireRangeLand;
 
     @Display("最小射程_陆")
     @Column(name = "minFireRangeLand")
-    private String minFireRangeLand;
+    private Float minFireRangeLand;
 
     @Display("最大射高_陆")
     @Column(name = "maxFireHeightLand")
-    private String maxFireHeightLand;
+    private Float maxFireHeightLand;
 
     @Display("最小射高_陆")
     @Column(name = "minFireHeightLand")
-    private String minFireHeightLand;
+    private Float minFireHeightLand;
 
     @Display("命中概率_陆")
     @Column(name = "hitRateLand")
-    private float hitRateLand;
+    private Float hitRateLand;
     //海
     @Display("最大射程_海")
     @Column(name = "maxFireRangeSea")
-    private String maxFireRangeSea;
+    private Float maxFireRangeSea;
 
     @Display("最小射程_海")
     @Column(name = "minFireRangeSea")
-    private String minFireRangeSea;
+    private Float minFireRangeSea;
 
     @Display("最大射高_海")
     @Column(name = "maxFireHeightSea")
-    private String maxFireHeightSea;
+    private Float maxFireHeightSea;
 
     @Display("最小射高_海")
     @Column(name = "minFireHeightSea")
-    private String minFireHeightSea;
+    private Float minFireHeightSea;
 
     @Display("命中概率_海")
     @Column(name = "hitRateSea")
-    private float hitRateSea;
+    private Float hitRateSea;
     //空
     @Display("最大射程_空")
     @Column(name = "maxFireRangeAir")
-    private String maxFireRangeAir;
+    private Float maxFireRangeAir;
 
     @Display("最小射程_空")
     @Column(name = "minFireRangeAir")
-    private String minFireRangeAir;
+    private Float minFireRangeAir;
 
     @Display("最大射高_空")
     @Column(name = "maxFireHeightAir")
-    private String maxFireHeightAir;
+    private Float maxFireHeightAir;
 
     @Display("最小射高_空")
     @Column(name = "minFireHeightAir")
-    private String minFireHeightAir;
+    private Float minFireHeightAir;
 
     @Display("命中概率_空")
     @Column(name = "hitRateAir")
-    private float hitRateAir;
+    private Float hitRateAir;
     //天
     @Display("最大射程_天")
     @Column(name = "maxFireRangeSpace")
-    private String maxFireRangeSpace;
+    private Float maxFireRangeSpace;
 
     @Display("最小射程_天")
     @Column(name = "minFireRangeSpace")
-    private String minFireRangeSpace;
+    private Float minFireRangeSpace;
 
     @Display("最大射高_天")
     @Column(name = "maxFireHeightSpace")
-    private String maxFireHeightSpace;
+    private Float maxFireHeightSpace;
 
     @Display("最小射高_天")
     @Column(name = "minFireHeightSpace")
-    private String minFireHeightSpace;
+    private Float minFireHeightSpace;
 
     @Display("命中概率_天")
     @Column(name = "hitRateSpace")
-    private float hitRateSpace;
+    private Float hitRateSpace;
     //潜
     @Display("最大射程_潜")
     @Column(name = "maxFireRangeUnderSea")
-    private String maxFireRangeUnderSea;
+    private Float maxFireRangeUnderSea;
 
     @Display("最小射程_潜")
     @Column(name = "minFireRangeUnderSea")
-    private String minFireRange;
+    private Float minFireRange;
 
     @Display("最大深度_潜")
     @Column(name = "maxFireDepthUnderSea")
-    private String maxFireDepthUnderSea;
+    private Float maxFireDepthUnderSea;
 
     @Display("最小深度_潜")
     @Column(name = "minFireDepthUnderSea")
-    private String minFireDepthUnderSea;
+    private Float minFireDepthUnderSea;
 
     @Display("命中概率_潜")
     @Column(name = "hitRateUnderSea")
-    private float hitRateUnderSea;
+    private Float hitRateUnderSea;
 
 }

@@ -4,7 +4,6 @@ package com.soul.pooling.entity;
 import com.egova.model.BaseEntity;
 import com.egova.model.annotation.Display;
 import com.soul.pooling.entity.enums.ResourceStatus;
-import com.soul.pooling.model.PlatformMoveData;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -41,6 +40,10 @@ public class Find extends BaseEntity {
     @Column(name = "type")
     private String type;
 
+    @Transient
+    @Display("状态")
+    private ResourceStatus status;
+
     @Display("平台编号")
     @Column(name = "platformCode")
     private String platformCode;
@@ -48,7 +51,6 @@ public class Find extends BaseEntity {
     @Display("平台名称")
     @Column(name = "platformName")
     private String platformName;
-
 
     //陆
     @Display("最大作用距离_陆")
@@ -216,9 +218,5 @@ public class Find extends BaseEntity {
     @Column(name = "precisionUnderSea")
     private Float precisionUnderSea;
 
-
-    @Transient
-    @Display("状态")
-    private ResourceStatus status;
 
 }

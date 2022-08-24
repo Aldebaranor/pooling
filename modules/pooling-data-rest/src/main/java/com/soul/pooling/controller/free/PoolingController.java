@@ -184,20 +184,26 @@ public class PoolingController {
     }
 
     /**
+     * 根据平台id获取movedata
+     *
+     * @param platformId
+     * @return
+     */
+    @Api
+    @GetMapping(value = "/platform/moveData/{platformId}")
+    public PlatformMoveData platformMoveData(@PathVariable String platformId) {
+        return management.getPlatformPool().get(platformId).getPlatformMoveData();
+    }
+
+    /**
      * 获取资源池的平台信息
      *
      * @return
      */
     @Api
-    @GetMapping(value = "/pool/platform")
+    @GetMapping(value = "/all/platform")
     public Map<String, Platform> platformPool() {
         return management.getPlatformPool();
-    }
-
-    @Api
-    @GetMapping(value = "/platform/moveData/{platformId}")
-    public PlatformMoveData platformMoveData(@PathVariable String platformId) {
-        return management.getPlatformPool().get(platformId).getPlatformMoveData();
     }
 
     @Api
@@ -210,24 +216,25 @@ public class PoolingController {
     @PostMapping(value = "/list/find")
     public List<Find> getFindList(@RequestBody ResourceCondition condition) {
 
-        List<Find> collect = management.getFindPool(null);;
-        if(condition == null){
-           return  collect;
+        List<Find> collect = management.getFindPool(null);
+
+        if (condition == null) {
+            return collect;
         }
 
-        if(!StringUtils.isBlank(condition.getName())){
-            collect = collect.stream().filter(q->q.getName().contains(condition.getName())).collect(Collectors.toList());
+        if (!StringUtils.isBlank(condition.getName())) {
+            collect = collect.stream().filter(q -> q.getName().contains(condition.getName())).collect(Collectors.toList());
         }
-        if(StringUtils.isBlank(condition.getId())){
-            collect = collect.stream().filter(q->StringUtils.equals(condition.getId(),q.getId())).collect(Collectors.toList());
+        if (!StringUtils.isBlank(condition.getId())) {
+            collect = collect.stream().filter(q -> StringUtils.equals(condition.getId(), q.getId())).collect(Collectors.toList());
 
         }
-        if(StringUtils.isBlank(condition.getPlatformCode())){
-            collect = collect.stream().filter(q->StringUtils.equals(condition.getPlatformCode(),q.getPlatformCode())).collect(Collectors.toList());
+        if (!StringUtils.isBlank(condition.getPlatformCode())) {
+            collect = collect.stream().filter(q -> StringUtils.equals(condition.getPlatformCode(), q.getPlatformCode())).collect(Collectors.toList());
 
         }
-        if(StringUtils.isBlank(condition.getType())){
-            collect = collect.stream().filter(q->StringUtils.equals(condition.getType(),q.getType())).collect(Collectors.toList());
+        if (!StringUtils.isBlank(condition.getType())) {
+            collect = collect.stream().filter(q -> StringUtils.equals(condition.getType(), q.getType())).collect(Collectors.toList());
 
         }
         return collect;
@@ -235,35 +242,176 @@ public class PoolingController {
     }
 
     @Api
-    @GetMapping(value = "/pool/fix")
-    public Map<String, Fix> getAllFixes() {
-        return management.getFixPool();
+    @GetMapping(value = "/all/fix/{type}")
+    public List<Fix> getAllFixes(@PathVariable(required = false) CommandType type) {
+        return management.getFixPool(type);
+    }
+
+
+    @Api
+    @PostMapping(value = "/list/fix")
+    public List<Fix> getFindLix(@RequestBody ResourceCondition condition) {
+
+        List<Fix> collect = management.getFixPool(null);
+        if (condition == null) {
+            return collect;
+        }
+
+        if (!StringUtils.isBlank(condition.getName())) {
+            collect = collect.stream().filter(q -> q.getName().contains(condition.getName())).collect(Collectors.toList());
+        }
+        if (!StringUtils.isBlank(condition.getId())) {
+            collect = collect.stream().filter(q -> StringUtils.equals(condition.getId(), q.getId())).collect(Collectors.toList());
+
+        }
+        if (!StringUtils.isBlank(condition.getPlatformCode())) {
+            collect = collect.stream().filter(q -> StringUtils.equals(condition.getPlatformCode(), q.getPlatformCode())).collect(Collectors.toList());
+
+        }
+        if (!StringUtils.isBlank(condition.getType())) {
+            collect = collect.stream().filter(q -> StringUtils.equals(condition.getType(), q.getType())).collect(Collectors.toList());
+
+        }
+        return collect;
+
     }
 
     @Api
-    @GetMapping(value = "/pool/track")
-    public Map<String, Track> getAllTracks() {
-        return management.getTrackPool();
+    @GetMapping(value = "/all/track/{type}")
+    public List<Track> getAllTracks(@PathVariable(required = false) CommandType type) {
+        return management.getTrackPool(type);
     }
 
     @Api
-    @GetMapping(value = "/pool/target")
-    public Map<String, Target> getAllTargets() {
-        return management.getTargetPool();
+    @PostMapping(value = "/list/track")
+    public List<Track> getTrackList(@RequestBody ResourceCondition condition) {
+
+        List<Track> collect = management.getTrackPool(null);
+        if (condition == null) {
+            return collect;
+        }
+
+        if (!StringUtils.isBlank(condition.getName())) {
+            collect = collect.stream().filter(q -> q.getName().contains(condition.getName())).collect(Collectors.toList());
+        }
+        if (!StringUtils.isBlank(condition.getId())) {
+            collect = collect.stream().filter(q -> StringUtils.equals(condition.getId(), q.getId())).collect(Collectors.toList());
+
+        }
+        if (!StringUtils.isBlank(condition.getPlatformCode())) {
+            collect = collect.stream().filter(q -> StringUtils.equals(condition.getPlatformCode(), q.getPlatformCode())).collect(Collectors.toList());
+
+        }
+        if (!StringUtils.isBlank(condition.getType())) {
+            collect = collect.stream().filter(q -> StringUtils.equals(condition.getType(), q.getType())).collect(Collectors.toList());
+
+        }
+        return collect;
+
     }
 
     @Api
-    @GetMapping(value = "/pool/engage")
-    public Map<String, Engage> getAllEngages() {
-        return management.getEngagePool();
+    @GetMapping(value = "/all/target/{type}")
+    public List<Target> getAllTargets(@PathVariable(required = false) CommandType type) {
+        return management.getTargetPool(type);
+    }
+
+
+    @Api
+    @PostMapping(value = "/list/target")
+    public List<Target> getTargetList(@RequestBody ResourceCondition condition) {
+
+        List<Target> collect = management.getTargetPool(null);
+        if (condition == null) {
+            return collect;
+        }
+
+        if (!StringUtils.isBlank(condition.getName())) {
+            collect = collect.stream().filter(q -> q.getName().contains(condition.getName())).collect(Collectors.toList());
+        }
+        if (!StringUtils.isBlank(condition.getId())) {
+            collect = collect.stream().filter(q -> StringUtils.equals(condition.getId(), q.getId())).collect(Collectors.toList());
+
+        }
+        if (!StringUtils.isBlank(condition.getPlatformCode())) {
+            collect = collect.stream().filter(q -> StringUtils.equals(condition.getPlatformCode(), q.getPlatformCode())).collect(Collectors.toList());
+
+        }
+        if (!StringUtils.isBlank(condition.getType())) {
+            collect = collect.stream().filter(q -> StringUtils.equals(condition.getType(), q.getType())).collect(Collectors.toList());
+
+        }
+        return collect;
+
     }
 
     @Api
-    @GetMapping(value = "/pool/asses")
-    public Map<String, Asses> getAllAsses() {
-        return management.getAssesPool();
+    @GetMapping(value = "/all/engage/{type}")
+    public List<Engage> getAllEngages(@PathVariable(required = false) CommandType type) {
+        return management.getEngagePool(type);
     }
 
+    @Api
+    @PostMapping(value = "/list/engage")
+    public List<Engage> getEngageList(@RequestBody ResourceCondition condition) {
+
+        List<Engage> collect = management.getEngagePool(null);
+        if (condition == null) {
+            return collect;
+        }
+
+        if (!StringUtils.isBlank(condition.getName())) {
+            collect = collect.stream().filter(q -> q.getName().contains(condition.getName())).collect(Collectors.toList());
+        }
+        if (!StringUtils.isBlank(condition.getId())) {
+            collect = collect.stream().filter(q -> StringUtils.equals(condition.getId(), q.getId())).collect(Collectors.toList());
+
+        }
+        if (!StringUtils.isBlank(condition.getPlatformCode())) {
+            collect = collect.stream().filter(q -> StringUtils.equals(condition.getPlatformCode(), q.getPlatformCode())).collect(Collectors.toList());
+
+        }
+        if (!StringUtils.isBlank(condition.getType())) {
+            collect = collect.stream().filter(q -> StringUtils.equals(condition.getType(), q.getType())).collect(Collectors.toList());
+
+        }
+        return collect;
+
+    }
+
+    @Api
+    @GetMapping(value = "/all/asses/{type}")
+    public List<Asses> getAllAsses(@PathVariable(required = false) CommandType type) {
+        return management.getAssesPool(type);
+    }
+
+    @Api
+    @PostMapping(value = "/list/asses")
+    public List<Asses> getAssesList(@RequestBody ResourceCondition condition) {
+
+        List<Asses> collect = management.getAssesPool(null);
+        if (condition == null) {
+            return collect;
+        }
+
+        if (!StringUtils.isBlank(condition.getName())) {
+            collect = collect.stream().filter(q -> q.getName().contains(condition.getName())).collect(Collectors.toList());
+        }
+        if (!StringUtils.isBlank(condition.getId())) {
+            collect = collect.stream().filter(q -> StringUtils.equals(condition.getId(), q.getId())).collect(Collectors.toList());
+
+        }
+        if (!StringUtils.isBlank(condition.getPlatformCode())) {
+            collect = collect.stream().filter(q -> StringUtils.equals(condition.getPlatformCode(), q.getPlatformCode())).collect(Collectors.toList());
+
+        }
+        if (!StringUtils.isBlank(condition.getType())) {
+            collect = collect.stream().filter(q -> StringUtils.equals(condition.getType(), q.getType())).collect(Collectors.toList());
+
+        }
+        return collect;
+
+    }
 
 }
 

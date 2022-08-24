@@ -1139,5 +1139,533 @@
         </createTable>
     </changeSet>
 
+    <changeSet author="41656 (generated)" id="1647400803042-130">
+        <preConditions>
+            <columnExists tableName="pooling_find" columnName="status"/>
+            <columnExists tableName="pooling_fix" columnName="status"/>
+            <columnExists tableName="pooling_track" columnName="status"/>
+            <columnExists tableName="pooling_target" columnName="status"/>
+            <columnExists tableName="pooling_engage" columnName="status"/>
+            <columnExists tableName="pooling_asses" columnName="status"/>
+        </preConditions>
+        <renameColumn tableName="pooling_find" oldColumnName="status" newColumnName="platformName"
+                      columnDataType="VARCHAR(50)"/>
+        <renameColumn tableName="pooling_fix" oldColumnName="status" newColumnName="platformName"
+                      columnDataType="VARCHAR(50)"/>
+        <renameColumn tableName="pooling_track" oldColumnName="status" newColumnName="platformName"
+                      columnDataType="VARCHAR(50)"/>
+        <renameColumn tableName="pooling_target" oldColumnName="status" newColumnName="platformName"
+                      columnDataType="VARCHAR(50)"/>
+        <renameColumn tableName="pooling_engage" oldColumnName="status" newColumnName="platformName"
+                      columnDataType="VARCHAR(50)"/>
+        <renameColumn tableName="pooling_asses" oldColumnName="status" newColumnName="platformName"
+                      columnDataType="VARCHAR(50)"/>
+    </changeSet>
+
+
+    <changeSet author="41656 (generated)" id="1647400803042-131">
+        <preConditions>
+            <columnExists tableName="pooling_find" columnName="sensorCode"/>
+            <columnExists tableName="pooling_fix" columnName="sensorCode"/>
+            <columnExists tableName="pooling_track" columnName="sensorCode"/>
+            <columnExists tableName="pooling_engage" columnName="weaponCode"/>
+            <columnExists tableName="pooling_asses" columnName="sensorCode"/>
+        </preConditions>
+        <renameColumn tableName="pooling_find" oldColumnName="sensorCode" newColumnName="deviceCode"
+                      columnDataType="VARCHAR(50)"/>
+        <renameColumn tableName="pooling_fix" oldColumnName="sensorCode" newColumnName="deviceCode"
+                      columnDataType="VARCHAR(50)"/>
+        <renameColumn tableName="pooling_track" oldColumnName="sensorCode" newColumnName="deviceCode"
+                      columnDataType="VARCHAR(50)"/>
+        <renameColumn tableName="pooling_engage" oldColumnName="weaponCode" newColumnName="deviceCode"
+                      columnDataType="VARCHAR(50)"/>
+        <renameColumn tableName="pooling_asses" oldColumnName="sensorCode" newColumnName="deviceCode"
+                      columnDataType="VARCHAR(50)"/>
+    </changeSet>
+
+    <changeSet author="41656 (generated)" id="1647400803042-132">
+        <preConditions>
+            <columnExists tableName="pooling_find" columnName="detectionSpace"/>
+            <columnExists tableName="pooling_find" columnName="detectionAir"/>
+            <columnExists tableName="pooling_find" columnName="detectionSea"/>
+            <columnExists tableName="pooling_find" columnName="detectionLand"/>
+            <columnExists tableName="pooling_find" columnName="detectionUnderSea"/>
+            <columnExists tableName="pooling_fix" columnName="detectionSpace"/>
+            <columnExists tableName="pooling_fix" columnName="detectionAir"/>
+            <columnExists tableName="pooling_fix" columnName="detectionSea"/>
+            <columnExists tableName="pooling_fix" columnName="detectionLand"/>
+            <columnExists tableName="pooling_fix" columnName="detectionUnderSea"/>
+            <columnExists tableName="pooling_track" columnName="detectionSpace"/>
+            <columnExists tableName="pooling_track" columnName="detectionAir"/>
+            <columnExists tableName="pooling_track" columnName="detectionSea"/>
+            <columnExists tableName="pooling_track" columnName="detectionLand"/>
+            <columnExists tableName="pooling_track" columnName="detectionUnderSea"/>
+            <columnExists tableName="pooling_engage" columnName="fireSpace"/>
+            <columnExists tableName="pooling_engage" columnName="fireAir"/>
+            <columnExists tableName="pooling_engage" columnName="fireSea"/>
+            <columnExists tableName="pooling_engage" columnName="fireLand"/>
+            <columnExists tableName="pooling_engage" columnName="fireUnderSea"/>
+            <columnExists tableName="pooling_asses" columnName="detectionSpace"/>
+            <columnExists tableName="pooling_asses" columnName="detectionAir"/>
+            <columnExists tableName="pooling_asses" columnName="detectionSea"/>
+            <columnExists tableName="pooling_asses" columnName="detectionLand"/>
+            <columnExists tableName="pooling_asses" columnName="detectionUnderSea"/>
+        </preConditions>
+        <dropColumn tableName="pooling_find" columnName="detectionSpace"/>
+        <dropColumn tableName="pooling_find" columnName="detectionAir"/>
+        <dropColumn tableName="pooling_find" columnName="detectionSea"/>
+        <dropColumn tableName="pooling_find" columnName="detectionLand"/>
+        <dropColumn tableName="pooling_find" columnName="detectionUnderSea"/>
+        <dropColumn tableName="pooling_fix" columnName="detectionSpace"/>
+        <dropColumn tableName="pooling_fix" columnName="detectionAir"/>
+        <dropColumn tableName="pooling_fix" columnName="detectionSea"/>
+        <dropColumn tableName="pooling_fix" columnName="detectionLand"/>
+        <dropColumn tableName="pooling_fix" columnName="detectionUnderSea"/>
+        <dropColumn tableName="pooling_track" columnName="detectionSpace"/>
+        <dropColumn tableName="pooling_track" columnName="detectionAir"/>
+        <dropColumn tableName="pooling_track" columnName="detectionSea"/>
+        <dropColumn tableName="pooling_track" columnName="detectionLand"/>
+        <dropColumn tableName="pooling_track" columnName="detectionUnderSea"/>
+        <dropColumn tableName="pooling_engage" columnName="fireSpace"/>
+        <dropColumn tableName="pooling_engage" columnName="fireAir"/>
+        <dropColumn tableName="pooling_engage" columnName="fireSea"/>
+        <dropColumn tableName="pooling_engage" columnName="fireLand"/>
+        <dropColumn tableName="pooling_engage" columnName="fireUnderSea"/>
+        <dropColumn tableName="pooling_asses" columnName="detectionSpace"/>
+        <dropColumn tableName="pooling_asses" columnName="detectionAir"/>
+        <dropColumn tableName="pooling_asses" columnName="detectionSea"/>
+        <dropColumn tableName="pooling_asses" columnName="detectionLand"/>
+        <dropColumn tableName="pooling_asses" columnName="detectionUnderSea"/>
+    </changeSet>
+
+
+    <changeSet author="41656 (generated)" id="1647400803042-134">
+        <renameColumn tableName="pooling_find" oldColumnName="maxDetectRangeLand" newColumnName="maxDetectRangeLand"
+                      columnDataType="FLOAT"/>
+        <renameColumn tableName="pooling_find" oldColumnName="maxDetectHeightLand" newColumnName="maxDetectHeightLand"
+                      columnDataType="FLOAT"/>
+        <renameColumn tableName="pooling_find" oldColumnName="minDetectHeightLand" newColumnName="minDetectHeightLand"
+                      columnDataType="FLOAT"/>
+        <renameColumn tableName="pooling_find" oldColumnName="minTargetFeatureLand" newColumnName="minTargetFeatureLand"
+                      columnDataType="FLOAT"/>
+        <renameColumn tableName="pooling_find" oldColumnName="intelligenceCycleLand"
+                      newColumnName="intelligenceCycleLand" columnDataType="FLOAT"/>
+        <renameColumn tableName="pooling_find" oldColumnName="handleTargetNumLand" newColumnName="handleTargetNumLand"
+                      columnDataType="INT"/>
+        <renameColumn tableName="pooling_find" oldColumnName="azimuthLand" newColumnName="azimuthLand"
+                      columnDataType="FLOAT"/>
+        <renameColumn tableName="pooling_find" oldColumnName="precisionLand" newColumnName="precisionLand"
+                      columnDataType="FLOAT"/>
+        <renameColumn tableName="pooling_find" oldColumnName="maxDetectRangeSea" newColumnName="maxDetectRangeSea"
+                      columnDataType="FLOAT"/>
+        <renameColumn tableName="pooling_find" oldColumnName="maxDetectHeightSea" newColumnName="maxDetectHeightSea"
+                      columnDataType="FLOAT"/>
+        <renameColumn tableName="pooling_find" oldColumnName="minDetectHeightSea" newColumnName="minDetectHeightSea"
+                      columnDataType="FLOAT"/>
+        <renameColumn tableName="pooling_find" oldColumnName="minTargetFeatureSea" newColumnName="minTargetFeatureSea"
+                      columnDataType="FLOAT"/>
+        <renameColumn tableName="pooling_find" oldColumnName="intelligenceCycleSea"
+                      newColumnName="intelligenceCycleSea" columnDataType="FLOAT"/>
+        <renameColumn tableName="pooling_find" oldColumnName="handleTargetNumSea" newColumnName="handleTargetNumSea"
+                      columnDataType="INT"/>
+        <renameColumn tableName="pooling_find" oldColumnName="azimuthSea" newColumnName="azimuthSea"
+                      columnDataType="FLOAT"/>
+        <renameColumn tableName="pooling_find" oldColumnName="precisionSea" newColumnName="precisionSea"
+                      columnDataType="FLOAT"/>
+        <renameColumn tableName="pooling_find" oldColumnName="maxDetectRangeAir" newColumnName="maxDetectRangeAir"
+                      columnDataType="FLOAT"/>
+        <renameColumn tableName="pooling_find" oldColumnName="maxDetectHeightAir" newColumnName="maxDetectHeightAir"
+                      columnDataType="FLOAT"/>
+        <renameColumn tableName="pooling_find" oldColumnName="minDetectHeightAir" newColumnName="minDetectHeightAir"
+                      columnDataType="FLOAT"/>
+        <renameColumn tableName="pooling_find" oldColumnName="minTargetFeatureAir" newColumnName="minTargetFeatureAir"
+                      columnDataType="FLOAT"/>
+        <renameColumn tableName="pooling_find" oldColumnName="intelligenceCycleAir"
+                      newColumnName="intelligenceCycleAir" columnDataType="FLOAT"/>
+        <renameColumn tableName="pooling_find" oldColumnName="handleTargetNumAir" newColumnName="handleTargetNumAir"
+                      columnDataType="INT"/>
+        <renameColumn tableName="pooling_find" oldColumnName="azimuthAir" newColumnName="azimuthAir"
+                      columnDataType="FLOAT"/>
+        <renameColumn tableName="pooling_find" oldColumnName="precisionAir" newColumnName="precisionAir"
+                      columnDataType="FLOAT"/>
+        <renameColumn tableName="pooling_find" oldColumnName="maxDetectRangeSpace" newColumnName="maxDetectRangeSpace"
+                      columnDataType="FLOAT"/>
+        <renameColumn tableName="pooling_find" oldColumnName="maxDetectHeightSpace" newColumnName="maxDetectHeightSpace"
+                      columnDataType="FLOAT"/>
+        <renameColumn tableName="pooling_find" oldColumnName="minDetectHeightSpace" newColumnName="minDetectHeightSpace"
+                      columnDataType="FLOAT"/>
+        <renameColumn tableName="pooling_find" oldColumnName="minTargetFeatureSpace"
+                      newColumnName="minTargetFeatureSpace"
+                      columnDataType="FLOAT"/>
+        <renameColumn tableName="pooling_find" oldColumnName="intelligenceCycleSpace"
+                      newColumnName="intelligenceCycleSpace" columnDataType="FLOAT"/>
+        <renameColumn tableName="pooling_find" oldColumnName="handleTargetNumSpace" newColumnName="handleTargetNumSpace"
+                      columnDataType="INT"/>
+        <renameColumn tableName="pooling_find" oldColumnName="azimuthSpace" newColumnName="azimuthSpace"
+                      columnDataType="FLOAT"/>
+        <renameColumn tableName="pooling_find" oldColumnName="precisionSpace" newColumnName="precisionSpace"
+                      columnDataType="FLOAT"/>
+        <renameColumn tableName="pooling_find" oldColumnName="maxDetectRangeUnderSea"
+                      newColumnName="maxDetectRangeUnderSea"
+                      columnDataType="FLOAT"/>
+        <renameColumn tableName="pooling_find" oldColumnName="maxDetectDepthUnderSea"
+                      newColumnName="maxDetectDepthUnderSea"
+                      columnDataType="FLOAT"/>
+        <renameColumn tableName="pooling_find" oldColumnName="minDetectDepthUnderSea"
+                      newColumnName="minDetectDepthUnderSea"
+                      columnDataType="FLOAT"/>
+        <renameColumn tableName="pooling_find" oldColumnName="minTargetFeatureUnderSea"
+                      newColumnName="minTargetFeatureUnderSea"
+                      columnDataType="FLOAT"/>
+        <renameColumn tableName="pooling_find" oldColumnName="intelligenceCycleUnderSea"
+                      newColumnName="intelligenceCycleUnderSea" columnDataType="FLOAT"/>
+        <renameColumn tableName="pooling_find" oldColumnName="handleTargetNumUnderSea"
+                      newColumnName="handleTargetNumUnderSea"
+                      columnDataType="INT"/>
+        <renameColumn tableName="pooling_find" oldColumnName="azimuthUnderSea" newColumnName="azimuthUnderSea"
+                      columnDataType="FLOAT"/>
+        <renameColumn tableName="pooling_find" oldColumnName="precisionUnderSea" newColumnName="precisionUnderSea"
+                      columnDataType="FLOAT"/>
+
+    </changeSet>
+
+    <changeSet author="41656 (generated)" id="1647400803042-135">
+        <renameColumn tableName="pooling_fix" oldColumnName="maxDetectRangeLand" newColumnName="maxDetectRangeLand"
+                      columnDataType="FLOAT"/>
+        <renameColumn tableName="pooling_fix" oldColumnName="maxDetectHeightLand" newColumnName="maxDetectHeightLand"
+                      columnDataType="FLOAT"/>
+        <renameColumn tableName="pooling_fix" oldColumnName="minDetectHeightLand" newColumnName="minDetectHeightLand"
+                      columnDataType="FLOAT"/>
+        <renameColumn tableName="pooling_fix" oldColumnName="minTargetFeatureLand" newColumnName="minTargetFeatureLand"
+                      columnDataType="FLOAT"/>
+        <renameColumn tableName="pooling_fix" oldColumnName="intelligenceCycleLand"
+                      newColumnName="intelligenceCycleLand" columnDataType="FLOAT"/>
+        <renameColumn tableName="pooling_fix" oldColumnName="handleTargetNumLand" newColumnName="handleTargetNumLand"
+                      columnDataType="INT"/>
+        <renameColumn tableName="pooling_fix" oldColumnName="azimuthLand" newColumnName="azimuthLand"
+                      columnDataType="FLOAT"/>
+        <renameColumn tableName="pooling_fix" oldColumnName="precisionLand" newColumnName="precisionLand"
+                      columnDataType="FLOAT"/>
+        <renameColumn tableName="pooling_fix" oldColumnName="maxDetectRangeSea" newColumnName="maxDetectRangeSea"
+                      columnDataType="FLOAT"/>
+        <renameColumn tableName="pooling_fix" oldColumnName="maxDetectHeightSea" newColumnName="maxDetectHeightSea"
+                      columnDataType="FLOAT"/>
+        <renameColumn tableName="pooling_fix" oldColumnName="minDetectHeightSea" newColumnName="minDetectHeightSea"
+                      columnDataType="FLOAT"/>
+        <renameColumn tableName="pooling_fix" oldColumnName="minTargetFeatureSea" newColumnName="minTargetFeatureSea"
+                      columnDataType="FLOAT"/>
+        <renameColumn tableName="pooling_fix" oldColumnName="intelligenceCycleSea"
+                      newColumnName="intelligenceCycleSea" columnDataType="FLOAT"/>
+        <renameColumn tableName="pooling_fix" oldColumnName="handleTargetNumSea" newColumnName="handleTargetNumSea"
+                      columnDataType="INT"/>
+        <renameColumn tableName="pooling_fix" oldColumnName="azimuthSea" newColumnName="azimuthSea"
+                      columnDataType="FLOAT"/>
+        <renameColumn tableName="pooling_fix" oldColumnName="precisionSea" newColumnName="precisionSea"
+                      columnDataType="FLOAT"/>
+        <renameColumn tableName="pooling_fix" oldColumnName="maxDetectRangeAir" newColumnName="maxDetectRangeAir"
+                      columnDataType="FLOAT"/>
+        <renameColumn tableName="pooling_fix" oldColumnName="maxDetectHeightAir" newColumnName="maxDetectHeightAir"
+                      columnDataType="FLOAT"/>
+        <renameColumn tableName="pooling_fix" oldColumnName="minDetectHeightAir" newColumnName="minDetectHeightAir"
+                      columnDataType="FLOAT"/>
+        <renameColumn tableName="pooling_fix" oldColumnName="minTargetFeatureAir" newColumnName="minTargetFeatureAir"
+                      columnDataType="FLOAT"/>
+        <renameColumn tableName="pooling_fix" oldColumnName="intelligenceCycleAir"
+                      newColumnName="intelligenceCycleAir" columnDataType="FLOAT"/>
+        <renameColumn tableName="pooling_fix" oldColumnName="handleTargetNumAir" newColumnName="handleTargetNumAir"
+                      columnDataType="INT"/>
+        <renameColumn tableName="pooling_fix" oldColumnName="azimuthAir" newColumnName="azimuthAir"
+                      columnDataType="FLOAT"/>
+        <renameColumn tableName="pooling_fix" oldColumnName="precisionAir" newColumnName="precisionAir"
+                      columnDataType="FLOAT"/>
+        <renameColumn tableName="pooling_fix" oldColumnName="maxDetectRangeSpace" newColumnName="maxDetectRangeSpace"
+                      columnDataType="FLOAT"/>
+        <renameColumn tableName="pooling_fix" oldColumnName="maxDetectHeightSpace" newColumnName="maxDetectHeightSpace"
+                      columnDataType="FLOAT"/>
+        <renameColumn tableName="pooling_fix" oldColumnName="minDetectHeightSpace" newColumnName="minDetectHeightSpace"
+                      columnDataType="FLOAT"/>
+        <renameColumn tableName="pooling_fix" oldColumnName="minTargetFeatureSpace"
+                      newColumnName="minTargetFeatureSpace"
+                      columnDataType="FLOAT"/>
+        <renameColumn tableName="pooling_fix" oldColumnName="intelligenceCycleSpace"
+                      newColumnName="intelligenceCycleSpace" columnDataType="FLOAT"/>
+        <renameColumn tableName="pooling_fix" oldColumnName="handleTargetNumSpace" newColumnName="handleTargetNumSpace"
+                      columnDataType="INT"/>
+        <renameColumn tableName="pooling_fix" oldColumnName="azimuthSpace" newColumnName="azimuthSpace"
+                      columnDataType="FLOAT"/>
+        <renameColumn tableName="pooling_fix" oldColumnName="precisionSpace" newColumnName="precisionSpace"
+                      columnDataType="FLOAT"/>
+        <renameColumn tableName="pooling_fix" oldColumnName="maxDetectRangeUnderSea"
+                      newColumnName="maxDetectRangeUnderSea"
+                      columnDataType="FLOAT"/>
+        <renameColumn tableName="pooling_fix" oldColumnName="maxDetectDepthUnderSea"
+                      newColumnName="maxDetectDepthUnderSea"
+                      columnDataType="FLOAT"/>
+        <renameColumn tableName="pooling_fix" oldColumnName="minDetectDepthUnderSea"
+                      newColumnName="minDetectDepthUnderSea"
+                      columnDataType="FLOAT"/>
+        <renameColumn tableName="pooling_fix" oldColumnName="minTargetFeatureUnderSea"
+                      newColumnName="minTargetFeatureUnderSea"
+                      columnDataType="FLOAT"/>
+        <renameColumn tableName="pooling_fix" oldColumnName="intelligenceCycleUnderSea"
+                      newColumnName="intelligenceCycleUnderSea" columnDataType="FLOAT"/>
+        <renameColumn tableName="pooling_fix" oldColumnName="handleTargetNumUnderSea"
+                      newColumnName="handleTargetNumUnderSea"
+                      columnDataType="INT"/>
+        <renameColumn tableName="pooling_fix" oldColumnName="azimuthUnderSea" newColumnName="azimuthUnderSea"
+                      columnDataType="FLOAT"/>
+        <renameColumn tableName="pooling_fix" oldColumnName="precisionUnderSea" newColumnName="precisionUnderSea"
+                      columnDataType="FLOAT"/>
+
+    </changeSet>
+
+    <changeSet author="41656 (generated)" id="1647400803042-136">
+        <renameColumn tableName="pooling_track" oldColumnName="maxDetectRangeLand" newColumnName="maxDetectRangeLand"
+                      columnDataType="FLOAT"/>
+        <renameColumn tableName="pooling_track" oldColumnName="maxDetectHeightLand" newColumnName="maxDetectHeightLand"
+                      columnDataType="FLOAT"/>
+        <renameColumn tableName="pooling_track" oldColumnName="minDetectHeightLand" newColumnName="minDetectHeightLand"
+                      columnDataType="FLOAT"/>
+        <renameColumn tableName="pooling_track" oldColumnName="minTargetFeatureLand"
+                      newColumnName="minTargetFeatureLand"
+                      columnDataType="FLOAT"/>
+        <renameColumn tableName="pooling_track" oldColumnName="intelligenceCycleLand"
+                      newColumnName="intelligenceCycleLand" columnDataType="FLOAT"/>
+        <renameColumn tableName="pooling_track" oldColumnName="handleTargetNumLand" newColumnName="handleTargetNumLand"
+                      columnDataType="INT"/>
+        <renameColumn tableName="pooling_track" oldColumnName="azimuthLand" newColumnName="azimuthLand"
+                      columnDataType="FLOAT"/>
+        <renameColumn tableName="pooling_track" oldColumnName="precisionLand" newColumnName="precisionLand"
+                      columnDataType="FLOAT"/>
+        <renameColumn tableName="pooling_track" oldColumnName="maxDetectRangeSea" newColumnName="maxDetectRangeSea"
+                      columnDataType="FLOAT"/>
+        <renameColumn tableName="pooling_track" oldColumnName="maxDetectHeightSea" newColumnName="maxDetectHeightSea"
+                      columnDataType="FLOAT"/>
+        <renameColumn tableName="pooling_track" oldColumnName="minDetectHeightSea" newColumnName="minDetectHeightSea"
+                      columnDataType="FLOAT"/>
+        <renameColumn tableName="pooling_track" oldColumnName="minTargetFeatureSea" newColumnName="minTargetFeatureSea"
+                      columnDataType="FLOAT"/>
+        <renameColumn tableName="pooling_track" oldColumnName="intelligenceCycleSea"
+                      newColumnName="intelligenceCycleSea" columnDataType="FLOAT"/>
+        <renameColumn tableName="pooling_track" oldColumnName="handleTargetNumSea" newColumnName="handleTargetNumSea"
+                      columnDataType="INT"/>
+        <renameColumn tableName="pooling_track" oldColumnName="azimuthSea" newColumnName="azimuthSea"
+                      columnDataType="FLOAT"/>
+        <renameColumn tableName="pooling_track" oldColumnName="precisionSea" newColumnName="precisionSea"
+                      columnDataType="FLOAT"/>
+        <renameColumn tableName="pooling_track" oldColumnName="maxDetectRangeAir" newColumnName="maxDetectRangeAir"
+                      columnDataType="FLOAT"/>
+        <renameColumn tableName="pooling_track" oldColumnName="maxDetectHeightAir" newColumnName="maxDetectHeightAir"
+                      columnDataType="FLOAT"/>
+        <renameColumn tableName="pooling_track" oldColumnName="minDetectHeightAir" newColumnName="minDetectHeightAir"
+                      columnDataType="FLOAT"/>
+        <renameColumn tableName="pooling_track" oldColumnName="minTargetFeatureAir" newColumnName="minTargetFeatureAir"
+                      columnDataType="FLOAT"/>
+        <renameColumn tableName="pooling_track" oldColumnName="intelligenceCycleAir"
+                      newColumnName="intelligenceCycleAir" columnDataType="FLOAT"/>
+        <renameColumn tableName="pooling_track" oldColumnName="handleTargetNumAir" newColumnName="handleTargetNumAir"
+                      columnDataType="INT"/>
+        <renameColumn tableName="pooling_track" oldColumnName="azimuthAir" newColumnName="azimuthAir"
+                      columnDataType="FLOAT"/>
+        <renameColumn tableName="pooling_track" oldColumnName="precisionAir" newColumnName="precisionAir"
+                      columnDataType="FLOAT"/>
+        <renameColumn tableName="pooling_track" oldColumnName="maxDetectRangeSpace" newColumnName="maxDetectRangeSpace"
+                      columnDataType="FLOAT"/>
+        <renameColumn tableName="pooling_track" oldColumnName="maxDetectHeightSpace"
+                      newColumnName="maxDetectHeightSpace"
+                      columnDataType="FLOAT"/>
+        <renameColumn tableName="pooling_track" oldColumnName="minDetectHeightSpace"
+                      newColumnName="minDetectHeightSpace"
+                      columnDataType="FLOAT"/>
+        <renameColumn tableName="pooling_track" oldColumnName="minTargetFeatureSpace"
+                      newColumnName="minTargetFeatureSpace"
+                      columnDataType="FLOAT"/>
+        <renameColumn tableName="pooling_track" oldColumnName="intelligenceCycleSpace"
+                      newColumnName="intelligenceCycleSpace" columnDataType="FLOAT"/>
+        <renameColumn tableName="pooling_track" oldColumnName="handleTargetNumSpace"
+                      newColumnName="handleTargetNumSpace"
+                      columnDataType="INT"/>
+        <renameColumn tableName="pooling_track" oldColumnName="azimuthSpace" newColumnName="azimuthSpace"
+                      columnDataType="FLOAT"/>
+        <renameColumn tableName="pooling_track" oldColumnName="precisionSpace" newColumnName="precisionSpace"
+                      columnDataType="FLOAT"/>
+        <renameColumn tableName="pooling_track" oldColumnName="maxDetectRangeUnderSea"
+                      newColumnName="maxDetectRangeUnderSea"
+                      columnDataType="FLOAT"/>
+        <renameColumn tableName="pooling_track" oldColumnName="maxDetectDepthUnderSea"
+                      newColumnName="maxDetectDepthUnderSea"
+                      columnDataType="FLOAT"/>
+        <renameColumn tableName="pooling_track" oldColumnName="minDetectDepthUnderSea"
+                      newColumnName="minDetectDepthUnderSea"
+                      columnDataType="FLOAT"/>
+        <renameColumn tableName="pooling_track" oldColumnName="minTargetFeatureUnderSea"
+                      newColumnName="minTargetFeatureUnderSea"
+                      columnDataType="FLOAT"/>
+        <renameColumn tableName="pooling_track" oldColumnName="intelligenceCycleUnderSea"
+                      newColumnName="intelligenceCycleUnderSea" columnDataType="FLOAT"/>
+        <renameColumn tableName="pooling_track" oldColumnName="handleTargetNumUnderSea"
+                      newColumnName="handleTargetNumUnderSea"
+                      columnDataType="INT"/>
+        <renameColumn tableName="pooling_track" oldColumnName="azimuthUnderSea" newColumnName="azimuthUnderSea"
+                      columnDataType="FLOAT"/>
+        <renameColumn tableName="pooling_track" oldColumnName="precisionUnderSea" newColumnName="precisionUnderSea"
+                      columnDataType="FLOAT"/>
+
+    </changeSet>
+
+    <changeSet author="41656 (generated)" id="1647400803042-137">
+        <renameColumn tableName="pooling_asses" oldColumnName="maxDetectRangeLand" newColumnName="maxDetectRangeLand"
+                      columnDataType="FLOAT"/>
+        <renameColumn tableName="pooling_asses" oldColumnName="maxDetectHeightLand" newColumnName="maxDetectHeightLand"
+                      columnDataType="FLOAT"/>
+        <renameColumn tableName="pooling_asses" oldColumnName="minDetectHeightLand" newColumnName="minDetectHeightLand"
+                      columnDataType="FLOAT"/>
+        <renameColumn tableName="pooling_asses" oldColumnName="minTargetFeatureLand"
+                      newColumnName="minTargetFeatureLand"
+                      columnDataType="FLOAT"/>
+        <renameColumn tableName="pooling_asses" oldColumnName="intelligenceCycleLand"
+                      newColumnName="intelligenceCycleLand" columnDataType="FLOAT"/>
+        <renameColumn tableName="pooling_asses" oldColumnName="handleTargetNumLand" newColumnName="handleTargetNumLand"
+                      columnDataType="INT"/>
+        <renameColumn tableName="pooling_asses" oldColumnName="azimuthLand" newColumnName="azimuthLand"
+                      columnDataType="FLOAT"/>
+        <renameColumn tableName="pooling_asses" oldColumnName="precisionLand" newColumnName="precisionLand"
+                      columnDataType="FLOAT"/>
+        <renameColumn tableName="pooling_asses" oldColumnName="maxDetectRangeSea" newColumnName="maxDetectRangeSea"
+                      columnDataType="FLOAT"/>
+        <renameColumn tableName="pooling_asses" oldColumnName="maxDetectHeightSea" newColumnName="maxDetectHeightSea"
+                      columnDataType="FLOAT"/>
+        <renameColumn tableName="pooling_asses" oldColumnName="minDetectHeightSea" newColumnName="minDetectHeightSea"
+                      columnDataType="FLOAT"/>
+        <renameColumn tableName="pooling_asses" oldColumnName="minTargetFeatureSea" newColumnName="minTargetFeatureSea"
+                      columnDataType="FLOAT"/>
+        <renameColumn tableName="pooling_asses" oldColumnName="intelligenceCycleSea"
+                      newColumnName="intelligenceCycleSea" columnDataType="FLOAT"/>
+        <renameColumn tableName="pooling_asses" oldColumnName="handleTargetNumSea" newColumnName="handleTargetNumSea"
+                      columnDataType="INT"/>
+        <renameColumn tableName="pooling_asses" oldColumnName="azimuthSea" newColumnName="azimuthSea"
+                      columnDataType="FLOAT"/>
+        <renameColumn tableName="pooling_asses" oldColumnName="precisionSea" newColumnName="precisionSea"
+                      columnDataType="FLOAT"/>
+        <renameColumn tableName="pooling_asses" oldColumnName="maxDetectRangeAir" newColumnName="maxDetectRangeAir"
+                      columnDataType="FLOAT"/>
+        <renameColumn tableName="pooling_asses" oldColumnName="maxDetectHeightAir" newColumnName="maxDetectHeightAir"
+                      columnDataType="FLOAT"/>
+        <renameColumn tableName="pooling_asses" oldColumnName="minDetectHeightAir" newColumnName="minDetectHeightAir"
+                      columnDataType="FLOAT"/>
+        <renameColumn tableName="pooling_asses" oldColumnName="minTargetFeatureAir" newColumnName="minTargetFeatureAir"
+                      columnDataType="FLOAT"/>
+        <renameColumn tableName="pooling_asses" oldColumnName="intelligenceCycleAir"
+                      newColumnName="intelligenceCycleAir" columnDataType="FLOAT"/>
+        <renameColumn tableName="pooling_asses" oldColumnName="handleTargetNumAir" newColumnName="handleTargetNumAir"
+                      columnDataType="INT"/>
+        <renameColumn tableName="pooling_asses" oldColumnName="azimuthAir" newColumnName="azimuthAir"
+                      columnDataType="FLOAT"/>
+        <renameColumn tableName="pooling_asses" oldColumnName="precisionAir" newColumnName="precisionAir"
+                      columnDataType="FLOAT"/>
+        <renameColumn tableName="pooling_asses" oldColumnName="maxDetectRangeSpace" newColumnName="maxDetectRangeSpace"
+                      columnDataType="FLOAT"/>
+        <renameColumn tableName="pooling_asses" oldColumnName="maxDetectHeightSpace"
+                      newColumnName="maxDetectHeightSpace"
+                      columnDataType="FLOAT"/>
+        <renameColumn tableName="pooling_asses" oldColumnName="minDetectHeightSpace"
+                      newColumnName="minDetectHeightSpace"
+                      columnDataType="FLOAT"/>
+        <renameColumn tableName="pooling_asses" oldColumnName="minTargetFeatureSpace"
+                      newColumnName="minTargetFeatureSpace"
+                      columnDataType="FLOAT"/>
+        <renameColumn tableName="pooling_asses" oldColumnName="intelligenceCycleSpace"
+                      newColumnName="intelligenceCycleSpace" columnDataType="FLOAT"/>
+        <renameColumn tableName="pooling_asses" oldColumnName="handleTargetNumSpace"
+                      newColumnName="handleTargetNumSpace"
+                      columnDataType="INT"/>
+        <renameColumn tableName="pooling_asses" oldColumnName="azimuthSpace" newColumnName="azimuthSpace"
+                      columnDataType="FLOAT"/>
+        <renameColumn tableName="pooling_asses" oldColumnName="precisionSpace" newColumnName="precisionSpace"
+                      columnDataType="FLOAT"/>
+        <renameColumn tableName="pooling_asses" oldColumnName="maxDetectRangeUnderSea"
+                      newColumnName="maxDetectRangeUnderSea"
+                      columnDataType="FLOAT"/>
+        <renameColumn tableName="pooling_asses" oldColumnName="maxDetectDepthUnderSea"
+                      newColumnName="maxDetectDepthUnderSea"
+                      columnDataType="FLOAT"/>
+        <renameColumn tableName="pooling_asses" oldColumnName="minDetectDepthUnderSea"
+                      newColumnName="minDetectDepthUnderSea"
+                      columnDataType="FLOAT"/>
+        <renameColumn tableName="pooling_asses" oldColumnName="minTargetFeatureUnderSea"
+                      newColumnName="minTargetFeatureUnderSea"
+                      columnDataType="FLOAT"/>
+        <renameColumn tableName="pooling_asses" oldColumnName="intelligenceCycleUnderSea"
+                      newColumnName="intelligenceCycleUnderSea" columnDataType="FLOAT"/>
+        <renameColumn tableName="pooling_asses" oldColumnName="handleTargetNumUnderSea"
+                      newColumnName="handleTargetNumUnderSea"
+                      columnDataType="INT"/>
+        <renameColumn tableName="pooling_asses" oldColumnName="azimuthUnderSea" newColumnName="azimuthUnderSea"
+                      columnDataType="FLOAT"/>
+        <renameColumn tableName="pooling_asses" oldColumnName="precisionUnderSea" newColumnName="precisionUnderSea"
+                      columnDataType="FLOAT"/>
+
+    </changeSet>
+
+    <changeSet author="41656 (generated)" id="1647400803042-138">
+        <renameColumn tableName="pooling_engage" oldColumnName="maxSpeed" newColumnName="maxSpeed"
+                      columnDataType="FLOAT"/>
+        <renameColumn tableName="pooling_engage" oldColumnName="maxFireRangeLand" newColumnName="maxFireRangeLand"
+                      columnDataType="FLOAT"/>
+        <renameColumn tableName="pooling_engage" oldColumnName="minFireHeightLand" newColumnName="minFireHeightLand"
+                      columnDataType="FLOAT"/>
+        <renameColumn tableName="pooling_engage" oldColumnName="maxFireHeightLand" newColumnName="maxFireHeightLand"
+                      columnDataType="FLOAT"/>
+        <renameColumn tableName="pooling_engage" oldColumnName="minFireRangeLand" newColumnName="minFireRangeLand"
+                      columnDataType="FLOAT"/>
+        <renameColumn tableName="pooling_engage" oldColumnName="hitRateLand" newColumnName="hitRateLand"
+                      columnDataType="FLOAT"/>
+        <renameColumn tableName="pooling_engage" oldColumnName="maxFireRangeSea" newColumnName="maxFireRangeSea"
+                      columnDataType="FLOAT"/>
+        <renameColumn tableName="pooling_engage" oldColumnName="minFireHeightSea" newColumnName="minFireHeightSea"
+                      columnDataType="FLOAT"/>
+        <renameColumn tableName="pooling_engage" oldColumnName="maxFireHeightSea" newColumnName="maxFireHeightSea"
+                      columnDataType="FLOAT"/>
+        <renameColumn tableName="pooling_engage" oldColumnName="minFireRangeSea" newColumnName="minFireRangeSea"
+                      columnDataType="FLOAT"/>
+        <renameColumn tableName="pooling_engage" oldColumnName="hitRateSea" newColumnName="hitRateSea"
+                      columnDataType="FLOAT"/>
+        <renameColumn tableName="pooling_engage" oldColumnName="maxFireRangeAir" newColumnName="maxFireRangeAir"
+                      columnDataType="FLOAT"/>
+        <renameColumn tableName="pooling_engage" oldColumnName="minFireHeightAir" newColumnName="minFireHeightAir"
+                      columnDataType="FLOAT"/>
+        <renameColumn tableName="pooling_engage" oldColumnName="maxFireHeightAir" newColumnName="maxFireHeightAir"
+                      columnDataType="FLOAT"/>
+        <renameColumn tableName="pooling_engage" oldColumnName="minFireRangeAir" newColumnName="minFireRangeAir"
+                      columnDataType="FLOAT"/>
+        <renameColumn tableName="pooling_engage" oldColumnName="hitRateAir" newColumnName="hitRateAir"
+                      columnDataType="FLOAT"/>
+        <renameColumn tableName="pooling_engage" oldColumnName="maxFireRangeSpace" newColumnName="maxFireRangeSpace"
+                      columnDataType="FLOAT"/>
+        <renameColumn tableName="pooling_engage" oldColumnName="minFireHeightSpace" newColumnName="minFireHeightSpace"
+                      columnDataType="FLOAT"/>
+        <renameColumn tableName="pooling_engage" oldColumnName="maxFireHeightSpace" newColumnName="maxFireHeightSpace"
+                      columnDataType="FLOAT"/>
+        <renameColumn tableName="pooling_engage" oldColumnName="minFireRangeSpace" newColumnName="minFireRangeSpace"
+                      columnDataType="FLOAT"/>
+        <renameColumn tableName="pooling_engage" oldColumnName="hitRateSpace" newColumnName="hitRateSpace"
+                      columnDataType="FLOAT"/>
+        <renameColumn tableName="pooling_engage" oldColumnName="maxFireRangeUnderSea"
+                      newColumnName="maxFireRangeUnderSea"
+                      columnDataType="FLOAT"/>
+        <renameColumn tableName="pooling_engage" oldColumnName="minFireDepthUnderSea"
+                      newColumnName="minFireDepthUnderSea"
+                      columnDataType="FLOAT"/>
+        <renameColumn tableName="pooling_engage" oldColumnName="maxFireDepthUnderSea"
+                      newColumnName="maxFireDepthUnderSea"
+                      columnDataType="FLOAT"/>
+        <renameColumn tableName="pooling_engage" oldColumnName="minFireRangeUnderSea"
+                      newColumnName="minFireRangeUnderSea"
+                      columnDataType="FLOAT"/>
+        <renameColumn tableName="pooling_engage" oldColumnName="hitRateUnderSea" newColumnName="hitRateUnderSea"
+                      columnDataType="FLOAT"/>
+
+    </changeSet>
+
 
 </databaseChangeLog>

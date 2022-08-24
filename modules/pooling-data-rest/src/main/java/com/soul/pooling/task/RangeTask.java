@@ -64,38 +64,38 @@ public class RangeTask {
         for (Engage weapon : weapons) {
             //获取最大对太空火力范围
             maxFireRangeSpace = (maxFireRangeSpace >
-                    weapon.getFireSpace()) ? maxFireRangeSpace : weapon.getFireSpace();
+                    weapon.getMaxFireRangeSpace()) ? maxFireRangeSpace : weapon.getMaxFireRangeSpace();
             //获取最大对空火力范围
             maxFireRangeAir = (maxFireRangeAir >
-                    weapon.getFireAir()) ? maxFireRangeAir : weapon.getFireAir();
-            //获取最大对陆火力范围
-            maxFireRangeLand = (maxFireRangeLand >
-                    weapon.getFireLand()) ? maxFireRangeLand : weapon.getFireLand();
+                    weapon.getMaxFireRangeAir()) ? maxFireRangeAir : weapon.getMaxFireRangeAir();
             //获取最大对海火力范围
             maxFireRangeSea = (maxFireRangeSea >
-                    weapon.getFireSea()) ? maxFireRangeSea : weapon.getFireSea();
+                    weapon.getMaxFireRangeSea()) ? maxFireRangeSea : weapon.getMaxFireRangeSea();
+            //获取最大对陆火力范围
+            maxFireRangeLand = (maxFireRangeLand >
+                    weapon.getMaxFireRangeLand()) ? maxFireRangeLand : weapon.getMaxFireRangeLand();
             //获取最大对潜火力范围
             maxFireRangeUnderSea = (maxFireRangeUnderSea >
-                    weapon.getFireUnderSea()) ? maxFireRangeUnderSea : weapon.getFireUnderSea();
+                    weapon.getMaxFireRangeUnderSea()) ? maxFireRangeUnderSea : weapon.getMaxFireRangeUnderSea();
         }
 
         List<Find> sensors = findService.getByPlatformCode(platformId);
         for (Find sensor : sensors) {
             //获取最大对太空探测范围
             maxDetectionRangeSpace = (maxDetectionRangeSpace >
-                    sensor.getDetectionSpace()) ? maxDetectionRangeSpace : sensor.getDetectionSpace();
+                    sensor.getMaxDetectRangeSpace()) ? maxDetectionRangeSpace : sensor.getMaxDetectRangeSpace();
             //获取最大对空探测范围
             maxDetectionRangeAir = (maxDetectionRangeAir >
-                    sensor.getDetectionAir()) ? maxDetectionRangeAir : sensor.getDetectionAir();
-            //获取最大对陆探测范围
-            maxDetectionRangeLand = (maxDetectionRangeLand >
-                    sensor.getDetectionLand()) ? maxDetectionRangeLand : sensor.getDetectionLand();
+                    sensor.getMaxDetectRangeAir()) ? maxDetectionRangeAir : sensor.getMaxDetectRangeAir();
             //获取最大对海探测范围
             maxDetectionRangeSea = (maxDetectionRangeSea >
-                    sensor.getDetectionSea()) ? maxDetectionRangeSea : sensor.getDetectionSea();
+                    sensor.getMaxDetectRangeSea()) ? maxDetectionRangeSea : sensor.getMaxDetectRangeSea();
+            //获取最大对陆探测范围
+            maxDetectionRangeLand = (maxDetectionRangeLand >
+                    sensor.getMaxDetectRangeLand()) ? maxDetectionRangeLand : sensor.getMaxDetectRangeLand();
             //获取最大对潜探测范围
             maxDetectionRangeUnderSea = (maxDetectionRangeUnderSea >
-                    sensor.getDetectionUnderSea()) ? maxDetectionRangeUnderSea : sensor.getDetectionUnderSea();
+                    sensor.getMaxDetectRangeUnderSea()) ? maxDetectionRangeUnderSea : sensor.getMaxDetectRangeUnderSea();
         }
 
         String range = String.format("%s_%s_%s_%s_%s@%s_%s_%s_%s_%s",
