@@ -4,6 +4,7 @@ import com.egova.exception.ExceptionUtils;
 import com.soul.pooling.config.Constants;
 import com.soul.pooling.config.PoolingConfig;
 import com.soul.pooling.entity.*;
+import com.soul.pooling.entity.enums.CommandType;
 import com.soul.pooling.model.ActivatedModel;
 import com.soul.pooling.model.PlatformStatus;
 import lombok.extern.slf4j.Slf4j;
@@ -18,6 +19,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
+import java.util.stream.Collectors;
 
 
 /**
@@ -68,12 +70,29 @@ public class StatusManagement {
         return platformPool;
     }
 
-    public Map<String, Find> getFindPool() {
-        return findPool;
+    public List<Find> getFindPool(CommandType type) {
+        List<Find> result = findPool.values().stream().collect(Collectors.toList());
+        if(type == null){
+            return result;
+        }
+        if(type == CommandType.ATTACK_AIR){
+            result = result.stream().filter(q -> q.getMaxDetectRangeAir() > 0).collect(Collectors.toList());
+        }
+        if(type == CommandType.ATTACK_SEA){
+            result = result.stream().filter(q -> q.getMaxDetectRangeSea() > 0).collect(Collectors.toList());
+        }
+        if(type == CommandType.ATTACK_LAND){
+            result = result.stream().filter(q -> q.getMaxDetectRangeLand() > 0).collect(Collectors.toList());
+        }
+        if(type == CommandType.ATTACK_UNDERSEA){
+            result = result.stream().filter(q -> q.getMaxDetectRangeUnderSea() > 0).collect(Collectors.toList());
+        }
+        return result;
     }
 
-    public Map<String, Fix> getFixPool() {
+    public Map<String,Fix> getFixPool() {
         return fixPool;
+
     }
 
     public Map<String, Track> getTrackPool() {
@@ -91,6 +110,8 @@ public class StatusManagement {
     public Map<String, Asses> getAssesPool() {
         return assesPool;
     }
+
+
 
 
     public List<Find> getFindByPlatform(String code) {

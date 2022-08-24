@@ -7,6 +7,7 @@ import com.flagwind.commons.StringUtils;
 import com.soul.pooling.condition.ResourceCondition;
 import com.soul.pooling.config.PoolingConfig;
 import com.soul.pooling.entity.*;
+import com.soul.pooling.entity.enums.CommandType;
 import com.soul.pooling.model.PlatformMoveData;
 import com.soul.pooling.model.PlatformStatus;
 import com.soul.pooling.mqtt.producer.MqttMsgProducer;
@@ -200,17 +201,16 @@ public class PoolingController {
     }
 
     @Api
-    @GetMapping(value = "/all/find")
-    public Map<String, Find> getAllFinds() {
-        return management.getFindPool();
+    @GetMapping(value = "/all/find/{type}")
+    public List<Find> getAllFinds(@PathVariable(required = false) CommandType type) {
+        return management.getFindPool(type);
     }
 
     @Api
     @PostMapping(value = "/list/find")
     public List<Find> getFindList(@RequestBody ResourceCondition condition) {
 
-        Map<String, Find> findPool = management.getFindPool();
-        List<Find> collect = findPool.values().stream().collect(Collectors.toList());
+        List<Find> collect = management.getFindPool(null);;
         if(condition == null){
            return  collect;
         }
