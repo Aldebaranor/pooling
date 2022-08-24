@@ -3,13 +3,12 @@ package com.soul.pooling.entity;
 
 import com.egova.model.BaseEntity;
 import com.egova.model.annotation.Display;
+import com.soul.pooling.entity.enums.ResourceStatus;
+import com.soul.pooling.model.PlatformMoveData;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 /**
  * @Author: 王质松
@@ -30,9 +29,9 @@ public class Find extends BaseEntity {
     @Column(name = "id")
     private String id;
 
-    @Display("平台编号")
-    @Column(name = "platformCode")
-    private String platformCode;
+    @Display("传感器编号")
+    @Column(name = "deviceCode")
+    private String deviceCode;
 
     @Display("名称")
     @Column(name = "name")
@@ -41,6 +40,14 @@ public class Find extends BaseEntity {
     @Display("类型")
     @Column(name = "type")
     private String type;
+
+    @Display("平台编号")
+    @Column(name = "platformCode")
+    private String platformCode;
+
+    @Display("平台名称")
+    @Column(name = "platformName")
+    private String platformName;
 
     @Display("对太空探测能力")
     @Column(name = "detectionSpace")
@@ -61,14 +68,6 @@ public class Find extends BaseEntity {
     @Display("对水下探测能力（公里）")
     @Column(name = "detectionUnderSea")
     private float detectionUnderSea;
-
-    @Display("状态")
-    @Column(name = "status")
-    private int status;
-
-    @Display("传感器编号")
-    @Column(name = "sensorCode")
-    private String sensorCode;
 
 
     //陆
@@ -236,5 +235,10 @@ public class Find extends BaseEntity {
     @Display("精度_潜")
     @Column(name = "precisionUnderSea")
     private String precisionUnderSea;
+
+
+    @Transient
+    @Display("位置信息")
+    private ResourceStatus status;
 
 }

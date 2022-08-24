@@ -4,6 +4,7 @@ import com.egova.exception.ExceptionUtils;
 import com.egova.json.utils.JsonUtils;
 import com.egova.web.annotation.Api;
 import com.flagwind.commons.StringUtils;
+import com.soul.pooling.condition.ResourceCondition;
 import com.soul.pooling.config.PoolingConfig;
 import com.soul.pooling.entity.*;
 import com.soul.pooling.model.Command;
@@ -198,26 +199,22 @@ public class PoolingController {
         return management.getPlatformPool().get(platformId).getPlatformMoveData();
     }
 
-    /**
-     * 智能调度
-     *
-     * @param command
-     * @return
-     */
-    @Api
-    @PostMapping(value = "/command/test")
-    public List<String> command(@RequestBody Command command) {
 
-        List<String> list = new ArrayList<>();
-
-        return list;
-    }
 
 
     @Api
-    @GetMapping(value = "/pool/find")
+    @GetMapping(value = "/all/find")
     public Map<String, Find> getAllFinds() {
         return management.getFindPool();
+    }
+
+    @Api
+    @PostMapping(value = "/list/find")
+    public List<Find> getFindList(@RequestBody ResourceCondition condition) {
+
+        Map<String, Find> findPool = management.getFindPool();
+        return null;
+        //findPool.entrySet().stream().filter()
     }
 
     @Api

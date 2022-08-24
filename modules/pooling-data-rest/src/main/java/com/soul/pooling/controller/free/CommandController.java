@@ -4,6 +4,7 @@ import com.egova.web.annotation.Api;
 import com.soul.pooling.entity.Engage;
 import com.soul.pooling.entity.Find;
 import com.soul.pooling.entity.Platform;
+import com.soul.pooling.model.KillingChain;
 import com.soul.pooling.model.Point;
 import com.soul.pooling.service.EngageService;
 import com.soul.pooling.service.FindService;
@@ -24,7 +25,7 @@ import java.util.Map;
  */
 @Slf4j
 @RestController
-@RequestMapping("/free/pooling/mission")
+@RequestMapping("/free/pooling/command")
 @RequiredArgsConstructor
 public class CommandController {
 
@@ -36,6 +37,13 @@ public class CommandController {
 
     @Autowired
     private EngageService engageService;
+
+
+    @Api
+    @PostMapping(value = "/mission")
+    public KillingChain getKillChain(@RequestBody String test){
+
+    }
 
 
     @Api
