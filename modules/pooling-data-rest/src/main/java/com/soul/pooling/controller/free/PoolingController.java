@@ -10,6 +10,7 @@ import com.soul.pooling.entity.*;
 import com.soul.pooling.entity.enums.CommandType;
 import com.soul.pooling.model.PlatformMoveData;
 import com.soul.pooling.model.PlatformStatus;
+import com.soul.pooling.model.ResourceModel;
 import com.soul.pooling.mqtt.producer.MqttMsgProducer;
 import com.soul.pooling.netty.NettyUdpClient;
 import com.soul.pooling.service.PoolingManagement;
@@ -214,12 +215,23 @@ public class PoolingController {
 
     @Api
     @PostMapping(value = "/list/find")
-    public List<Find> getFindList(@RequestBody ResourceCondition condition) {
+    public List<ResourceModel> getFindList(@RequestBody ResourceCondition condition) {
 
         List<Find> collect = management.getFindPool(null);
-
+        List<ResourceModel> list = new ArrayList<>();
         if (condition == null) {
-            return collect;
+            for (int i = 0; i < collect.size(); i++) {
+                ResourceModel model = new ResourceModel();
+                model.setId(collect.get(i).getId());
+                model.setName(collect.get(i).getName());
+                model.setDeviceCode(collect.get(i).getDeviceCode());
+                model.setType(collect.get(i).getType());
+                model.setPlatformCode(collect.get(i).getPlatformCode());
+                model.setPlatformName(collect.get(i).getPlatformName());
+                model.setStatus(collect.get(i).getStatus());
+                list.add(model);
+            }
+            return list;
         }
 
         if (!StringUtils.isBlank(condition.getName())) {
@@ -237,7 +249,20 @@ public class PoolingController {
             collect = collect.stream().filter(q -> StringUtils.equals(condition.getType(), q.getType())).collect(Collectors.toList());
 
         }
-        return collect;
+        int num = collect.size();
+        for (int i = 0; i < num; i++) {
+            ResourceModel model = new ResourceModel();
+            model.setId(collect.get(i).getId());
+            model.setName(collect.get(i).getName());
+            model.setDeviceCode(collect.get(i).getDeviceCode());
+            model.setType(collect.get(i).getType());
+            model.setPlatformCode(collect.get(i).getPlatformCode());
+            model.setPlatformName(collect.get(i).getPlatformName());
+            model.setStatus(collect.get(i).getStatus());
+            list.add(model);
+        }
+
+        return list;
 
     }
 
@@ -250,11 +275,23 @@ public class PoolingController {
 
     @Api
     @PostMapping(value = "/list/fix")
-    public List<Fix> getFindLix(@RequestBody ResourceCondition condition) {
+    public List<ResourceModel> getFindLix(@RequestBody ResourceCondition condition) {
 
         List<Fix> collect = management.getFixPool(null);
+        List<ResourceModel> list = new ArrayList<>();
         if (condition == null) {
-            return collect;
+            for (int i = 0; i < collect.size(); i++) {
+                ResourceModel model = new ResourceModel();
+                model.setId(collect.get(i).getId());
+                model.setName(collect.get(i).getName());
+                model.setDeviceCode(collect.get(i).getDeviceCode());
+                model.setType(collect.get(i).getType());
+                model.setPlatformCode(collect.get(i).getPlatformCode());
+                model.setPlatformName(collect.get(i).getPlatformName());
+                model.setStatus(collect.get(i).getStatus());
+                list.add(model);
+            }
+            return list;
         }
 
         if (!StringUtils.isBlank(condition.getName())) {
@@ -272,7 +309,20 @@ public class PoolingController {
             collect = collect.stream().filter(q -> StringUtils.equals(condition.getType(), q.getType())).collect(Collectors.toList());
 
         }
-        return collect;
+        int num = collect.size();
+        for (int i = 0; i < num; i++) {
+            ResourceModel model = new ResourceModel();
+            model.setId(collect.get(i).getId());
+            model.setName(collect.get(i).getName());
+            model.setDeviceCode(collect.get(i).getDeviceCode());
+            model.setType(collect.get(i).getType());
+            model.setPlatformCode(collect.get(i).getPlatformCode());
+            model.setPlatformName(collect.get(i).getPlatformName());
+            model.setStatus(collect.get(i).getStatus());
+            list.add(model);
+        }
+
+        return list;
 
     }
 
@@ -284,11 +334,23 @@ public class PoolingController {
 
     @Api
     @PostMapping(value = "/list/track")
-    public List<Track> getTrackList(@RequestBody ResourceCondition condition) {
+    public List<ResourceModel> getTrackList(@RequestBody ResourceCondition condition) {
 
         List<Track> collect = management.getTrackPool(null);
+        List<ResourceModel> list = new ArrayList<>();
         if (condition == null) {
-            return collect;
+            for (int i = 0; i < collect.size(); i++) {
+                ResourceModel model = new ResourceModel();
+                model.setId(collect.get(i).getId());
+                model.setName(collect.get(i).getName());
+                model.setDeviceCode(collect.get(i).getDeviceCode());
+                model.setType(collect.get(i).getType());
+                model.setPlatformCode(collect.get(i).getPlatformCode());
+                model.setPlatformName(collect.get(i).getPlatformName());
+                model.setStatus(collect.get(i).getStatus());
+                list.add(model);
+            }
+            return list;
         }
 
         if (!StringUtils.isBlank(condition.getName())) {
@@ -306,7 +368,20 @@ public class PoolingController {
             collect = collect.stream().filter(q -> StringUtils.equals(condition.getType(), q.getType())).collect(Collectors.toList());
 
         }
-        return collect;
+        int num = collect.size();
+        for (int i = 0; i < num; i++) {
+            ResourceModel model = new ResourceModel();
+            model.setId(collect.get(i).getId());
+            model.setName(collect.get(i).getName());
+            model.setDeviceCode(collect.get(i).getDeviceCode());
+            model.setType(collect.get(i).getType());
+            model.setPlatformCode(collect.get(i).getPlatformCode());
+            model.setPlatformName(collect.get(i).getPlatformName());
+            model.setStatus(collect.get(i).getStatus());
+            list.add(model);
+        }
+
+        return list;
 
     }
 
@@ -319,11 +394,22 @@ public class PoolingController {
 
     @Api
     @PostMapping(value = "/list/target")
-    public List<Target> getTargetList(@RequestBody ResourceCondition condition) {
+    public List<ResourceModel> getTargetList(@RequestBody ResourceCondition condition) {
 
         List<Target> collect = management.getTargetPool(null);
+        List<ResourceModel> list = new ArrayList<>();
         if (condition == null) {
-            return collect;
+            for (int i = 0; i < collect.size(); i++) {
+                ResourceModel model = new ResourceModel();
+                model.setId(collect.get(i).getId());
+                model.setName(collect.get(i).getName());
+                model.setType(collect.get(i).getType());
+                model.setPlatformCode(collect.get(i).getPlatformCode());
+                model.setPlatformName(collect.get(i).getPlatformName());
+                model.setStatus(collect.get(i).getStatus());
+                list.add(model);
+            }
+            return list;
         }
 
         if (!StringUtils.isBlank(condition.getName())) {
@@ -341,8 +427,19 @@ public class PoolingController {
             collect = collect.stream().filter(q -> StringUtils.equals(condition.getType(), q.getType())).collect(Collectors.toList());
 
         }
-        return collect;
+        int num = collect.size();
+        for (int i = 0; i < num; i++) {
+            ResourceModel model = new ResourceModel();
+            model.setId(collect.get(i).getId());
+            model.setName(collect.get(i).getName());
+            model.setType(collect.get(i).getType());
+            model.setPlatformCode(collect.get(i).getPlatformCode());
+            model.setPlatformName(collect.get(i).getPlatformName());
+            model.setStatus(collect.get(i).getStatus());
+            list.add(model);
+        }
 
+        return list;
     }
 
     @Api
@@ -353,11 +450,23 @@ public class PoolingController {
 
     @Api
     @PostMapping(value = "/list/engage")
-    public List<Engage> getEngageList(@RequestBody ResourceCondition condition) {
+    public List<ResourceModel> getEngageList(@RequestBody ResourceCondition condition) {
 
         List<Engage> collect = management.getEngagePool(null);
+        List<ResourceModel> list = new ArrayList<>();
         if (condition == null) {
-            return collect;
+            for (int i = 0; i < collect.size(); i++) {
+                ResourceModel model = new ResourceModel();
+                model.setId(collect.get(i).getId());
+                model.setName(collect.get(i).getName());
+                model.setDeviceCode(collect.get(i).getDeviceCode());
+                model.setType(collect.get(i).getType());
+                model.setPlatformCode(collect.get(i).getPlatformCode());
+                model.setPlatformName(collect.get(i).getPlatformName());
+                model.setStatus(collect.get(i).getStatus());
+                list.add(model);
+            }
+            return list;
         }
 
         if (!StringUtils.isBlank(condition.getName())) {
@@ -375,7 +484,20 @@ public class PoolingController {
             collect = collect.stream().filter(q -> StringUtils.equals(condition.getType(), q.getType())).collect(Collectors.toList());
 
         }
-        return collect;
+        int num = collect.size();
+        for (int i = 0; i < num; i++) {
+            ResourceModel model = new ResourceModel();
+            model.setId(collect.get(i).getId());
+            model.setName(collect.get(i).getName());
+            model.setDeviceCode(collect.get(i).getDeviceCode());
+            model.setType(collect.get(i).getType());
+            model.setPlatformCode(collect.get(i).getPlatformCode());
+            model.setPlatformName(collect.get(i).getPlatformName());
+            model.setStatus(collect.get(i).getStatus());
+            list.add(model);
+        }
+
+        return list;
 
     }
 
@@ -387,11 +509,23 @@ public class PoolingController {
 
     @Api
     @PostMapping(value = "/list/asses")
-    public List<Asses> getAssesList(@RequestBody ResourceCondition condition) {
+    public List<ResourceModel> getAssesList(@RequestBody ResourceCondition condition) {
 
         List<Asses> collect = management.getAssesPool(null);
+        List<ResourceModel> list = new ArrayList<>();
         if (condition == null) {
-            return collect;
+            for (int i = 0; i < collect.size(); i++) {
+                ResourceModel model = new ResourceModel();
+                model.setId(collect.get(i).getId());
+                model.setName(collect.get(i).getName());
+                model.setDeviceCode(collect.get(i).getDeviceCode());
+                model.setType(collect.get(i).getType());
+                model.setPlatformCode(collect.get(i).getPlatformCode());
+                model.setPlatformName(collect.get(i).getPlatformName());
+                model.setStatus(collect.get(i).getStatus());
+                list.add(model);
+            }
+            return list;
         }
 
         if (!StringUtils.isBlank(condition.getName())) {
@@ -409,7 +543,20 @@ public class PoolingController {
             collect = collect.stream().filter(q -> StringUtils.equals(condition.getType(), q.getType())).collect(Collectors.toList());
 
         }
-        return collect;
+        int num = collect.size();
+        for (int i = 0; i < num; i++) {
+            ResourceModel model = new ResourceModel();
+            model.setId(collect.get(i).getId());
+            model.setName(collect.get(i).getName());
+            model.setDeviceCode(collect.get(i).getDeviceCode());
+            model.setType(collect.get(i).getType());
+            model.setPlatformCode(collect.get(i).getPlatformCode());
+            model.setPlatformName(collect.get(i).getPlatformName());
+            model.setStatus(collect.get(i).getStatus());
+            list.add(model);
+        }
+
+        return list;
 
     }
 

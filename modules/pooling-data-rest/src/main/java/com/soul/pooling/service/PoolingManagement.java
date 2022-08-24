@@ -5,6 +5,7 @@ import com.soul.pooling.config.Constants;
 import com.soul.pooling.config.PoolingConfig;
 import com.soul.pooling.entity.*;
 import com.soul.pooling.entity.enums.CommandType;
+import com.soul.pooling.entity.enums.ResourceStatus;
 import com.soul.pooling.model.ActivatedModel;
 import com.soul.pooling.model.PlatformStatus;
 import lombok.extern.slf4j.Slf4j;
@@ -45,10 +46,6 @@ public class PoolingManagement {
     private final ConcurrentMap<String, PlatformStatus> forceStatusData = new ConcurrentHashMap();
 
     private final ConcurrentMap<String, Platform> platformPool = new ConcurrentHashMap<>();
-
-    private final ConcurrentMap<String, Sensor> sensorPool = new ConcurrentHashMap<>();
-
-    private final ConcurrentMap<String, Weapon> weaponPool = new ConcurrentHashMap<>();
 
     private final ConcurrentMap<String, Find> findPool = new ConcurrentHashMap<>();
 
@@ -160,7 +157,7 @@ public class PoolingManagement {
 
         return result;
     }
-    
+
     public List<Asses> getAssesPool(CommandType type) {
         List<Asses> result = assesPool.values().stream().collect(Collectors.toList());
         if (type == null) {
@@ -286,35 +283,38 @@ public class PoolingManagement {
                 throw ExceptionUtils.api(String.format("该兵力未初始化"));
             }
             forcesStatus.setActiveStatus(true);
-            forceStatusData.put(id, forcesStatus);
             log.info("--->兵力" + id + "激活成功");
             Platform platform = platformService.seekById(id);
+            forcesStatus.setCode(platform.getCode());
+            forcesStatus.setName(platform.getName());
+            forcesStatus.setType(platform.getType());
+            forceStatusData.put(id, forcesStatus);
             if (platform == null) {
                 throw ExceptionUtils.api(String.format("数据库没有平台数据"));
             } else {
                 platformPool.put(id, platform);
-                for (Sensor sensor : platform.getSensors()) {
-                    sensorPool.put(sensor.getId(), sensor);
-                }
-                for (Weapon weapon : platform.getWeapons()) {
-                    weaponPool.put(weapon.getId(), weapon);
-                }
                 for (Find find : platform.getFinds()) {
+                    find.setStatus(ResourceStatus.AVAILABLE);
                     findPool.put(find.getId(), find);
                 }
                 for (Fix fix : platform.getFixes()) {
+                    fix.setStatus(ResourceStatus.AVAILABLE);
                     fixPool.put(fix.getId(), fix);
                 }
                 for (Track track : platform.getTracks()) {
+                    track.setStatus(ResourceStatus.AVAILABLE);
                     trackPool.put(track.getId(), track);
                 }
                 for (Target target : platform.getTargets()) {
+                    target.setStatus(ResourceStatus.AVAILABLE);
                     targetPool.put(target.getId(), target);
                 }
                 for (Engage engage : platform.getEngages()) {
+                    engage.setStatus(ResourceStatus.AVAILABLE);
                     engagePool.put(engage.getId(), engage);
                 }
                 for (Asses asses : platform.getAsses()) {
+                    asses.setStatus(ResourceStatus.AVAILABLE);
                     assesPool.put(asses.getId(), asses);
                 }
             }
@@ -345,12 +345,6 @@ public class PoolingManagement {
             if (platform == null) {
                 throw ExceptionUtils.api(String.format("数据库没有平台数据"));
             } else {
-                for (Sensor sensor : platform.getSensors()) {
-                    sensorPool.remove(sensor.getId());
-                }
-                for (Weapon weapon : platform.getWeapons()) {
-                    weaponPool.remove(weapon.getId());
-                }
                 for (Find find : platform.getFinds()) {
                     findPool.remove(find.getId());
                 }
@@ -397,12 +391,6 @@ public class PoolingManagement {
             if (platform == null) {
                 throw ExceptionUtils.api(String.format("数据库没有平台数据"));
             } else {
-                for (Sensor sensor : platform.getSensors()) {
-                    sensorPool.remove(sensor.getId());
-                }
-                for (Weapon weapon : platform.getWeapons()) {
-                    weaponPool.remove(weapon.getId());
-                }
                 for (Find find : platform.getFinds()) {
                     findPool.remove(find.getId());
                 }
@@ -432,8 +420,12 @@ public class PoolingManagement {
     public void cleanForce() {
         forceStatusData.clear();
         platformPool.clear();
-        sensorPool.clear();
-        weaponPool.clear();
+        findPool.clear();
+        fixPool.clear();
+        targetPool.clear();
+        trackPool.clear();
+        engagePool.clear();
+        assesPool.clear();
     }
 
     public boolean isInited(String id) {

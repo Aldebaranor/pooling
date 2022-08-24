@@ -4,7 +4,9 @@ import com.egova.redis.RedisUtils;
 import com.soul.pooling.entity.Engage;
 import com.soul.pooling.entity.Find;
 import com.soul.pooling.entity.Platform;
-import com.soul.pooling.service.*;
+import com.soul.pooling.service.EngageService;
+import com.soul.pooling.service.FindService;
+import com.soul.pooling.service.PlatformService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -22,12 +24,6 @@ public class RangeTask {
 
     @Autowired
     private PlatformService platformService;
-
-    @Autowired
-    private SensorService sensorService;
-
-    @Autowired
-    private WeaponService weaponService;
 
     @Autowired
     private FindService findService;
@@ -103,8 +99,6 @@ public class RangeTask {
                 String.valueOf(maxDetectionRangeSpace), String.valueOf(maxDetectionRangeAir), String.valueOf(maxDetectionRangeSea), String.valueOf(maxDetectionRangeLand), String.valueOf(maxDetectionRangeUnderSea));
         return range;
     }
-
-
 
 
 }
