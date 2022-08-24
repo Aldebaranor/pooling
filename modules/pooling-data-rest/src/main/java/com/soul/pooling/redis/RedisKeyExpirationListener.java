@@ -1,7 +1,7 @@
 package com.soul.pooling.redis;
 
 import com.soul.pooling.config.Constants;
-import com.soul.pooling.service.StatusManagement;
+import com.soul.pooling.service.PoolingManagement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.connection.Message;
 import org.springframework.data.redis.listener.KeyExpirationEventMessageListener;
@@ -17,7 +17,7 @@ import org.springframework.stereotype.Component;
 public class RedisKeyExpirationListener extends KeyExpirationEventMessageListener {
 
     @Autowired
-    private StatusManagement management;
+    private PoolingManagement management;
 
 
     public RedisKeyExpirationListener(RedisMessageListenerContainer listenerContainer) {

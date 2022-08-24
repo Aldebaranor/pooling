@@ -13,17 +13,21 @@ import java.util.List;
 @Data
 public class KillingChain implements Serializable {
 
+    private static final long serialVersionUID = 2553371875733781000L;
+
+    private String targetId;
+
     private List<ResourceModel> find;
 
     private List<ResourceModel> fix;
 
-    private List<ResourceModel> Track;
+    private List<ResourceModel> track;
 
-    private List<ResourceModel> Target;
+    private List<ResourceModel> target;
 
-    private List<ResourceModel> Engage;
+    private List<ResourceModel> engage;
 
-    private List<ResourceModel> Asses;
+    private List<ResourceModel> asses;
 
 
 

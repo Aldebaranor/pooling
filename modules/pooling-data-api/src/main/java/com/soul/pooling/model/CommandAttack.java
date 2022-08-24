@@ -17,10 +17,6 @@ import java.util.List;
 public class CommandAttack implements Serializable {
 
     private static final long serialVersionUID = -4814402135783312522L;
-    //命令唯一编号
-    private Long id;
-    //命令下发时间
-    private Long time;
     //命令类型
     private CommandType type;
     //目标ID

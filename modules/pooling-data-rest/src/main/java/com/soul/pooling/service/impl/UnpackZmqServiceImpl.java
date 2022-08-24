@@ -5,7 +5,7 @@ import com.flagwind.commons.StringUtils;
 import com.soul.pooling.entity.Platform;
 import com.soul.pooling.facade.UnpackMessageService;
 import com.soul.pooling.model.SituationMoveData;
-import com.soul.pooling.service.StatusManagement;
+import com.soul.pooling.service.PoolingManagement;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +24,7 @@ import java.util.Map;
 public class UnpackZmqServiceImpl implements UnpackMessageService {
 
     @Autowired
-    private StatusManagement management;
+    private PoolingManagement management;
 
     @Override
     public void unpackZmq(String s) {

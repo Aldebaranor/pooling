@@ -2,7 +2,7 @@ package com.soul.pooling.task;
 
 
 import com.soul.pooling.config.PoolingConfig;
-import com.soul.pooling.service.StatusManagement;
+import com.soul.pooling.service.PoolingManagement;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -26,7 +26,7 @@ public class PingJob {
     public PoolingConfig poolingConfig;
 
     @Autowired
-    private StatusManagement management;
+    private PoolingManagement management;
 
     @Scheduled(fixedDelayString = "1000" )
     public void execute(){

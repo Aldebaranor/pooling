@@ -12,7 +12,7 @@ import com.soul.pooling.model.PlatformMoveData;
 import com.soul.pooling.model.PlatformStatus;
 import com.soul.pooling.mqtt.producer.MqttMsgProducer;
 import com.soul.pooling.netty.NettyUdpClient;
-import com.soul.pooling.service.StatusManagement;
+import com.soul.pooling.service.PoolingManagement;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,7 +37,7 @@ public class PoolingController {
 
 
     @Autowired
-    private StatusManagement management;
+    private PoolingManagement management;
 
     @Autowired
     private MqttMsgProducer mqttMsgProducer;

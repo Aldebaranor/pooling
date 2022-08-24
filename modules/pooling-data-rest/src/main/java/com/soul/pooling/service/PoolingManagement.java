@@ -30,7 +30,7 @@ import java.util.stream.Collectors;
 @Service
 @Slf4j
 @Priority(5)
-public class StatusManagement {
+public class PoolingManagement {
 
     @Autowired
     private PlatformService platformService;

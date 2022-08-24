@@ -8,7 +8,7 @@ import com.soul.pooling.entity.Platform;
 import com.soul.pooling.model.PlatformMoveData;
 import com.soul.pooling.model.SituationMoveData;
 import com.soul.pooling.model.SituationTemArmy;
-import com.soul.pooling.service.StatusManagement;
+import com.soul.pooling.service.PoolingManagement;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -32,7 +32,7 @@ public class MoveDataJob {
     private MetaConfig metaConfig;
 
     @Autowired
-    private StatusManagement management;
+    private PoolingManagement management;
 
     @Scheduled(fixedDelayString = "500")
     public void updateMoveData() {
