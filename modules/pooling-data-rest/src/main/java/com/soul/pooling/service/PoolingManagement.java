@@ -67,6 +67,30 @@ public class PoolingManagement {
         return platformPool;
     }
 
+    public Find getFindById(String id){
+        return findPool.get(id);
+    }
+
+    public Fix getFixById(String id){
+        return fixPool.get(id);
+    }
+
+    public Track getTrackById(String id){
+        return trackPool.get(id);
+    }
+
+    public Target getTargetById(String id){
+        return targetPool.get(id);
+    }
+
+    public Engage getEngageById(String id){
+        return engagePool.get(id);
+    }
+
+    public Asses getAssesById(String id){
+        return assesPool.get(id);
+    }
+
     public List<Find> getFindPool(CommandType type) {
         List<Find> result = findPool.values().stream().collect(Collectors.toList());
         if (type == null) {

@@ -207,11 +207,45 @@ public class PoolingController {
         return management.getPlatformPool();
     }
 
+
+
     @Api
-    @GetMapping(value = "/all/find/{type}")
-    public List<Find> getAllFinds(@PathVariable(required = false) CommandType type) {
-        return management.getFindPool(type);
+    @GetMapping(value = "/find/{id}")
+    public Find getFindById(@PathVariable String id) {
+        return management.getFindById(id);
     }
+
+    @Api
+    @GetMapping(value = "/fix/{id}")
+    public Fix getFixById(@PathVariable String id) {
+        return management.getFixById(id);
+    }
+
+    @Api
+    @GetMapping(value = "/track/{id}")
+    public Track getTrackById(@PathVariable String id) {
+        return management.getTrackById(id);
+    }
+
+    @Api
+    @GetMapping(value = "/target/{id}")
+    public Target getTargetById(@PathVariable String id) {
+        return management.getTargetById(id);
+    }
+
+    @Api
+    @GetMapping(value = "/engage/{id}")
+    public Engage getEngageById(@PathVariable String id) {
+        return management.getEngageById(id);
+    }
+
+    @Api
+    @GetMapping(value = "/asses/{id}")
+    public Asses getAssesById(@PathVariable String id) {
+        return management.getAssesById(id);
+    }
+
+
 
     @Api
     @PostMapping(value = "/list/find")
@@ -266,11 +300,6 @@ public class PoolingController {
 
     }
 
-    @Api
-    @GetMapping(value = "/all/fix/{type}")
-    public List<Fix> getAllFixes(@PathVariable(required = false) CommandType type) {
-        return management.getFixPool(type);
-    }
 
 
     @Api
@@ -315,11 +344,6 @@ public class PoolingController {
 
     }
 
-    @Api
-    @GetMapping(value = "/all/track/{type}")
-    public List<Track> getAllTracks(@PathVariable(required = false) CommandType type) {
-        return management.getTrackPool(type);
-    }
 
     @Api
     @PostMapping(value = "/list/track")
@@ -375,13 +399,6 @@ public class PoolingController {
     }
 
     @Api
-    @GetMapping(value = "/all/target/{type}")
-    public List<Target> getAllTargets(@PathVariable(required = false) CommandType type) {
-        return management.getTargetPool(type);
-    }
-
-
-    @Api
     @PostMapping(value = "/list/target")
     public List<ResourceModel> getTargetList(@RequestBody ResourceCondition condition) {
 
@@ -431,11 +448,6 @@ public class PoolingController {
         return list;
     }
 
-    @Api
-    @GetMapping(value = "/all/engage/{type}")
-    public List<Engage> getAllEngages(@PathVariable(required = false) CommandType type) {
-        return management.getEngagePool(type);
-    }
 
     @Api
     @PostMapping(value = "/list/engage")
@@ -488,12 +500,6 @@ public class PoolingController {
 
         return list;
 
-    }
-
-    @Api
-    @GetMapping(value = "/all/asses/{type}")
-    public List<Asses> getAllAsses(@PathVariable(required = false) CommandType type) {
-        return management.getAssesPool(type);
     }
 
     @Api
