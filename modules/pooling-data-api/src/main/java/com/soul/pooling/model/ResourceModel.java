@@ -1,8 +1,10 @@
 package com.soul.pooling.model;
 
+import com.egova.model.BaseEntity;
 import com.soul.pooling.entity.enums.ResourceStatus;
 import lombok.Data;
 
+import javax.persistence.Entity;
 import java.io.Serializable;
 
 /**
@@ -11,10 +13,10 @@ import java.io.Serializable;
  * @Date: 2022/8/23 3:27 PM
  */
 @Data
-public class ResourceModel implements Serializable {
+@Entity
+public class ResourceModel extends BaseEntity {
 
-    private static final long serialVersionUID = -3457635165508631282L;
-
+    private static final long serialVersionUID = 7458456359568580658L;
     private String id;
 
     private String name;

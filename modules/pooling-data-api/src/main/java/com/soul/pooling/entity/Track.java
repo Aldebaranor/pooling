@@ -42,9 +42,6 @@ public class Track extends BaseEntity {
     @Column(name = "type")
     private String type;
 
-    @Transient
-    @Display("设备状态")
-    private ResourceStatus status;
 
     @Display("平台编号")
     @Column(name = "platformCode")
@@ -219,5 +216,9 @@ public class Track extends BaseEntity {
     @Display("精度_潜")
     @Column(name = "precisionUnderSea")
     private Float precisionUnderSea;
+
+    @Transient
+    @Display("设备状态")
+    private ResourceStatus status;
 
 }
