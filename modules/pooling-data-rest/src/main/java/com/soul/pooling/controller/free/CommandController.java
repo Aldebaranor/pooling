@@ -5,6 +5,7 @@ import com.soul.pooling.entity.Engage;
 import com.soul.pooling.entity.Find;
 import com.soul.pooling.model.CommandAttack;
 import com.soul.pooling.model.KillingChain;
+import com.soul.pooling.model.ResourceModel;
 import com.soul.pooling.service.EngageService;
 import com.soul.pooling.service.FindService;
 import com.soul.pooling.service.PoolingManagement;
@@ -42,6 +43,15 @@ public class CommandController {
      *
      * @param command
      * @return <目标,打击连></>
+     *  //0确定那个方面战，对空按照下面的逻辑
+     *         //1.根据每个目标当前位置A与 航向，航速外推200s得到B
+     *         //2.筛选出所有武器到AB的最小距离小于武器射程
+     *         //3.按武器所在位置距离A的距离排序，排序得到前两个武器
+     *         //4.在前两个中根据先余弹量后距离排序选出一个的武器进行打击，根据命中概率计算需要几发弹
+     *         //5.选择这个武器所属平台的传感器开机作为跟踪资源
+     *         //6.选择离A点最近的find资源
+     *         //7.选择离A点最近的fix track资源作为传感器+执行打击武器的track资源
+     *         //8。选择离B点最近的asses
      */
     @Api
     @PostMapping(value = "/mission")
@@ -58,6 +68,19 @@ public class CommandController {
     @Api
     @PostMapping(value = "/resource")
     public KillingChain getTargetResource(@RequestBody CommandAttack command) {
+        KillingChain killingChain = new KillingChain();
+        List<ResourceModel> find = new ArrayList<>();
+        List<ResourceModel> fix= new ArrayList<>();
+        List<ResourceModel> track= new ArrayList<>();
+        List<ResourceModel> target= new ArrayList<>();
+        List<ResourceModel> engage= new ArrayList<>();
+
+        //0确定那个方面战，对空按照下面的逻辑
+        //1.根据每个目标当前位置A与 航向，航速外推200s得到B
+        //2.筛选所有到AB最小距离小于其探测半径的 发现，定位，跟踪资源
+        //2.筛选所有到AB最小距离小于其火力半径半径的武器资源
+        //3.筛选所有到AB最小距离小于其探测半径的评估资源
+
         return null;
     }
 //
