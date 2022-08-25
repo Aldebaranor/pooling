@@ -7,13 +7,13 @@ import com.flagwind.commons.StringUtils;
 import com.soul.pooling.condition.ResourceCondition;
 import com.soul.pooling.config.PoolingConfig;
 import com.soul.pooling.entity.*;
-import com.soul.pooling.entity.enums.CommandType;
 import com.soul.pooling.model.PlatformMoveData;
 import com.soul.pooling.model.PlatformStatus;
 import com.soul.pooling.model.ResourceModel;
 import com.soul.pooling.mqtt.producer.MqttMsgProducer;
 import com.soul.pooling.netty.NettyUdpClient;
 import com.soul.pooling.service.PoolingManagement;
+import com.soul.pooling.service.PoolingService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,6 +45,9 @@ public class PoolingController {
 
     @Autowired
     private PoolingConfig poolingConfig;
+
+    @Autowired
+    private PoolingService poolingService;
 
     @Autowired(required = false)
     private NettyUdpClient nettyUdpClient;
@@ -208,7 +211,6 @@ public class PoolingController {
     }
 
 
-
     @Api
     @GetMapping(value = "/find/{id}")
     public Find getFindById(@PathVariable String id) {
@@ -246,25 +248,13 @@ public class PoolingController {
     }
 
 
-
     @Api
     @PostMapping(value = "/list/find")
     public List<ResourceModel> getFindList(@RequestBody ResourceCondition condition) {
 
         List<Find> collect = management.getFindPool(null);
-        List<ResourceModel> list = new ArrayList<>();
+        List<ResourceModel> list = poolingService.findToList(collect);
 
-        for (Find find : collect) {
-            ResourceModel model = new ResourceModel();
-            model.setId(find.getId());
-            model.setName(find.getName());
-            model.setDeviceCode(find.getDeviceCode());
-            model.setType(find.getType());
-            model.setPlatformCode(find.getPlatformCode());
-            model.setPlatformName(find.getPlatformName());
-            model.setStatus(find.getStatus());
-            list.add(model);
-        }
         if (condition == null) {
             return list;
         }
@@ -290,24 +280,12 @@ public class PoolingController {
     }
 
 
-
     @Api
     @PostMapping(value = "/list/fix")
     public List<ResourceModel> getFindLix(@RequestBody ResourceCondition condition) {
 
         List<Fix> collect = management.getFixPool(null);
-        List<ResourceModel> list = new ArrayList<>();
-        for (Fix fix : collect) {
-            ResourceModel model = new ResourceModel();
-            model.setId(fix.getId());
-            model.setName(fix.getName());
-            model.setDeviceCode(fix.getDeviceCode());
-            model.setType(fix.getType());
-            model.setPlatformCode(fix.getPlatformCode());
-            model.setPlatformName(fix.getPlatformName());
-            model.setStatus(fix.getStatus());
-            list.add(model);
-        }
+        List<ResourceModel> list = poolingService.fixToList(collect);
 
         if (condition == null) {
             return list;
@@ -339,18 +317,8 @@ public class PoolingController {
     public List<ResourceModel> getTrackList(@RequestBody ResourceCondition condition) {
 
         List<Track> collect = management.getTrackPool(null);
-        List<ResourceModel> list = new ArrayList<>();
-        for (Track track : collect) {
-            ResourceModel model = new ResourceModel();
-            model.setId(track.getId());
-            model.setName(track.getName());
-            model.setDeviceCode(track.getDeviceCode());
-            model.setType(track.getType());
-            model.setPlatformCode(track.getPlatformCode());
-            model.setPlatformName(track.getPlatformName());
-            model.setStatus(track.getStatus());
-            list.add(model);
-        }
+        List<ResourceModel> list = poolingService.trackToList(collect);
+
         if (condition == null) {
             return list;
         }
@@ -380,18 +348,8 @@ public class PoolingController {
     public List<ResourceModel> getTargetList(@RequestBody ResourceCondition condition) {
 
         List<Target> collect = management.getTargetPool(null);
-        List<ResourceModel> list = new ArrayList<>();
+        List<ResourceModel> list = poolingService.targetToList(collect);
 
-        for (Target target : collect) {
-            ResourceModel model = new ResourceModel();
-            model.setId(target.getId());
-            model.setName(target.getName());
-            model.setType(target.getType());
-            model.setPlatformCode(target.getPlatformCode());
-            model.setPlatformName(target.getPlatformName());
-            model.setStatus(target.getStatus());
-            list.add(model);
-        }
 
         if (condition == null) {
             return list;
@@ -422,18 +380,7 @@ public class PoolingController {
     public List<ResourceModel> getEngageList(@RequestBody ResourceCondition condition) {
 
         List<Engage> collect = management.getEngagePool(null);
-        List<ResourceModel> list = new ArrayList<>();
-
-        for (Engage engage : collect) {
-            ResourceModel model = new ResourceModel();
-            model.setId(engage.getId());
-            model.setName(engage.getName());
-            model.setType(engage.getType());
-            model.setPlatformCode(engage.getPlatformCode());
-            model.setPlatformName(engage.getPlatformName());
-            model.setStatus(engage.getStatus());
-            list.add(model);
-        }
+        List<ResourceModel> list = poolingService.engageToList(collect);
 
 
         if (condition == null) {
@@ -465,18 +412,7 @@ public class PoolingController {
     public List<ResourceModel> getAssesList(@RequestBody ResourceCondition condition) {
 
         List<Asses> collect = management.getAssesPool(null);
-        List<ResourceModel> list = new ArrayList<>();
-
-        for (Asses asses : collect) {
-            ResourceModel model = new ResourceModel();
-            model.setId(asses.getId());
-            model.setName(asses.getName());
-            model.setType(asses.getType());
-            model.setPlatformCode(asses.getPlatformCode());
-            model.setPlatformName(asses.getPlatformName());
-            model.setStatus(asses.getStatus());
-            list.add(model);
-        }
+        List<ResourceModel> list = poolingService.assesToList(collect);
 
         if (condition == null) {
             return list;

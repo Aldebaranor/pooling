@@ -67,27 +67,27 @@ public class PoolingManagement {
         return platformPool;
     }
 
-    public Find getFindById(String id){
+    public Find getFindById(String id) {
         return findPool.get(id);
     }
 
-    public Fix getFixById(String id){
+    public Fix getFixById(String id) {
         return fixPool.get(id);
     }
 
-    public Track getTrackById(String id){
+    public Track getTrackById(String id) {
         return trackPool.get(id);
     }
 
-    public Target getTargetById(String id){
+    public Target getTargetById(String id) {
         return targetPool.get(id);
     }
 
-    public Engage getEngageById(String id){
+    public Engage getEngageById(String id) {
         return engagePool.get(id);
     }
 
-    public Asses getAssesById(String id){
+    public Asses getAssesById(String id) {
         return assesPool.get(id);
     }
 
@@ -409,6 +409,10 @@ public class PoolingManagement {
             PlatformStatus forcesStatus = forceStatusData.get(id);
             forcesStatus.setInitStatus(false);
             forcesStatus.setActiveStatus(false);
+            forcesStatus.setCode("");
+            forcesStatus.setName("");
+            forcesStatus.setPlatformId("");
+            forcesStatus.setType("");
             forceStatusData.put(id, forcesStatus);
             log.info("--->兵力" + id + "注销成功");
             Platform platform = platformService.seekById(id);

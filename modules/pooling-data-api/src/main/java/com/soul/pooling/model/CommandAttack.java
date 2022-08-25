@@ -1,7 +1,6 @@
 package com.soul.pooling.model;
 
 
-import com.soul.pooling.entity.enums.CommandType;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -18,7 +17,7 @@ public class CommandAttack implements Serializable {
 
     private static final long serialVersionUID = -4814402135783312522L;
     //命令类型
-    private CommandType type;
+    private Integer type;
     //目标ID
     private List<TargetData> targets;
 

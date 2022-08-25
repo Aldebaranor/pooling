@@ -1,20 +1,20 @@
 package com.soul.pooling.controller.free;
 
 import com.egova.web.annotation.Api;
-import com.soul.pooling.entity.Engage;
-import com.soul.pooling.entity.Find;
-import com.soul.pooling.model.CommandAttack;
-import com.soul.pooling.model.KillingChain;
-import com.soul.pooling.model.ResourceModel;
+import com.soul.pooling.entity.enums.CommandType;
+import com.soul.pooling.model.*;
 import com.soul.pooling.service.EngageService;
 import com.soul.pooling.service.FindService;
 import com.soul.pooling.service.PoolingManagement;
+import com.soul.pooling.service.PoolingService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -37,21 +37,24 @@ public class CommandController {
     @Autowired
     private EngageService engageService;
 
+    @Autowired
+    private PoolingService poolingService;
+
 
     /**
      * 智能调度
      *
      * @param command
      * @return <目标,打击连></>
-     *  //0确定那个方面战，对空按照下面的逻辑
-     *         //1.根据每个目标当前位置A与 航向，航速外推200s得到B
-     *         //2.筛选出所有武器到AB的最小距离小于武器射程
-     *         //3.按武器所在位置距离A的距离排序，排序得到前两个武器
-     *         //4.在前两个中根据先余弹量后距离排序选出一个的武器进行打击，根据命中概率计算需要几发弹
-     *         //5.选择这个武器所属平台的传感器开机作为跟踪资源
-     *         //6.选择离A点最近的find资源
-     *         //7.选择离A点最近的fix track资源作为传感器+执行打击武器的track资源
-     *         //8。选择离B点最近的asses
+     * //0确定那个方面战，对空按照下面的逻辑
+     * //1.根据每个目标当前位置A与 航向，航速外推200s得到B
+     * //2.筛选出所有武器到AB的最小距离小于武器射程
+     * //3.按武器所在位置距离A的距离排序，排序得到前两个武器
+     * //4.在前两个中根据先余弹量后距离排序选出一个的武器进行打击，根据命中概率计算需要几发弹
+     * //5.选择这个武器所属平台的传感器开机作为跟踪资源
+     * //6.选择离A点最近的find资源
+     * //7.选择离A点最近的fix track资源作为传感器+执行打击武器的track资源
+     * //8。选择离B点最近的asses
      */
     @Api
     @PostMapping(value = "/mission")
@@ -68,12 +71,33 @@ public class CommandController {
     @Api
     @PostMapping(value = "/resource")
     public KillingChain getTargetResource(@RequestBody CommandAttack command) {
+        CommandType type = CommandType.ATTACK;
+        if (command.getType() == 21) {
+            type = CommandType.ATTACK_AIR;
+        } else if (command.getType() == 22) {
+            type = CommandType.ATTACK_SEA;
+        } else if (command.getType() == 23) {
+            type = CommandType.ATTACK_LAND;
+        } else if (command.getType() == 24) {
+            type = CommandType.ATTACK_UNDERSEA;
+        } else {
+            log.info("commandType 错误，取值不在21，22，23，24");
+        }
+
         KillingChain killingChain = new KillingChain();
-        List<ResourceModel> find = new ArrayList<>();
-        List<ResourceModel> fix= new ArrayList<>();
-        List<ResourceModel> track= new ArrayList<>();
-        List<ResourceModel> target= new ArrayList<>();
-        List<ResourceModel> engage= new ArrayList<>();
+        List<ResourceModel> find = poolingService.findToList(management.getFindPool(type));
+        List<ResourceModel> fix = poolingService.fixToList(management.getFixPool(type));
+        List<ResourceModel> track = poolingService.trackToList(management.getTrackPool(type));
+        List<ResourceModel> target = poolingService.targetToList(management.getTargetPool(type));
+        List<ResourceModel> engage = poolingService.engageToList(management.getEngagePool(type));
+        List<ResourceModel> asses = poolingService.assesToList(management.getAssesPool(type));
+
+        killingChain.setFind(find);
+        killingChain.setFix(fix);
+        killingChain.setTrack(track);
+        killingChain.setTarget(target);
+        killingChain.setEngage(engage);
+        killingChain.setTarget(asses);
 
         //0确定那个方面战，对空按照下面的逻辑
         //1.根据每个目标当前位置A与 航向，航速外推200s得到B
@@ -81,117 +105,17 @@ public class CommandController {
         //2.筛选所有到AB最小距离小于其火力半径半径的武器资源
         //3.筛选所有到AB最小距离小于其探测半径的评估资源
 
-        return null;
-    }
-//
-//    @Api
-//    @GetMapping(value = "/weapon/{test}")
-//    public List<String> engage(@PathVariable String test) {
-//        List<String> list = new ArrayList<>();
-//        list.add(test);
-//        return list;
-//    }
-//
-//    @Api
-//    @PostMapping(value = "/sensor/test")
-//    public List<String> mission(@RequestBody Mission mission) {
-//        List<String> list = new ArrayList<>();
-//        Map<String, Platform> platformPool = management.getPlatformPool();
-//
-//        double distance = Double.MAX_VALUE;
-//        String firstSensor = "";
-//
-//        for (int i = 0; i < mission.targets.size(); i++) {
-//            double targetLon = mission.targets.get(i).getLon();
-//            double targetLat = mission.targets.get(i).getLat();
-//            double targetAlt = mission.targets.get(i).getAlt();
-//
-//            for (Map.Entry<String, Platform> entry : platformPool.entrySet()) {
-//                Platform platform = entry.getValue();
-//                //经纬度算距离
-//                double platformLon = platform.getPlatformMoveData().getLon();
-//                double platformLat = platform.getPlatformMoveData().getLat();
-//                double s = DistanceUtils.getDistance(platformLon, platformLat, targetLon, targetLat);
-//
-//                //是否在探测距离内
-//                //TODO:判断高度
-//                List<Float> detectDistance = platformFindRange(platform.getId());
-//
-//                if ((detectDistance.get(mission.missionArea) > s) && (distance > s)) {
-//                    firstSensor = entry.getValue().getId();
-//                }
-//            }
-//            list.add(firstSensor);
-//        }
-//        return list;
-//    }
+        for (TargetData targetData : command.getTargets()) {
+            Point start = new Point();
+            Point end = new Point();
+            start.setLon(targetData.getMoveDetect().getLon());
+            start.setLat(targetData.getMoveDetect().getLat());
 
-    public List<Float> platformFindRange(String platformId) {
-        List<Float> list = new ArrayList<>();
-        float maxDetectionRangeSpace = 0;
-        float maxDetectionRangeAir = 0;
-        float maxDetectionRangeSea = 0;
-        float maxDetectionRangeLand = 0;
-        float maxDetectionRangeUnderSea = 0;
-
-        List<Find> sensors = findService.getByPlatformCode(platformId);
-        for (Find sensor : sensors) {
-            //获取最大对太空探测范围
-            maxDetectionRangeSpace = (maxDetectionRangeSpace >
-                    sensor.getMaxDetectRangeSpace()) ? maxDetectionRangeSpace : sensor.getMaxDetectRangeSpace();
-            //获取最大对空探测范围
-            maxDetectionRangeAir = (maxDetectionRangeAir >
-                    sensor.getMaxDetectRangeAir()) ? maxDetectionRangeAir : sensor.getMaxDetectRangeAir();
-            //获取最大对陆探测范围
-            maxDetectionRangeLand = (maxDetectionRangeLand >
-                    sensor.getMaxDetectRangeLand()) ? maxDetectionRangeLand : sensor.getMaxDetectRangeLand();
-            //获取最大对海探测范围
-            maxDetectionRangeSea = (maxDetectionRangeSea >
-                    sensor.getMaxDetectRangeSea()) ? maxDetectionRangeSea : sensor.getMaxDetectRangeSea();
-            //获取最大对潜探测范围
-            maxDetectionRangeUnderSea = (maxDetectionRangeUnderSea >
-                    sensor.getMaxDetectRangeUnderSea()) ? maxDetectionRangeUnderSea : sensor.getMaxDetectRangeUnderSea();
+            Double heading = targetData.getMoveDetect().getHeading();
+            Double speed = targetData.getMoveDetect().getSpeed();
         }
-        list.add(maxDetectionRangeSpace);
-        list.add(maxDetectionRangeAir);
-        list.add(maxDetectionRangeSea);
-        list.add(maxDetectionRangeLand);
-        list.add(maxDetectionRangeUnderSea);
-        return list;
-    }
 
-    public List<Float> platformEngageRange(String platformId) {
-        List<Float> list = new ArrayList<>();
-        float maxFireRangeSpace = 0;
-        float maxFireRangeAir = 0;
-        float maxFireRangeSea = 0;
-        float maxFireRangeLand = 0;
-        float maxFireRangeUnderSea = 0;
-
-        List<Engage> weapons = engageService.getByPlatformCode(platformId);
-        for (Engage weapon : weapons) {
-            //获取最大对太空火力范围
-            maxFireRangeSpace = (maxFireRangeSpace >
-                    weapon.getMaxFireRangeSpace()) ? maxFireRangeSpace : weapon.getMaxFireRangeSpace();
-            //获取最大对空火力范围
-            maxFireRangeAir = (maxFireRangeAir >
-                    weapon.getMaxFireRangeAir()) ? maxFireRangeAir : weapon.getMaxFireRangeAir();
-            //获取最大对陆火力范围
-            maxFireRangeLand = (maxFireRangeLand >
-                    weapon.getMaxFireRangeLand()) ? maxFireRangeLand : weapon.getMaxFireRangeLand();
-            //获取最大对海火力范围
-            maxFireRangeSea = (maxFireRangeSea >
-                    weapon.getMaxFireRangeSea()) ? maxFireRangeSea : weapon.getMaxFireRangeSea();
-            //获取最大对潜火力范围
-            maxFireRangeUnderSea = (maxFireRangeUnderSea >
-                    weapon.getMaxFireRangeUnderSea()) ? maxFireRangeUnderSea : weapon.getMaxFireRangeUnderSea();
-        }
-        list.add(maxFireRangeSpace);
-        list.add(maxFireRangeAir);
-        list.add(maxFireRangeSea);
-        list.add(maxFireRangeLand);
-        list.add(maxFireRangeUnderSea);
-        return list;
+        return killingChain;
     }
 
 

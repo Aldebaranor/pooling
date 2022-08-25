@@ -1188,12 +1188,10 @@
             <columnExists tableName="pooling_find" columnName="detectionSpace"/>
             <columnExists tableName="pooling_find" columnName="detectionAir"/>
             <columnExists tableName="pooling_find" columnName="detectionSea"/>
-            <columnExists tableName="pooling_find" columnName="detectionLand"/>
             <columnExists tableName="pooling_find" columnName="detectionUnderSea"/>
             <columnExists tableName="pooling_fix" columnName="detectionSpace"/>
             <columnExists tableName="pooling_fix" columnName="detectionAir"/>
             <columnExists tableName="pooling_fix" columnName="detectionSea"/>
-            <columnExists tableName="pooling_fix" columnName="detectionLand"/>
             <columnExists tableName="pooling_fix" columnName="detectionUnderSea"/>
             <columnExists tableName="pooling_track" columnName="detectionSpace"/>
             <columnExists tableName="pooling_track" columnName="detectionAir"/>
@@ -1214,12 +1212,10 @@
         <dropColumn tableName="pooling_find" columnName="detectionSpace"/>
         <dropColumn tableName="pooling_find" columnName="detectionAir"/>
         <dropColumn tableName="pooling_find" columnName="detectionSea"/>
-        <dropColumn tableName="pooling_find" columnName="detectionLand"/>
         <dropColumn tableName="pooling_find" columnName="detectionUnderSea"/>
         <dropColumn tableName="pooling_fix" columnName="detectionSpace"/>
         <dropColumn tableName="pooling_fix" columnName="detectionAir"/>
         <dropColumn tableName="pooling_fix" columnName="detectionSea"/>
-        <dropColumn tableName="pooling_fix" columnName="detectionLand"/>
         <dropColumn tableName="pooling_fix" columnName="detectionUnderSea"/>
         <dropColumn tableName="pooling_track" columnName="detectionSpace"/>
         <dropColumn tableName="pooling_track" columnName="detectionAir"/>
