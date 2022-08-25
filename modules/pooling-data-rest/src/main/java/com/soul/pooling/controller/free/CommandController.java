@@ -57,8 +57,8 @@ public class CommandController {
      * //8。选择离B点最近的asses
      */
     @Api
-    @PostMapping(value = "/mission")
-    public Map<String, KillingChain> getKillChain(@RequestBody CommandAttack command) {
+    @PostMapping("/mission")
+    public List<KillingChain> getKillChain(@RequestBody CommandAttack command) {
         return null;
     }
 
@@ -69,7 +69,7 @@ public class CommandController {
      * @return
      */
     @Api
-    @PostMapping(value = "/resource")
+    @PostMapping("/resource")
     public KillingChain getTargetResource(@RequestBody CommandAttack command) {
         CommandType type = CommandType.ATTACK;
         if (command.getType() == 21) {
