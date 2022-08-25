@@ -62,6 +62,7 @@ public class PoolingManagement {
     public Map<String, PlatformStatus> getAll() {
         return forceStatusData;
     }
+    
 
     public Map<String, Platform> getPlatformPool() {
         return platformPool;
@@ -284,7 +285,7 @@ public class PoolingManagement {
         } else {
             PlatformStatus forcesStatus = forceStatusData.get(id);
             if (forcesStatus.getInitStatus()) {
-                log.info("--->兵力" + id + "已经初始化成功，无需重新初始化");
+//                log.info("--->兵力" + id + "已经初始化成功，无需重新初始化");
                 return;
             } else {
                 forcesStatus.setInitStatus(true);

@@ -34,8 +34,9 @@ public class RedisKeyExpirationListener extends KeyExpirationEventMessageListene
     public void onMessage(Message message, byte[] pattern) {
         // 用户做自己的业务处理即可,注意message.toString()可以获取失效的key
         String expiredKey = message.toString();
-        if (expiredKey.contains( Constants.FORCE_HEAR)) {
+        if (expiredKey.contains(Constants.FORCE_HEAR)) {
             //有兵力注销，通知仿真引擎将对应的仿真节点退出
+            System.out.println("--------------" + expiredKey);
             String id = expiredKey.replace(Constants.FORCE_HEAR, "");
             management.sendDisActivated(id);
             management.deleteForce(id);

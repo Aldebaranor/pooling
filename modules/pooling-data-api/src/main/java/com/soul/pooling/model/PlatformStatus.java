@@ -2,6 +2,7 @@ package com.soul.pooling.model;
 
 import lombok.Data;
 
+import javax.persistence.Entity;
 import java.io.Serializable;
 
 /**
@@ -10,6 +11,7 @@ import java.io.Serializable;
  * @Date: 2022/6/20 6:13 PM
  */
 @Data
+@Entity
 public class PlatformStatus implements Serializable {
 
     private static final long serialVersionUID = 5770184557706043686L;

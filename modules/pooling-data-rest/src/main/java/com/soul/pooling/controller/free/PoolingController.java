@@ -4,6 +4,7 @@ import com.egova.exception.ExceptionUtils;
 import com.egova.json.utils.JsonUtils;
 import com.egova.web.annotation.Api;
 import com.flagwind.commons.StringUtils;
+import com.soul.pooling.condition.PoolingCondition;
 import com.soul.pooling.condition.ResourceCondition;
 import com.soul.pooling.config.PoolingConfig;
 import com.soul.pooling.entity.*;
@@ -247,6 +248,37 @@ public class PoolingController {
         return management.getAssesById(id);
     }
 
+    @Api
+    @PostMapping(value = "/list/platform")
+    public List<PlatformStatus> getPlatformList(@RequestBody PoolingCondition condition) {
+
+        List<PlatformStatus> list = new ArrayList<>();
+        for (Map.Entry<String, PlatformStatus> map : management.getAll().entrySet()) {
+            list.add(map.getValue());
+        }
+
+        if (condition == null) {
+            return list;
+        }
+
+        if (!StringUtils.isBlank(condition.getName())) {
+            list = list.stream().filter(q -> q.getName().contains(condition.getName())).collect(Collectors.toList());
+        }
+        if (!StringUtils.isBlank(condition.getId())) {
+            list = list.stream().filter(q -> StringUtils.equals(condition.getId(), q.getPlatformId())).collect(Collectors.toList());
+
+        }
+        if (!StringUtils.isBlank(condition.getActiveStatus().toString())) {
+            list = list.stream().filter(q -> StringUtils.equals(condition.getActiveStatus().toString(), q.getActiveStatus().toString())).collect(Collectors.toList());
+
+        }
+        if (!StringUtils.isBlank(condition.getType())) {
+            list = list.stream().filter(q -> StringUtils.equals(condition.getType(), q.getType())).collect(Collectors.toList());
+
+        }
+        return list;
+
+    }
 
     @Api
     @PostMapping(value = "/list/find")
