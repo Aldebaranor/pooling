@@ -72,7 +72,7 @@ public class PoolingManagement {
         return findPool.get(id);
     }
 
-    //TODO添加平台经纬度
+    //TODO 添加平台经纬度
 
     public Fix getFixById(String id) {
         return fixPool.get(id);

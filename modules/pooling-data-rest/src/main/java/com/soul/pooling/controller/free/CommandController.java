@@ -57,8 +57,9 @@ public class CommandController {
     @Api
     @PostMapping("/mission")
     public List<KillingChain> getKillChain(@RequestBody CommandAttack command) {
+
         //TODO 没有目标返回空
-        //TODO修改数据库数据
+        //TODO 修改数据库数据
         KillingChain killingChain = new KillingChain();
         List<Find> finds = new ArrayList<>();
         finds.add(management.getFindById("125"));
