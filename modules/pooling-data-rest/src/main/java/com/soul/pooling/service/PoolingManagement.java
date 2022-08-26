@@ -69,29 +69,100 @@ public class PoolingManagement {
     }
 
     public Find getFindById(String id) {
-        return findPool.get(id);
+        Find find = findPool.get(id);
+        Platform platform = platformPool.get(find.getPlatformCode());
+        if(platform != null){
+            find.set("lon",platform.getPlatformMoveData().getLon());
+            find.set("lat",platform.getPlatformMoveData().getLat());
+            find.set("alt",platform.getPlatformMoveData().getAlt());
+            find.set("heading",platform.getPlatformMoveData().getHeading());
+            find.set("pitch",platform.getPlatformMoveData().getPitch());
+            find.set("roll",platform.getPlatformMoveData().getRoll());
+            find.set("speed",platform.getPlatformMoveData().getSpeed());
+        }
+
+        return find;
     }
 
-    //TODO 添加平台经纬度
 
     public Fix getFixById(String id) {
-        return fixPool.get(id);
+        Fix fix = fixPool.get(id);
+        Platform platform = platformPool.get(fix.getPlatformCode());
+        if(platform != null){
+            fix.set("lon",platform.getPlatformMoveData().getLon());
+            fix.set("lat",platform.getPlatformMoveData().getLat());
+            fix.set("alt",platform.getPlatformMoveData().getAlt());
+            fix.set("heading",platform.getPlatformMoveData().getHeading());
+            fix.set("pitch",platform.getPlatformMoveData().getPitch());
+            fix.set("roll",platform.getPlatformMoveData().getRoll());
+            fix.set("speed",platform.getPlatformMoveData().getSpeed());
+        }
+
+        return fix;
     }
 
     public Track getTrackById(String id) {
-        return trackPool.get(id);
+        Track track = trackPool.get(id);
+        Platform platform = platformPool.get(track.getPlatformCode());
+        if(platform != null){
+            track.set("lon",platform.getPlatformMoveData().getLon());
+            track.set("lat",platform.getPlatformMoveData().getLat());
+            track.set("alt",platform.getPlatformMoveData().getAlt());
+            track.set("heading",platform.getPlatformMoveData().getHeading());
+            track.set("pitch",platform.getPlatformMoveData().getPitch());
+            track.set("roll",platform.getPlatformMoveData().getRoll());
+            track.set("speed",platform.getPlatformMoveData().getSpeed());
+        }
+
+        return track;
     }
 
     public Target getTargetById(String id) {
-        return targetPool.get(id);
+        Target target = targetPool.get(id);
+        Platform platform = platformPool.get(target.getPlatformCode());
+        if(platform != null){
+            target.set("lon",platform.getPlatformMoveData().getLon());
+            target.set("lat",platform.getPlatformMoveData().getLat());
+            target.set("alt",platform.getPlatformMoveData().getAlt());
+            target.set("heading",platform.getPlatformMoveData().getHeading());
+            target.set("pitch",platform.getPlatformMoveData().getPitch());
+            target.set("roll",platform.getPlatformMoveData().getRoll());
+            target.set("speed",platform.getPlatformMoveData().getSpeed());
+        }
+
+        return target;
     }
 
     public Engage getEngageById(String id) {
-        return engagePool.get(id);
+        Engage engage = engagePool.get(id);
+        Platform platform = platformPool.get(engage.getPlatformCode());
+        if(platform != null){
+            engage.set("lon",platform.getPlatformMoveData().getLon());
+            engage.set("lat",platform.getPlatformMoveData().getLat());
+            engage.set("alt",platform.getPlatformMoveData().getAlt());
+            engage.set("heading",platform.getPlatformMoveData().getHeading());
+            engage.set("pitch",platform.getPlatformMoveData().getPitch());
+            engage.set("roll",platform.getPlatformMoveData().getRoll());
+            engage.set("speed",platform.getPlatformMoveData().getSpeed());
+        }
+
+        return engage;
     }
 
     public Asses getAssesById(String id) {
-        return assesPool.get(id);
+        Asses asses = assesPool.get(id);
+        Platform platform = platformPool.get(asses.getPlatformCode());
+        if(platform != null){
+            asses.set("lon",platform.getPlatformMoveData().getLon());
+            asses.set("lat",platform.getPlatformMoveData().getLat());
+            asses.set("alt",platform.getPlatformMoveData().getAlt());
+            asses.set("heading",platform.getPlatformMoveData().getHeading());
+            asses.set("pitch",platform.getPlatformMoveData().getPitch());
+            asses.set("roll",platform.getPlatformMoveData().getRoll());
+            asses.set("speed",platform.getPlatformMoveData().getSpeed());
+        }
+
+        return asses;
     }
 
     public List<Find> getFindPool(CommandType type) {

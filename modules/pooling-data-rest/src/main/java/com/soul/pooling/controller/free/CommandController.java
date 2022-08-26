@@ -11,6 +11,7 @@ import com.soul.pooling.service.PoolingService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -57,31 +58,31 @@ public class CommandController {
     @Api
     @PostMapping("/mission")
     public List<KillingChain> getKillChain(@RequestBody CommandAttack command) {
-
-        //TODO 没有目标返回空
-        //TODO 修改数据库数据
+        List<KillingChain> list = new ArrayList<>();
+        if(CollectionUtils.isEmpty(command.getTargets())){
+            return list;
+        }
+        //TODO修改数据库数据 wzs
         KillingChain killingChain = new KillingChain();
+        killingChain.setTargetId(list.get(0).getTargetId());
         List<Find> finds = new ArrayList<>();
         finds.add(management.getFindById("125"));
-        finds.add(management.getFindById("72"));
         List<Fix> fixes = new ArrayList<>();
         fixes.add(management.getFixById("125"));
-        fixes.add(management.getFixById("72"));
         List<Track> tracks = new ArrayList<>();
         tracks.add(management.getTrackById("125"));
         tracks.add(management.getTrackById("72"));
         List<Engage> engages = new ArrayList<>();
         engages.add(management.getEngageById("83"));
-
-        List<Asses> asseses = new ArrayList<>();
-        asseses.add(management.getAssesById("125"));
-        asseses.add(management.getAssesById("72"));
+        List<Asses> assesList = new ArrayList<>();
+        assesList.add(management.getAssesById("125"));
+        assesList.add(management.getAssesById("72"));
 
         List<ResourceModel> find = poolingService.findToList(finds);
         List<ResourceModel> fix = poolingService.fixToList(fixes);
         List<ResourceModel> track = poolingService.trackToList(tracks);
         List<ResourceModel> engage = poolingService.engageToList(engages);
-        List<ResourceModel> asses = poolingService.assesToList(asseses);
+        List<ResourceModel> asses = poolingService.assesToList(assesList);
 
         killingChain.setFind(find);
         killingChain.setFix(fix);
@@ -89,39 +90,10 @@ public class CommandController {
         killingChain.setEngage(engage);
         killingChain.setTarget(asses);
 
-        KillingChain killingChain1 = new KillingChain();
 
-        List<Find> finds1 = new ArrayList<>();
-        finds1.add(management.getFindById("131"));
-        finds1.add(management.getFindById("75"));
-        List<Fix> fixes1 = new ArrayList<>();
-        fixes1.add(management.getFixById("131"));
-        fixes1.add(management.getFixById("75"));
-        List<Track> tracks1 = new ArrayList<>();
-        tracks1.add(management.getTrackById("131"));
-        tracks1.add(management.getTrackById("75"));
-        List<Engage> engages1 = new ArrayList<>();
-        engages1.add(management.getEngageById("87"));
 
-        List<Asses> asseses1 = new ArrayList<>();
-        asseses1.add(management.getAssesById("131"));
-        asseses1.add(management.getAssesById("75"));
 
-        List<ResourceModel> find1 = poolingService.findToList(finds1);
-        List<ResourceModel> fix1 = poolingService.fixToList(fixes1);
-        List<ResourceModel> track1 = poolingService.trackToList(tracks1);
-        List<ResourceModel> engage1 = poolingService.engageToList(engages1);
-        List<ResourceModel> asses1 = poolingService.assesToList(asseses1);
-
-        killingChain1.setFind(find1);
-        killingChain1.setFix(fix1);
-        killingChain1.setTrack(track1);
-        killingChain1.setEngage(engage1);
-        killingChain1.setTarget(asses1);
-
-        List<KillingChain> list = new ArrayList<>();
         list.add(killingChain);
-        list.add(killingChain1);
         return list;
     }
 
