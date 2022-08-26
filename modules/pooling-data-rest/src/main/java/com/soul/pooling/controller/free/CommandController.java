@@ -61,20 +61,20 @@ public class CommandController {
         //TODO修改数据库数据
         KillingChain killingChain = new KillingChain();
         List<Find> finds = new ArrayList<>();
-        finds.add(management.getFindById("109"));
-        finds.add(management.getFindById("110"));
+        finds.add(management.getFindById("125"));
+        finds.add(management.getFindById("72"));
         List<Fix> fixes = new ArrayList<>();
-        fixes.add(management.getFixById("109"));
-        fixes.add(management.getFixById("110"));
+        fixes.add(management.getFixById("125"));
+        fixes.add(management.getFixById("72"));
         List<Track> tracks = new ArrayList<>();
-        tracks.add(management.getTrackById("109"));
-        tracks.add(management.getTrackById("110"));
+        tracks.add(management.getTrackById("125"));
+        tracks.add(management.getTrackById("72"));
         List<Engage> engages = new ArrayList<>();
-        engages.add(management.getEngageById("142"));
-        engages.add(management.getEngageById("151"));
+        engages.add(management.getEngageById("83"));
+
         List<Asses> asseses = new ArrayList<>();
-        asseses.add(management.getAssesById("109"));
-        asseses.add(management.getAssesById("110"));
+        asseses.add(management.getAssesById("125"));
+        asseses.add(management.getAssesById("72"));
 
         List<ResourceModel> find = poolingService.findToList(finds);
         List<ResourceModel> fix = poolingService.fixToList(fixes);
@@ -91,20 +91,20 @@ public class CommandController {
         KillingChain killingChain1 = new KillingChain();
 
         List<Find> finds1 = new ArrayList<>();
-        finds1.add(management.getFindById("111"));
-        finds1.add(management.getFindById("112"));
+        finds1.add(management.getFindById("131"));
+        finds1.add(management.getFindById("75"));
         List<Fix> fixes1 = new ArrayList<>();
-        fixes1.add(management.getFixById("111"));
-        fixes1.add(management.getFixById("112"));
+        fixes1.add(management.getFixById("131"));
+        fixes1.add(management.getFixById("75"));
         List<Track> tracks1 = new ArrayList<>();
-        tracks1.add(management.getTrackById("111"));
-        tracks1.add(management.getTrackById("111"));
+        tracks1.add(management.getTrackById("131"));
+        tracks1.add(management.getTrackById("75"));
         List<Engage> engages1 = new ArrayList<>();
-        engages1.add(management.getEngageById("160"));
-        engages1.add(management.getEngageById("169"));
+        engages1.add(management.getEngageById("87"));
+
         List<Asses> asseses1 = new ArrayList<>();
-        asseses1.add(management.getAssesById("111"));
-        asseses1.add(management.getAssesById("112"));
+        asseses1.add(management.getAssesById("131"));
+        asseses1.add(management.getAssesById("75"));
 
         List<ResourceModel> find1 = poolingService.findToList(finds1);
         List<ResourceModel> fix1 = poolingService.fixToList(fixes1);
