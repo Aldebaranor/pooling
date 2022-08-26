@@ -77,8 +77,9 @@ public class PoolingController {
      */
     @Api
     @GetMapping(value = "/platform")
-    public Map<String, PlatformStatus> platform() {
-        return management.getAll();
+    public List<PlatformStatus> platform() {
+        PoolingCondition condition = new PoolingCondition();
+        return getPlatformList(condition);
     }
 
     /**
@@ -198,17 +199,6 @@ public class PoolingController {
     @GetMapping(value = "/platform/moveData/{platformId}")
     public PlatformMoveData platformMoveData(@PathVariable String platformId) {
         return management.getPlatformPool().get(platformId).getPlatformMoveData();
-    }
-
-    /**
-     * 获取资源池的平台信息
-     *
-     * @return
-     */
-    @Api
-    @GetMapping(value = "/all/platform")
-    public Map<String, Platform> platformPool() {
-        return management.getPlatformPool();
     }
 
 

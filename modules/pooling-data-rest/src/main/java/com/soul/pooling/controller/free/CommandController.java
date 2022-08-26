@@ -62,38 +62,40 @@ public class CommandController {
         if(CollectionUtils.isEmpty(command.getTargets())){
             return list;
         }
+        for(TargetData target:command.getTargets()){
+            KillingChain killingChain = new KillingChain();
+            killingChain.setTargetId(target.getInstId());
+            List<Find> finds = new ArrayList<>();
+            finds.add(management.getFindById("62"));
+            List<Fix> fixes = new ArrayList<>();
+            fixes.add(management.getFixById("62"));
+            List<Track> tracks = new ArrayList<>();
+            tracks.add(management.getTrackById("62"));
+            tracks.add(management.getTrackById("26"));
+            List<Engage> engages = new ArrayList<>();
+            engages.add(management.getEngageById("27"));
+            List<Asses> assesList = new ArrayList<>();
+            assesList.add(management.getAssesById("62"));
+            assesList.add(management.getAssesById("26"));
+
+            List<ResourceModel> find = poolingService.findToList(finds);
+            List<ResourceModel> fix = poolingService.fixToList(fixes);
+            List<ResourceModel> track = poolingService.trackToList(tracks);
+            List<ResourceModel> engage = poolingService.engageToList(engages);
+            List<ResourceModel> asses = poolingService.assesToList(assesList);
+
+            killingChain.setFind(find);
+            killingChain.setFix(fix);
+            killingChain.setTrack(track);
+            killingChain.setEngage(engage);
+            killingChain.setTarget(asses);
+            list.add(killingChain);
+        }
         //TODO修改数据库数据 wzs
-        KillingChain killingChain = new KillingChain();
-        killingChain.setTargetId(list.get(0).getTargetId());
-        List<Find> finds = new ArrayList<>();
-        finds.add(management.getFindById("125"));
-        List<Fix> fixes = new ArrayList<>();
-        fixes.add(management.getFixById("125"));
-        List<Track> tracks = new ArrayList<>();
-        tracks.add(management.getTrackById("125"));
-        tracks.add(management.getTrackById("72"));
-        List<Engage> engages = new ArrayList<>();
-        engages.add(management.getEngageById("83"));
-        List<Asses> assesList = new ArrayList<>();
-        assesList.add(management.getAssesById("125"));
-        assesList.add(management.getAssesById("72"));
-
-        List<ResourceModel> find = poolingService.findToList(finds);
-        List<ResourceModel> fix = poolingService.fixToList(fixes);
-        List<ResourceModel> track = poolingService.trackToList(tracks);
-        List<ResourceModel> engage = poolingService.engageToList(engages);
-        List<ResourceModel> asses = poolingService.assesToList(assesList);
-
-        killingChain.setFind(find);
-        killingChain.setFix(fix);
-        killingChain.setTrack(track);
-        killingChain.setEngage(engage);
-        killingChain.setTarget(asses);
 
 
 
 
-        list.add(killingChain);
         return list;
     }
 
