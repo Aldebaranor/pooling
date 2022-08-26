@@ -111,20 +111,32 @@ public class RangeTask {
         List<Engage> weapons = engageService.getByPlatformCode(platformId);
         for (Engage weapon : weapons) {
             //获取最大对太空火力范围
-            maxFireRangeSpace = (maxFireRangeSpace >
-                    weapon.getMaxFireRangeSpace()) ? maxFireRangeSpace : weapon.getMaxFireRangeSpace();
+            if( weapon.getMaxFireRangeSpace() != null){
+                maxFireRangeSpace = (maxFireRangeSpace >
+                        weapon.getMaxFireRangeSpace()) ? maxFireRangeSpace : weapon.getMaxFireRangeSpace();
+            }
             //获取最大对空火力范围
-            maxFireRangeAir = (maxFireRangeAir >
-                    weapon.getMaxFireRangeAir()) ? maxFireRangeAir : weapon.getMaxFireRangeAir();
+            if(weapon.getMaxFireRangeAir() != null){
+                maxFireRangeAir = (maxFireRangeAir >
+                        weapon.getMaxFireRangeAir()) ? maxFireRangeAir : weapon.getMaxFireRangeAir();
+            }
             //获取最大对陆火力范围
-            maxFireRangeLand = (maxFireRangeLand >
-                    weapon.getMaxFireRangeLand()) ? maxFireRangeLand : weapon.getMaxFireRangeLand();
+            if(weapon.getMaxFireRangeLand() != null){
+                maxFireRangeLand = (maxFireRangeLand >
+                        weapon.getMaxFireRangeLand()) ? maxFireRangeLand : weapon.getMaxFireRangeLand();
+            }
+
             //获取最大对海火力范围
-            maxFireRangeSea = (maxFireRangeSea >
-                    weapon.getMaxFireRangeSea()) ? maxFireRangeSea : weapon.getMaxFireRangeSea();
+            if(weapon.getMaxFireRangeSea() != null){
+                maxFireRangeSea = (maxFireRangeSea >
+                        weapon.getMaxFireRangeSea()) ? maxFireRangeSea : weapon.getMaxFireRangeSea();
+            }
             //获取最大对潜火力范围
-            maxFireRangeUnderSea = (maxFireRangeUnderSea >
-                    weapon.getMaxFireRangeUnderSea()) ? maxFireRangeUnderSea : weapon.getMaxFireRangeUnderSea();
+            if(weapon.getMaxFireRangeUnderSea() !=null){
+                maxFireRangeUnderSea = (maxFireRangeUnderSea >
+                        weapon.getMaxFireRangeUnderSea()) ? maxFireRangeUnderSea : weapon.getMaxFireRangeUnderSea();
+            }
+
         }
         list.add(maxFireRangeSpace);
         list.add(maxFireRangeAir);
