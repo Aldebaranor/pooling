@@ -62,7 +62,7 @@ public class PoolingManagement {
     public Map<String, PlatformStatus> getAll() {
         return forceStatusData;
     }
-    
+
 
     public Map<String, Platform> getPlatformPool() {
         return platformPool;
@@ -71,6 +71,8 @@ public class PoolingManagement {
     public Find getFindById(String id) {
         return findPool.get(id);
     }
+
+    //TODO添加平台经纬度
 
     public Fix getFixById(String id) {
         return fixPool.get(id);
@@ -177,7 +179,7 @@ public class PoolingManagement {
             result = result.stream().filter(q -> q.getMaxFireRangeLand() > 0).collect(Collectors.toList());
         }
         if (type == CommandType.ATTACK_UNDERSEA) {
-            result = result.stream().filter(q -> q.getMaxFireDepthUnderSea() > 0).collect(Collectors.toList());
+            result = result.stream().filter(q -> q.getMaxFireRangeUnderSea() > 0).collect(Collectors.toList());
         }
 
         return result;

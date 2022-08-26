@@ -57,7 +57,8 @@ public class CommandController {
     @Api
     @PostMapping("/mission")
     public List<KillingChain> getKillChain(@RequestBody CommandAttack command) {
-
+        //TODO 没有目标返回空
+        //TODO修改数据库数据
         KillingChain killingChain = new KillingChain();
         List<Find> finds = new ArrayList<>();
         finds.add(management.getFindById("109"));
@@ -154,17 +155,21 @@ public class CommandController {
     @PostMapping("/resource")
     public KillingChain getTargetResource(@RequestBody CommandAttack command) {
         CommandType type = CommandType.ATTACK;
-        if (command.getType() == 21) {
+        if (command.getType() == CommandType.ATTACK_AIR.getValue()) {
             type = CommandType.ATTACK_AIR;
-        } else if (command.getType() == 22) {
+        } else if (command.getType() == CommandType.ATTACK_SEA.getValue()) {
             type = CommandType.ATTACK_SEA;
-        } else if (command.getType() == 23) {
+        } else if (command.getType() == CommandType.ATTACK_LAND.getValue()) {
             type = CommandType.ATTACK_LAND;
-        } else if (command.getType() == 24) {
+        } else if (command.getType() == CommandType.ATTACK_UNDERSEA.getValue()) {
             type = CommandType.ATTACK_UNDERSEA;
+        } else if (command.getType() == 25) {
+            return null;
         } else {
-            log.info("commandType 错误，取值不在21，22，23，24");
+            log.info("commandType 错误，取值不在21，22，23，24，25");
+            return null;
         }
+        //TODO反水雷
 
         KillingChain killingChain = new KillingChain();
         List<ResourceModel> find = poolingService.findToList(management.getFindPool(type));
