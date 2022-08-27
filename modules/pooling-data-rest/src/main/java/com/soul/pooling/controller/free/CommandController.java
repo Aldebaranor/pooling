@@ -59,10 +59,10 @@ public class CommandController {
     @PostMapping("/mission")
     public List<KillingChain> getKillChain(@RequestBody CommandAttack command) {
         List<KillingChain> list = new ArrayList<>();
-        if(CollectionUtils.isEmpty(command.getTargets())){
+        if (CollectionUtils.isEmpty(command.getTargets())) {
             return list;
         }
-        for(TargetData target:command.getTargets()){
+        for (TargetData target : command.getTargets()) {
             KillingChain killingChain = new KillingChain();
             killingChain.setTargetId(target.getInstId());
             List<Find> finds = new ArrayList<>();
@@ -91,9 +91,6 @@ public class CommandController {
             killingChain.setTarget(asses);
             list.add(killingChain);
         }
-        //TODO修改数据库数据 wzs
-
-
 
 
         return list;
@@ -144,7 +141,7 @@ public class CommandController {
             log.info("commandType 错误，取值不在21，22，23，24，25");
             return null;
         }
-        //TODO反水雷
+        //TODO 反水雷
 
         KillingChain killingChain = new KillingChain();
         List<ResourceModel> find = poolingService.findToList(management.getFindPool(type));
