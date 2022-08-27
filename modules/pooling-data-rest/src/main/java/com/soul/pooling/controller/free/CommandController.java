@@ -8,6 +8,7 @@ import com.soul.pooling.service.EngageService;
 import com.soul.pooling.service.FindService;
 import com.soul.pooling.service.PoolingManagement;
 import com.soul.pooling.service.PoolingService;
+import com.soul.pooling.utils.GeometryUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -74,6 +75,7 @@ public class CommandController {
             tracks.add(management.getTrackById("26"));
             List<Engage> engages = new ArrayList<>();
             engages.add(management.getEngageById("27"));
+
             List<Asses> assesList = new ArrayList<>();
             assesList.add(management.getAssesById("62"));
             assesList.add(management.getAssesById("26"));
@@ -88,7 +90,8 @@ public class CommandController {
             killingChain.setFix(fix);
             killingChain.setTrack(track);
             killingChain.setEngage(engage);
-            killingChain.setTarget(asses);
+            killingChain.setAsses(asses);
+
             list.add(killingChain);
         }
 
@@ -112,7 +115,7 @@ public class CommandController {
         killingChain.setTrack(track);
         killingChain.setTarget(target);
         killingChain.setEngage(engage);
-        killingChain.setTarget(asses);
+        killingChain.setAsses(asses);
 
         return killingChain;
     }
@@ -164,6 +167,8 @@ public class CommandController {
         //2.筛选所有到AB最小距离小于其火力半径半径的武器资源
         //3.筛选所有到AB最小距离小于其探测半径的评估资源
 
+        int time = 200;
+
         for (TargetData targetData : command.getTargets()) {
             Point start = new Point();
             Point end = new Point();
@@ -172,6 +177,11 @@ public class CommandController {
 
             Double heading = targetData.getMoveDetect().getHeading();
             Double speed = targetData.getMoveDetect().getSpeed();
+            Double distance = speed * time;
+
+            end.setAlt(targetData.getMoveDetect().getAlt());
+            end.setLat(GeometryUtils.getTargetPoint(start.getLon(), start.getLat(), heading, distance).getX());
+            end.setLat(GeometryUtils.getTargetPoint(start.getLon(), start.getLat(), heading, distance).getX());
 
         }
 

@@ -297,31 +297,53 @@ public final class GeometryUtils {
 //        return minDis;
 //    }
 
-    public static int rgba2int(String s){
-        if(StringUtils.isBlank(s)){
+    /**
+     * @param lon      精度
+     * @param lat      维度
+     * @param a        方位角（弧度）
+     * @param distance 距离
+     * @return
+     */
+    public static Point getTargetPoint(double lon, double lat, double a, double distance) {
+        Point target = new Point();
+        double arc = EARTH_RADIUS * 1000;
+        lon += distance * Math.sin(a) / (arc * Math.cos(lat) * 2 * Math.PI / 360);
+        lat += distance * Math.cos(a) / (arc * 2 * Math.PI / 360);
+        target.setX(lon);
+        target.setY(lat);
+        return target;
+    }
+
+
+    public static int rgba2int(String s) {
+        if (StringUtils.isBlank(s)) {
             return 0;
         }
-        if(!s.startsWith("rgba(")||!s.endsWith(")")){
+        if (!s.startsWith("rgba(") || !s.endsWith(")")) {
             return 0;
         }
-        s = s.replace("rgba(","").replace(")","");
+        s = s.replace("rgba(", "").replace(")", "");
         String[] split = s.split(",");
-        if(split.length != 4){
+        if (split.length != 4) {
             return 0;
         }
         int r = Integer.valueOf(split[0].trim());
         int g = Integer.valueOf(split[1].trim());
         int b = Integer.valueOf(split[2].trim());
-        int a = (int)(255*Float.valueOf(split[3].trim()));
-        return ((a & 0xff) << 24) | ((r & 0xff) << 16) | ((g & 0xff) << 8) | (b & 0xff); }
-    public static int rgba2int(int r, int g, int b, int a){
-        return ((a & 0xff) << 24) | ((r & 0xff) << 16) | ((g & 0xff) << 8) | (b & 0xff); }
+        int a = (int) (255 * Float.valueOf(split[3].trim()));
+        return ((a & 0xff) << 24) | ((r & 0xff) << 16) | ((g & 0xff) << 8) | (b & 0xff);
+    }
+
+    public static int rgba2int(int r, int g, int b, int a) {
+        return ((a & 0xff) << 24) | ((r & 0xff) << 16) | ((g & 0xff) << 8) | (b & 0xff);
+    }
 
     @Data
     @NoArgsConstructor
     @AllArgsConstructor
     public static class Point implements Serializable {
 
+        private static final long serialVersionUID = 3978067069484497246L;
         private Double x;
         private Double y;
 
@@ -332,6 +354,7 @@ public final class GeometryUtils {
     @AllArgsConstructor
     public static class Line implements Serializable {
 
+        private static final long serialVersionUID = 1332673623527566216L;
         private Point p1 = new Point();
         private Point p2 = new Point();
 
