@@ -98,6 +98,7 @@ public class PoolingServiceImpl implements PoolingService {
             ResourceModel model = new ResourceModel();
             model.setId(engage.getId());
             model.setName(engage.getName());
+            model.setDeviceCode(engage.getDeviceCode());
             model.setType(engage.getType());
             model.setPlatformCode(engage.getPlatformCode());
             model.setPlatformName(engage.getPlatformName());
@@ -116,6 +117,7 @@ public class PoolingServiceImpl implements PoolingService {
             model.setId(asses.getId());
             model.setName(asses.getName());
             model.setType(asses.getType());
+            model.setDeviceCode(asses.getDeviceCode());
             model.setPlatformCode(asses.getPlatformCode());
             model.setPlatformName(asses.getPlatformName());
             model.setStatus(asses.getStatus());
