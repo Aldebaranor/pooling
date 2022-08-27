@@ -71,7 +71,7 @@ public class PoolingManagement {
     public Find getFindById(String id) {
         Find find = findPool.get(id);
         Platform platform = platformPool.get(find.getPlatformCode());
-        if(platform != null){
+        if(platform != null && platform.getPlatformMoveData() !=null){
             find.set("lon",platform.getPlatformMoveData().getLon());
             find.set("lat",platform.getPlatformMoveData().getLat());
             find.set("alt",platform.getPlatformMoveData().getAlt());
@@ -88,7 +88,7 @@ public class PoolingManagement {
     public Fix getFixById(String id) {
         Fix fix = fixPool.get(id);
         Platform platform = platformPool.get(fix.getPlatformCode());
-        if(platform != null){
+        if(platform != null && platform.getPlatformMoveData() !=null){
             fix.set("lon",platform.getPlatformMoveData().getLon());
             fix.set("lat",platform.getPlatformMoveData().getLat());
             fix.set("alt",platform.getPlatformMoveData().getAlt());
@@ -104,7 +104,7 @@ public class PoolingManagement {
     public Track getTrackById(String id) {
         Track track = trackPool.get(id);
         Platform platform = platformPool.get(track.getPlatformCode());
-        if(platform != null){
+        if(platform != null && platform.getPlatformMoveData() !=null){
             track.set("lon",platform.getPlatformMoveData().getLon());
             track.set("lat",platform.getPlatformMoveData().getLat());
             track.set("alt",platform.getPlatformMoveData().getAlt());
@@ -120,7 +120,7 @@ public class PoolingManagement {
     public Target getTargetById(String id) {
         Target target = targetPool.get(id);
         Platform platform = platformPool.get(target.getPlatformCode());
-        if(platform != null){
+        if(platform != null && platform.getPlatformMoveData() !=null ){
             target.set("lon",platform.getPlatformMoveData().getLon());
             target.set("lat",platform.getPlatformMoveData().getLat());
             target.set("alt",platform.getPlatformMoveData().getAlt());
@@ -136,7 +136,7 @@ public class PoolingManagement {
     public Engage getEngageById(String id) {
         Engage engage = engagePool.get(id);
         Platform platform = platformPool.get(engage.getPlatformCode());
-        if(platform != null){
+        if(platform != null && platform.getPlatformMoveData() !=null){
             engage.set("lon",platform.getPlatformMoveData().getLon());
             engage.set("lat",platform.getPlatformMoveData().getLat());
             engage.set("alt",platform.getPlatformMoveData().getAlt());
@@ -152,7 +152,7 @@ public class PoolingManagement {
     public Asses getAssesById(String id) {
         Asses asses = assesPool.get(id);
         Platform platform = platformPool.get(asses.getPlatformCode());
-        if(platform != null){
+        if(platform != null && platform.getPlatformMoveData() !=null){
             asses.set("lon",platform.getPlatformMoveData().getLon());
             asses.set("lat",platform.getPlatformMoveData().getLat());
             asses.set("alt",platform.getPlatformMoveData().getAlt());
