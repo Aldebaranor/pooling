@@ -4,8 +4,6 @@ import com.egova.web.annotation.Api;
 import com.soul.pooling.entity.*;
 import com.soul.pooling.entity.enums.CommandType;
 import com.soul.pooling.model.*;
-import com.soul.pooling.service.EngageService;
-import com.soul.pooling.service.FindService;
 import com.soul.pooling.service.PoolingManagement;
 import com.soul.pooling.service.PoolingService;
 import com.soul.pooling.utils.GeometryUtils;
@@ -30,12 +28,6 @@ public class CommandController {
 
     @Autowired
     private PoolingManagement management;
-
-    @Autowired
-    private FindService findService;
-
-    @Autowired
-    private EngageService engageService;
 
     @Autowired
     private PoolingService poolingService;

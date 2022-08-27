@@ -8,6 +8,8 @@ import org.springframework.data.redis.listener.KeyExpirationEventMessageListener
 import org.springframework.data.redis.listener.RedisMessageListenerContainer;
 import org.springframework.stereotype.Component;
 
+import java.text.SimpleDateFormat;
+
 /**
  * @Description:
  * @Author: nemo
@@ -36,7 +38,8 @@ public class RedisKeyExpirationListener extends KeyExpirationEventMessageListene
         String expiredKey = message.toString();
         if (expiredKey.contains(Constants.FORCE_HEAR)) {
             //有兵力注销，通知仿真引擎将对应的仿真节点退出
-            System.out.println("--------------" + expiredKey);
+            SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            System.out.println(df.format(System.currentTimeMillis()) + "--------------" + expiredKey);
             String id = expiredKey.replace(Constants.FORCE_HEAR, "");
             management.sendDisActivated(id);
             management.deleteForce(id);

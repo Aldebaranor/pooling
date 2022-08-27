@@ -12,11 +12,11 @@ import lombok.Data;
  */
 @Data
 @Condition
-@Display("平台")
+@Display("平台状态")
 public class PoolingCondition {
-    @Display("id")
-    @ConditionOperator(name = "id", operator = ClauseOperator.Equal)
-    private String id;
+    @Display("platformId")
+    @ConditionOperator(name = "platformId", operator = ClauseOperator.Equal)
+    private String platformId;
 
     @Display("编号")
     @ConditionOperator(name = "code", operator = ClauseOperator.Equal)
