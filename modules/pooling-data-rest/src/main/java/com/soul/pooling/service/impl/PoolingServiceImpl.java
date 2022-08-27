@@ -103,6 +103,7 @@ public class PoolingServiceImpl implements PoolingService {
             model.setPlatformCode(engage.getPlatformCode());
             model.setPlatformName(engage.getPlatformName());
             model.setStatus(engage.getStatus());
+            model.setNum(Integer.valueOf(engage.getNumber()));
             list.add(model);
         }
         return list;

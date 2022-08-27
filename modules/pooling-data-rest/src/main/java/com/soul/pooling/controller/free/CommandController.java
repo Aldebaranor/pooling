@@ -74,8 +74,9 @@ public class CommandController {
             tracks.add(management.getTrackById("62"));
             tracks.add(management.getTrackById("26"));
             List<Engage> engages = new ArrayList<>();
-            engages.add(management.getEngageById("27"));
-
+            Engage weapon = management.getEngageById("27");
+            weapon.setNumber("2");
+            engages.add(weapon);
             List<Asses> assesList = new ArrayList<>();
             assesList.add(management.getAssesById("62"));
             assesList.add(management.getAssesById("26"));
