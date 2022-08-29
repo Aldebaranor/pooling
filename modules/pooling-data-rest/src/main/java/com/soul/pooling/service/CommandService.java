@@ -1,5 +1,8 @@
 package com.soul.pooling.service;
 
+import com.soul.pooling.model.CommandAttack;
+import com.soul.pooling.model.KillingChain;
+
 /**
  * @Description: 资源池$
  * @Author: nemo
@@ -7,6 +10,11 @@ package com.soul.pooling.service;
  */
 
 public interface CommandService {
-    
+
+    KillingChain getTargetResource(CommandAttack command);
+
+    KillingChain getSquid();
+
+    KillingChain getAir(CommandAttack command);
 
 }

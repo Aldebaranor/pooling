@@ -2,11 +2,13 @@ package com.soul.pooling.controller.free;
 
 import com.egova.web.annotation.Api;
 import com.soul.pooling.entity.*;
-import com.soul.pooling.entity.enums.CommandType;
-import com.soul.pooling.model.*;
+import com.soul.pooling.model.CommandAttack;
+import com.soul.pooling.model.KillingChain;
+import com.soul.pooling.model.ResourceModel;
+import com.soul.pooling.model.TargetData;
+import com.soul.pooling.service.CommandService;
 import com.soul.pooling.service.PoolingManagement;
 import com.soul.pooling.service.PoolingService;
-import com.soul.pooling.utils.GeometryUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +33,9 @@ public class CommandController {
 
     @Autowired
     private PoolingService poolingService;
+
+    @Autowired
+    private CommandService commandService;
 
 
     /**
@@ -122,63 +127,8 @@ public class CommandController {
     @Api
     @PostMapping("/resource")
     public KillingChain getTargetResource(@RequestBody CommandAttack command) {
-        CommandType type = CommandType.ATTACK;
-        if (command.getType() == CommandType.ATTACK_AIR.getValue()) {
-            type = CommandType.ATTACK_AIR;
-        } else if (command.getType() == CommandType.ATTACK_SEA.getValue()) {
-            type = CommandType.ATTACK_SEA;
-        } else if (command.getType() == CommandType.ATTACK_LAND.getValue()) {
-            type = CommandType.ATTACK_LAND;
-        } else if (command.getType() == CommandType.ATTACK_UNDERSEA.getValue()) {
-            type = CommandType.ATTACK_UNDERSEA;
-        } else if (command.getType() == 25) {
-            return null;
-        } else {
-            log.info("commandType 错误，取值不在21，22，23，24，25");
-            return null;
-        }
-        //TODO 反水雷
 
-        KillingChain killingChain = new KillingChain();
-        List<ResourceModel> find = poolingService.findToList(management.getFindPool(type));
-        List<ResourceModel> fix = poolingService.fixToList(management.getFixPool(type));
-        List<ResourceModel> track = poolingService.trackToList(management.getTrackPool(type));
-        List<ResourceModel> target = poolingService.targetToList(management.getTargetPool(type));
-        List<ResourceModel> engage = poolingService.engageToList(management.getEngagePool(type));
-        List<ResourceModel> asses = poolingService.assesToList(management.getAssesPool(type));
-
-        killingChain.setFind(find);
-        killingChain.setFix(fix);
-        killingChain.setTrack(track);
-        killingChain.setTarget(target);
-        killingChain.setEngage(engage);
-        killingChain.setAsses(asses);
-
-        //0确定那个方面战，对空按照下面的逻辑
-        //1.根据每个目标当前位置A与 航向，航速外推200s得到B
-        //2.筛选所有到AB最小距离小于其探测半径的 发现，定位，跟踪资源
-        //2.筛选所有到AB最小距离小于其火力半径半径的武器资源
-        //3.筛选所有到AB最小距离小于其探测半径的评估资源
-
-        int time = 200;
-
-        for (TargetData targetData : command.getTargets()) {
-            Point start = new Point();
-            Point end = new Point();
-            start.setLon(targetData.getMoveDetect().getLon());
-            start.setLat(targetData.getMoveDetect().getLat());
-
-            Double heading = targetData.getMoveDetect().getHeading();
-            Double speed = targetData.getMoveDetect().getSpeed();
-            Double distance = speed * time;
-
-            end.setAlt(targetData.getMoveDetect().getAlt());
-            end.setLat(GeometryUtils.getTargetPoint(start.getLon(), start.getLat(), heading, distance).getX());
-            end.setLat(GeometryUtils.getTargetPoint(start.getLon(), start.getLat(), heading, distance).getX());
-
-        }
-
-        return killingChain;
+        return commandService.getTargetResource(command);
     }
 
 

@@ -252,25 +252,24 @@ public class PoolingController {
         }
 
         if (!StringUtils.isBlank(condition.getName())) {
-            List<PlatformStatus> selectList = new ArrayList<>();
-//            for (PlatformStatus platformStatus : list) {
-//                if (platformStatus.getName().contains(condition.getName())) {
-//                    selectList.add(platformStatus);
-//                }
-//            }
-//            list = selectList;
-            list = list.stream().filter(q -> q.getName().contains(condition.getName())).collect(Collectors.toList());
+
+            list = list.stream().filter(q -> q.getName() != null && q.getName().contains(condition.getName())).collect(Collectors.toList());
         }
         if (!StringUtils.isBlank(condition.getPlatformId())) {
-            list = list.stream().filter(q -> StringUtils.equals(condition.getPlatformId(), q.getPlatformId())).collect(Collectors.toList());
+
+
+            list = list.stream().filter(q -> q.getPlatformId() != null && StringUtils.equals(condition.getPlatformId(), q.getPlatformId())).collect(Collectors.toList());
 
         }
         if (condition.getActiveStatus() != null) {
-            list = list.stream().filter(q -> StringUtils.equals(condition.getActiveStatus().toString(), q.getActiveStatus().toString())).collect(Collectors.toList());
+
+
+            list = list.stream().filter(q -> q.getActiveStatus() != null && (q.getActiveStatus().equals(condition.getActiveStatus()))).collect(Collectors.toList());
 
         }
         if (!StringUtils.isBlank(condition.getType())) {
-            list = list.stream().filter(q -> StringUtils.equals(condition.getType(), q.getType())).collect(Collectors.toList());
+
+            list = list.stream().filter(q -> q.getType() != null && StringUtils.equals(condition.getType(), q.getType())).collect(Collectors.toList());
 
         }
         return list;
