@@ -2,6 +2,7 @@ package com.soul.pooling.controller.free;
 
 import com.egova.web.annotation.Api;
 import com.soul.pooling.entity.*;
+import com.soul.pooling.entity.enums.CommandType;
 import com.soul.pooling.model.CommandAttack;
 import com.soul.pooling.model.KillingChain;
 import com.soul.pooling.model.ResourceModel;
@@ -56,6 +57,9 @@ public class CommandController {
     @Api
     @PostMapping("/mission")
     public List<KillingChain> getKillChain(@RequestBody CommandAttack command) {
+        if (command.getType().equals(CommandType.ATTACK_AIR.getValue())) {
+            return commandService.getAir(command);
+        }
         List<KillingChain> list = new ArrayList<>();
         if (CollectionUtils.isEmpty(command.getTargets())) {
             return list;
