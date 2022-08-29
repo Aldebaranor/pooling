@@ -78,8 +78,8 @@ public class PoolingController {
     @Api
     @GetMapping(value = "/platform")
     public List<PlatformStatus> platform() {
-        PoolingCondition condition = new PoolingCondition();
-        return getPlatformList(condition);
+        
+        return getPlatformList(null);
     }
 
     /**
