@@ -78,7 +78,7 @@ public class PoolingController {
     @Api
     @GetMapping(value = "/platform")
     public List<PlatformStatus> platform() {
-        
+
         return getPlatformList(null);
     }
 
@@ -252,13 +252,20 @@ public class PoolingController {
         }
 
         if (!StringUtils.isBlank(condition.getName())) {
+            List<PlatformStatus> selectList = new ArrayList<>();
+//            for (PlatformStatus platformStatus : list) {
+//                if (platformStatus.getName().contains(condition.getName())) {
+//                    selectList.add(platformStatus);
+//                }
+//            }
+//            list = selectList;
             list = list.stream().filter(q -> q.getName().contains(condition.getName())).collect(Collectors.toList());
         }
         if (!StringUtils.isBlank(condition.getPlatformId())) {
             list = list.stream().filter(q -> StringUtils.equals(condition.getPlatformId(), q.getPlatformId())).collect(Collectors.toList());
 
         }
-        if (!StringUtils.isBlank(condition.getActiveStatus().toString())) {
+        if (condition.getActiveStatus() != null) {
             list = list.stream().filter(q -> StringUtils.equals(condition.getActiveStatus().toString(), q.getActiveStatus().toString())).collect(Collectors.toList());
 
         }
