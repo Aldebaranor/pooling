@@ -24,9 +24,6 @@ public class DisConnJob {
     @Autowired
     public PoolingManagement poolingManagement;
 
-    @Autowired
-    private PoolingManagement management;
-
     @Scheduled(fixedDelayString = "5000" )
     public void disConnect(){
 
@@ -38,8 +35,8 @@ public class DisConnJob {
                 //有兵力注销，通知仿真引擎将对应的仿真节点退出
             SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             System.out.println(df.format(System.currentTimeMillis()) + "--------------" + key);
-            management.sendDisActivated(entry.getKey());
-            management.deleteForce(entry.getKey());
+                poolingManagement.sendDisActivated(entry.getKey());
+                poolingManagement.deleteForce(entry.getKey());
             }
         }
 
