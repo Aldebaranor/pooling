@@ -1,12 +1,10 @@
 package com.soul.pooling.controller.free;
 
 import com.egova.web.annotation.Api;
+import com.flagwind.commons.StringUtils;
 import com.soul.pooling.entity.*;
 import com.soul.pooling.entity.enums.CommandType;
-import com.soul.pooling.model.CommandAttack;
-import com.soul.pooling.model.KillingChain;
-import com.soul.pooling.model.ResourceModel;
-import com.soul.pooling.model.TargetData;
+import com.soul.pooling.model.*;
 import com.soul.pooling.service.CommandService;
 import com.soul.pooling.service.PoolingManagement;
 import com.soul.pooling.service.PoolingService;
@@ -67,6 +65,8 @@ public class CommandController {
         for (TargetData target : command.getTargets()) {
             KillingChain killingChain = new KillingChain();
             killingChain.setTargetId(target.getInstId());
+            killingChain.setTargetName(target.getName());
+
             List<Find> finds = new ArrayList<>();
             finds.add(management.getFindById("62"));
             List<Fix> fixes = new ArrayList<>();
@@ -100,6 +100,42 @@ public class CommandController {
 
         return list;
     }
+
+    @Api
+    @PostMapping("/mission-search")
+    public List<KillingChain> getKillChain(@RequestBody CommandSearch command) {
+        List<KillingChain> list = new ArrayList<>();
+        if (CollectionUtils.isEmpty(command.getPolygons())) {
+            return list;
+        }
+        for (Polygon polygon : command.getPolygons()) {
+            KillingChain killingChain = new KillingChain();
+            killingChain.setTargetName(polygon.getName());
+            killingChain.setPolygon(polygon);
+            List<Find> finds = new ArrayList<>();
+            if(StringUtils.equals(polygon.getName(),"area_4")){
+                finds.add(management.getFindById("132"));
+                finds.add(management.getFindById("95"));
+            }
+            if(StringUtils.equals(polygon.getName(),"area_1")){
+                finds.add(management.getFindById("135"));
+                finds.add(management.getFindById("136"));
+                finds.add(management.getFindById("139"));
+                finds.add(management.getFindById("96"));
+                finds.add(management.getFindById("100"));
+                finds.add(management.getFindById("97"));
+                finds.add(management.getFindById("98"));
+            }
+            List<ResourceModel> find = poolingService.findToList(finds);
+            killingChain.setFind(find);
+            list.add(killingChain);
+
+
+        }
+        return list;
+
+    }
+
 
     @Api
     @GetMapping(value = "/resource/get")

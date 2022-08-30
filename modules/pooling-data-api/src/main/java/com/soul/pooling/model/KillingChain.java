@@ -17,6 +17,10 @@ public class KillingChain implements Serializable {
 
     private String targetId;
 
+    private String targetName;
+
+    private Polygon polygon;
+
     private List<ResourceModel> find;
 
     private List<ResourceModel> fix;

@@ -16,6 +16,8 @@ public class TargetData implements Serializable {
     private static final long serialVersionUID = -5367064915578563512L;
     //目标ID
     private String instId;
+
+    private String name;
     //目标类型
     private String type;
 
