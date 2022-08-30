@@ -1664,4 +1664,22 @@
     </changeSet>
 
 
+    <changeSet author="41656 (generated)" id="1647400803042-139">
+        <preConditions>
+            <not>
+                <columnExists tableName="pooling_platform" columnName="beRealEquipment"/>
+            </not>
+            <not>
+                <columnExists tableName="pooling_platform" columnName="beMineSweep"/>
+            </not>
+        </preConditions>
+        <addColumn tableName="pooling_platform">
+            <column name="beRealEquipment" remarks="是否实装" type="BOOLEAN"></column>
+        </addColumn>
+        <addColumn tableName="pooling_platform">
+            <column name="beMineSweep" remarks="是否扫雷" type="BOOLEAN"></column>
+        </addColumn>
+    </changeSet>
+
+
 </databaseChangeLog>

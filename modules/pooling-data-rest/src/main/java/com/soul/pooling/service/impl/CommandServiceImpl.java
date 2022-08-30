@@ -2,7 +2,6 @@ package com.soul.pooling.service.impl;
 
 
 import com.soul.pooling.entity.Find;
-import com.soul.pooling.entity.Platform;
 import com.soul.pooling.entity.enums.CommandType;
 import com.soul.pooling.model.*;
 import com.soul.pooling.service.CommandService;
@@ -16,7 +15,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -37,23 +35,14 @@ public class CommandServiceImpl implements CommandService {
     @Override
     public KillingChain getTargetResource(CommandAttack command) {
 
-        CommandType type = CommandType.ATTACK;
-        if (command.getType() == CommandType.ATTACK_AIR.getValue()) {
-            type = CommandType.ATTACK_AIR;
-        } else if (command.getType() == CommandType.ATTACK_SEA.getValue()) {
-            type = CommandType.ATTACK_SEA;
-        } else if (command.getType() == CommandType.ATTACK_LAND.getValue()) {
-            type = CommandType.ATTACK_LAND;
-        } else if (command.getType() == CommandType.ATTACK_UNDERSEA.getValue()) {
-            type = CommandType.ATTACK_UNDERSEA;
-        } else if (command.getType() == 25) {
+
+        if (command.getType() == 25) {
             return getSquid();
         } else if (command.getType() == CommandType.SEARCH.getValue()) {
             return getSearchResource();
-        } else {
-            log.info("commandType 错误，取值不在21，22，23，24，25");
-            return null;
         }
+        CommandType type = getCommandTpye(command);
+
         KillingChain killingChain = new KillingChain();
         List<ResourceModel> find = poolingService.findToList(management.getFindPool(type));
         List<ResourceModel> fix = poolingService.fixToList(management.getFixPool(type));
@@ -98,7 +87,7 @@ public class CommandServiceImpl implements CommandService {
     @Override
     public KillingChain getSearchResource() {
         KillingChain killingChain = new KillingChain();
-        List<ResourceModel> find = poolingService.findToList(management.getFindPool(null).stream().filter(q -> q.getName().contains("-S")).collect(Collectors.toList()));
+        List<ResourceModel> find = poolingService.findToList(management.getFindPool(null).stream().filter(q -> management.getPlatformPool().get(q.getPlatformCode()).getBeMineSweep().equals(true)).collect(Collectors.toList()));
 
         killingChain.setFind(find);
         killingChain.setFix(null);
@@ -138,23 +127,23 @@ public class CommandServiceImpl implements CommandService {
             end.setY(GeometryUtils.getTargetPoint(start.getX(), start.getY(), heading, distance).getY());
 
 //            List<ResourceModel> find = poolingService.findToList(management.getFindPool(CommandType.ATTACK_AIR).stream().filter(p -> p.getMaxDetectRangeAir() > GeometryUtils.minDistanceFromPointToLine(start, end, moveData2Point(management.getPlatformPool().get(p.getPlatformCode()).getPlatformMoveData()))).collect(Collectors.toList()));
-            List<ResourceModel> find = getFindAir(start, end);
+            List<ResourceModel> find = getFind(start, end, command);
             killingChain.setFind(find);
 
-            List<ResourceModel> fix = poolingService.fixToList(management.getFixPool(CommandType.ATTACK_AIR).stream().filter(p -> p.getMaxDetectRangeAir() > GeometryUtils.minDistanceFromPointToLine(start, end, moveData2Point(management.getPlatformPool().get(p.getPlatformCode()).getPlatformMoveData()))).collect(Collectors.toList()));
-            killingChain.setFix(fix);
-
-            List<ResourceModel> track = poolingService.trackToList(management.getTrackPool(CommandType.ATTACK_AIR).stream().filter(p -> p.getMaxDetectRangeAir() > GeometryUtils.minDistanceFromPointToLine(start, end, moveData2Point(management.getPlatformPool().get(p.getPlatformCode()).getPlatformMoveData()))).collect(Collectors.toList()));
-            killingChain.setTrack(track);
-
-            List<ResourceModel> target = poolingService.targetToList(management.getTargetPool(CommandType.ATTACK_AIR));
-            killingChain.setTarget(target);
-
-            List<ResourceModel> engage = poolingService.engageToList(management.getEngagePool(CommandType.ATTACK_AIR).stream().filter(p -> p.getMaxFireRangeAir() > GeometryUtils.minDistanceFromPointToLine(start, end, moveData2Point(management.getPlatformPool().get(p.getPlatformCode()).getPlatformMoveData()))).collect(Collectors.toList()));
-            killingChain.setEngage(engage);
-
-            List<ResourceModel> asses = poolingService.assesToList(management.getAssesPool(CommandType.ATTACK_AIR).stream().filter(p -> p.getMaxDetectRangeAir() > GeometryUtils.minDistanceFromPointToLine(start, end, moveData2Point(management.getPlatformPool().get(p.getPlatformCode()).getPlatformMoveData()))).collect(Collectors.toList()));
-            killingChain.setAsses(asses);
+//            List<ResourceModel> fix = poolingService.fixToList(management.getFixPool(CommandType.ATTACK_AIR).stream().filter(p -> p.getMaxDetectRangeAir() > GeometryUtils.minDistanceFromPointToLine(start, end, moveData2Point(management.getPlatformPool().get(p.getPlatformCode()).getPlatformMoveData()))).collect(Collectors.toList()));
+//            killingChain.setFix(fix);
+//
+//            List<ResourceModel> track = poolingService.trackToList(management.getTrackPool(CommandType.ATTACK_AIR).stream().filter(p -> p.getMaxDetectRangeAir() > GeometryUtils.minDistanceFromPointToLine(start, end, moveData2Point(management.getPlatformPool().get(p.getPlatformCode()).getPlatformMoveData()))).collect(Collectors.toList()));
+//            killingChain.setTrack(track);
+//
+//            List<ResourceModel> target = poolingService.targetToList(management.getTargetPool(CommandType.ATTACK_AIR));
+//            killingChain.setTarget(target);
+//
+//            List<ResourceModel> engage = poolingService.engageToList(management.getEngagePool(CommandType.ATTACK_AIR).stream().filter(p -> p.getMaxFireRangeAir() > GeometryUtils.minDistanceFromPointToLine(start, end, moveData2Point(management.getPlatformPool().get(p.getPlatformCode()).getPlatformMoveData()))).collect(Collectors.toList()));
+//            killingChain.setEngage(engage);
+//
+//            List<ResourceModel> asses = poolingService.assesToList(management.getAssesPool(CommandType.ATTACK_AIR).stream().filter(p -> p.getMaxDetectRangeAir() > GeometryUtils.minDistanceFromPointToLine(start, end, moveData2Point(management.getPlatformPool().get(p.getPlatformCode()).getPlatformMoveData()))).collect(Collectors.toList()));
+//            killingChain.setAsses(asses);
 
             list.add(killingChain);
         }
@@ -170,17 +159,34 @@ public class CommandServiceImpl implements CommandService {
         return point;
     }
 
+    public CommandType getCommandTpye(CommandAttack command) {
+        CommandType type = CommandType.ATTACK;
+        if (command.getType() == CommandType.ATTACK_AIR.getValue()) {
+            type = CommandType.ATTACK_AIR;
+        } else if (command.getType() == CommandType.ATTACK_SEA.getValue()) {
+            type = CommandType.ATTACK_SEA;
+        } else if (command.getType() == CommandType.ATTACK_LAND.getValue()) {
+            type = CommandType.ATTACK_LAND;
+        } else if (command.getType() == CommandType.ATTACK_UNDERSEA.getValue()) {
+            type = CommandType.ATTACK_UNDERSEA;
+        } else {
+            log.info("commandType 错误，取值不在21，22，23，24");
+            return null;
+        }
+        return type;
+    }
 
-    public List<ResourceModel> getFindAir(GeometryUtils.Point start, GeometryUtils.Point end) {
+
+    public List<ResourceModel> getFind(GeometryUtils.Point start, GeometryUtils.Point end, CommandAttack command) {
         List<Find> list = new ArrayList<>();
-        List<Find> finds = management.getFindPool(CommandType.ATTACK_AIR);
-        Map<String, Platform> platforms = management.getPlatformPool();
+        List<Find> finds = management.getFindPool(getCommandTpye(command));
+
         for (Find find : finds) {
-            PlatformMoveData moveData = platforms.get(find.getPlatformCode()).getPlatformMoveData();
+            PlatformMoveData moveData = management.getPlatformPool().get(find.getPlatformCode()).getPlatformMoveData();
             if (moveData != null) {
                 GeometryUtils.Point point = moveData2Point(moveData);
 
-                double distance = GeometryUtils.minDistanceFromPointToLine(start, end, point);
+                double distance = GeometryUtils.minDistanceFromPointToLine(start, end, point) / 1000;
                 if (find.getMaxDetectRangeAir() > distance) {
                     list.add(find);
                 }

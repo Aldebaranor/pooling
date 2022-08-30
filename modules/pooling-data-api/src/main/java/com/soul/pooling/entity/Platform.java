@@ -55,6 +55,14 @@ public class Platform extends BaseEntity {
     @Column(name = "status")
     private int status;
 
+    @Display("是否实装")
+    @Column(name = "beRealEquipment")
+    private Boolean beRealEquipment;
+
+    @Display("是否扫雷")
+    @Column(name = "beMineSweep")
+    private Boolean beMineSweep;
+
     @Transient
     @Display("位置信息")
     @Column(name = "moveData")
