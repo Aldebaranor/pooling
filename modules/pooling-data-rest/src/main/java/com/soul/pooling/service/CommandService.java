@@ -23,6 +23,6 @@ public interface CommandService {
 
     GeometryUtils.Point moveData2Point(PlatformMoveData moveData);
 
-    List<KillingChain> getAir(CommandAttack command);
+    List<KillingChain> getKillChain(CommandAttack command);
 
 }
