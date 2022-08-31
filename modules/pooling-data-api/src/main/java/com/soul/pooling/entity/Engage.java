@@ -56,7 +56,11 @@ public class Engage extends BaseEntity {
 
     @Display("数量")
     @Column(name = "number")
-    private String number;
+    private Integer number;
+
+    @Display("命中概率")
+    @Column(name = "hitRate")
+    private Float hitRate;
 
     //2022_08_18新增字段
 
@@ -94,9 +98,6 @@ public class Engage extends BaseEntity {
     @Column(name = "minFireHeightLand")
     private Float minFireHeightLand;
 
-    @Display("命中概率_陆")
-    @Column(name = "hitRateLand")
-    private Float hitRateLand;
     //海
     @Display("最大射程_海")
     @Column(name = "maxFireRangeSea")
@@ -114,9 +115,6 @@ public class Engage extends BaseEntity {
     @Column(name = "minFireHeightSea")
     private Float minFireHeightSea;
 
-    @Display("命中概率_海")
-    @Column(name = "hitRateSea")
-    private Float hitRateSea;
     //空
     @Display("最大射程_空")
     @Column(name = "maxFireRangeAir")
@@ -134,9 +132,6 @@ public class Engage extends BaseEntity {
     @Column(name = "minFireHeightAir")
     private Float minFireHeightAir;
 
-    @Display("命中概率_空")
-    @Column(name = "hitRateAir")
-    private Float hitRateAir;
     //天
     @Display("最大射程_天")
     @Column(name = "maxFireRangeSpace")
@@ -154,9 +149,6 @@ public class Engage extends BaseEntity {
     @Column(name = "minFireHeightSpace")
     private Float minFireHeightSpace;
 
-    @Display("命中概率_天")
-    @Column(name = "hitRateSpace")
-    private Float hitRateSpace;
     //潜
     @Display("最大射程_潜")
     @Column(name = "maxFireRangeUnderSea")
@@ -174,8 +166,7 @@ public class Engage extends BaseEntity {
     @Column(name = "minFireDepthUnderSea")
     private Float minFireDepthUnderSea;
 
-    @Display("命中概率_潜")
-    @Column(name = "hitRateUnderSea")
-    private Float hitRateUnderSea;
-
+    @Transient
+    @Display("距目标距离")
+    private Double distance;
 }

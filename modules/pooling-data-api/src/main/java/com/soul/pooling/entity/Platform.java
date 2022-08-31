@@ -65,7 +65,6 @@ public class Platform extends BaseEntity {
 
     @Transient
     @Display("位置信息")
-    @Column(name = "moveData")
     private PlatformMoveData platformMoveData;
 
     @Transient

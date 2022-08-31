@@ -1681,5 +1681,15 @@
         </addColumn>
     </changeSet>
 
+    <changeSet author="41656 (generated)" id="1647400803042-140">
+        <renameColumn tableName="pooling_engage" oldColumnName="number" newColumnName="number"
+                      columnDataType="INT"/>
+        <dropColumn tableName="pooling_engage" columnName="hitRateLand"/>
+        <dropColumn tableName="pooling_engage" columnName="hitRateSea"/>
+        <dropColumn tableName="pooling_engage" columnName="hitRateAir"/>
+        <dropColumn tableName="pooling_engage" columnName="hitRateSpace"/>
+        <dropColumn tableName="pooling_engage" columnName="hitRateUnderSea"/>
+    </changeSet>
+
 
 </databaseChangeLog>

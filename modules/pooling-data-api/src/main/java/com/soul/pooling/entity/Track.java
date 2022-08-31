@@ -221,4 +221,8 @@ public class Track extends BaseEntity {
     @Display("设备状态")
     private ResourceStatus status;
 
+    @Transient
+    @Display("距目标距离")
+    private Double distance;
+
 }

@@ -35,6 +35,12 @@ public class CommandController {
     @Autowired
     private CommandService commandService;
 
+    @Api
+    @PostMapping("/mission/test")
+    public List<KillingChain> getKillChainTest(@RequestBody CommandAttack command) {
+        return commandService.getKillChain(command);
+    }
+
 
     @Api
     @PostMapping("/mission")
@@ -58,7 +64,7 @@ public class CommandController {
             tracks.add(management.getTrackById("26"));
             List<Engage> engages = new ArrayList<>();
             Engage weapon = management.getEngageById("27");
-            weapon.setNumber("2");
+            weapon.setNumber(2);
             engages.add(weapon);
             List<Asses> assesList = new ArrayList<>();
             assesList.add(management.getAssesById("62"));

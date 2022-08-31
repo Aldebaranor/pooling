@@ -218,5 +218,9 @@ public class Find extends BaseEntity {
     @Column(name = "precisionUnderSea")
     private Float precisionUnderSea;
 
+    @Transient
+    @Display("距目标距离")
+    private Double distance;
+
 
 }

@@ -48,5 +48,9 @@ public class Target extends BaseEntity {
     @Column(name = "platformName")
     private String platformName;
 
+    @Transient
+    @Display("距目标距离")
+    private Double distance;
+
 
 }
