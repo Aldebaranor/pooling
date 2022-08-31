@@ -261,6 +261,9 @@ public class PoolingController {
             list = list.stream().filter(q -> q.getPlatformId() != null && StringUtils.equals(condition.getPlatformId(), q.getPlatformId())).collect(Collectors.toList());
 
         }
+        if (!StringUtils.isBlank(condition.getCode())) {
+            list = list.stream().filter(q -> q.getCode() != null && q.getCode().equals(condition.getCode())).collect(Collectors.toList());
+        }
         if (condition.getActiveStatus() != null) {
 
 
