@@ -209,7 +209,6 @@ public class CommandServiceImpl implements CommandService {
             List<ResourceModel> killChainAsses = new ArrayList<>();
 
             KillingChain killingChain = new KillingChain();
-            killingChain.setTargetId(targetData.getInstId());
 
             GeometryUtils.Point start = new GeometryUtils.Point();
             GeometryUtils.Point end = new GeometryUtils.Point();
@@ -226,8 +225,11 @@ public class CommandServiceImpl implements CommandService {
 
 //            选择离A点最近的find资源
             for (ResourceModel model : getFind(start, command)) {
-                if (!find.contains(model)) {
-                    find.add(model);
+                //排除J-15
+                if (!model.getPlatformName().contains("J-15")) {
+                    if (!find.contains(model)) {
+                        find.add(model);
+                    }
                 }
             }
             if (find.size() != 0) {
@@ -236,8 +238,11 @@ public class CommandServiceImpl implements CommandService {
 
 //            选择离A点最近的fix
             for (ResourceModel model : getFix(start, command)) {
-                if (!fix.contains(model)) {
-                    fix.add(model);
+                //排除J-15
+                if (!model.getPlatformName().contains("J-15")) {
+                    if (!fix.contains(model)) {
+                        fix.add(model);
+                    }
                 }
             }
             if (fix.size() != 0) {
@@ -245,8 +250,11 @@ public class CommandServiceImpl implements CommandService {
             }
 //            选择离A点最近的track
             for (ResourceModel model : getTrack(start, end, command)) {
-                if (!track.contains(model)) {
-                    track.add(model);
+                //排除J-15
+                if (!model.getPlatformName().contains("J-15")) {
+                    if (!track.contains(model)) {
+                        track.add(model);
+                    }
                 }
             }
             if (track.size() != 0) {
@@ -255,8 +263,11 @@ public class CommandServiceImpl implements CommandService {
 
             //TODO 选target
             for (ResourceModel model : getTarget(start, end, command)) {
-                if (!target.contains(model)) {
-                    target.add(model);
+                //排除J-15
+                if (!model.getPlatformName().contains("J-15")) {
+                    if (!target.contains(model)) {
+                        target.add(model);
+                    }
                 }
             }
             if (target.size() != 0) {
@@ -264,9 +275,12 @@ public class CommandServiceImpl implements CommandService {
             }
 
 //            按武器所在位置距离A的距离排序，排序得到前两个武器
-            for (ResourceModel model : getEngage(start, command)) {
-                if (!engage.contains(model)) {
-                    engage.add(model);
+            for (ResourceModel model : getEngage(start, end, command)) {
+                //排除J-15
+                if (!model.getPlatformName().contains("J-15")) {
+                    if (!engage.contains(model)) {
+                        engage.add(model);
+                    }
                 }
             }
 //            在前两个中根据先余弹量后距离排序选出一个的武器进行打击，根据命中概率计算需要几发弹
@@ -285,8 +299,11 @@ public class CommandServiceImpl implements CommandService {
 
 //            选择离B点最近的asses
             for (ResourceModel model : getAsses(end, command)) {
-                if (!asses.contains(model)) {
-                    asses.add(model);
+                //排除J-15
+                if (!model.getPlatformName().contains("J-15")) {
+                    if (!asses.contains(model)) {
+                        asses.add(model);
+                    }
                 }
             }
             if (asses.size() != 0) {
@@ -301,6 +318,8 @@ public class CommandServiceImpl implements CommandService {
             killingChain.setEngage(killChainEngage);
             killingChain.setAsses(killChainAsses);
 
+            killingChain.setTargetId(targetData.getInstId());
+            killingChain.setTargetName(targetData.getName());
 
             list.add(killingChain);
         }
