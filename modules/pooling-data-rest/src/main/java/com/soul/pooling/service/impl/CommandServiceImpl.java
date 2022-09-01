@@ -127,6 +127,7 @@ public class CommandServiceImpl implements CommandService {
                 killingChain.setTarget(target);
                 killingChain.setEngage(engage);
                 killingChain.setAsses(asses);
+                killingChain.setCommandType(command.getType());
 
             }
         }
@@ -320,6 +321,7 @@ public class CommandServiceImpl implements CommandService {
 
             killingChain.setTargetId(targetData.getInstId());
             killingChain.setTargetName(targetData.getName());
+            killingChain.setCommandType(command.getType());
 
             list.add(killingChain);
         }

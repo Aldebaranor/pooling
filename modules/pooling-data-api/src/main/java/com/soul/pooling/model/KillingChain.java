@@ -21,6 +21,8 @@ public class KillingChain implements Serializable {
 
     private Polygon polygon;
 
+    private Integer commandType;
+
     private List<ResourceModel> find;
 
     private List<ResourceModel> fix;
@@ -32,8 +34,6 @@ public class KillingChain implements Serializable {
     private List<ResourceModel> engage;
 
     private List<ResourceModel> asses;
-
-
 
 
 }
