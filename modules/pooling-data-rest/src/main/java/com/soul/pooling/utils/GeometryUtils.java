@@ -301,14 +301,14 @@ public final class GeometryUtils {
      * @param lon      精度
      * @param lat      维度
      * @param a        方位角（弧度）
-     * @param distance 距离
+     * @param distance 距离 m
      * @return
      */
     public static Point getTargetPoint(double lon, double lat, double a, double distance) {
         Point target = new Point();
         double arc = EARTH_RADIUS * 1000;
-        lon += distance * Math.sin(a) / (arc * Math.cos(lat) * 2 * Math.PI / 360);
-        lat += distance * Math.cos(a) / (arc * 2 * Math.PI / 360);
+        lon += distance * Math.sin(a * 2 * Math.PI / 360) / (arc * Math.cos(lat * Math.PI * 2 / 360) * 2 * Math.PI / 360);
+        lat += distance * Math.cos(a * 2 * Math.PI / 360) / (arc * 2 * Math.PI / 360);
         target.setX(lon);
         target.setY(lat);
         return target;

@@ -352,10 +352,13 @@ public class PoolingManagement {
             status.setPlatformId(id);
             status.setInitStatus(true);
             status.setActiveStatus(false);
-            Platform platform = platformService.seekById(id);
-            status.setCode(platform.getCode());
-            status.setName(platform.getName());
-            status.setType(platform.getType());
+            Platform platform = platformService.getById(id);
+            if (platform != null) {
+                status.setCode(platform.getCode());
+                status.setName(platform.getName());
+                status.setType(platform.getType());
+            }
+
             forceStatusData.put(id, status);
             log.info("--->兵力" + id + "初始化成功");
 
