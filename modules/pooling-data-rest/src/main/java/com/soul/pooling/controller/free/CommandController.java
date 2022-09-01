@@ -37,14 +37,14 @@ public class CommandController {
 
     @Api
     @PostMapping("/mission")
-    public List<KillingChain> getKillChainTest(@RequestBody CommandAttack command) {
+    public List<KillingChain> getKillChain(@RequestBody CommandAttack command) {
         return commandService.getKillChain(command);
     }
 
 
     @Api
-    @PostMapping("/mission/test")
-    public List<KillingChain> getKillChain(@RequestBody CommandAttack command) {
+    @PostMapping("/mission/fake")
+    public List<KillingChain> getKillChainFake(@RequestBody CommandAttack command) {
 
         List<KillingChain> list = new ArrayList<>();
         if (CollectionUtils.isEmpty(command.getTargets())) {

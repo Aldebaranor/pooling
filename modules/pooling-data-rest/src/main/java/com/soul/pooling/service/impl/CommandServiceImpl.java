@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -174,6 +175,9 @@ public class CommandServiceImpl implements CommandService {
     @Override
     public List<KillingChain> getKillChain(CommandAttack command) {
 
+        if (command.getType() == 25) {
+            return mineSweep(command);
+        }
 
         /**
          * 智能调度
@@ -335,6 +339,61 @@ public class CommandServiceImpl implements CommandService {
         point.setX(moveData.getLon());
         point.setY(moveData.getLat());
         return point;
+    }
+
+    public List<KillingChain> mineSweep(CommandAttack command) {
+        List<KillingChain> list = new ArrayList<>();
+        if (CollectionUtils.isEmpty(command.getTargets())) {
+            return list;
+        }
+//        81,86,87
+        String[] light = {"162", "167", "168"};
+        String[] sona = {"88", "93", "94"};
+        String[] boom = {"102", "107", "108"};
+        int num = 0;
+        for (TargetData target : command.getTargets()) {
+            KillingChain killingChain = new KillingChain();
+            killingChain.setTargetId(target.getInstId());
+            killingChain.setTargetName(target.getName());
+
+            List<Find> finds = new ArrayList<>();
+            finds.add(management.getFindById(light[num % 3]));
+            finds.add(management.getFindById(sona[num % 3]));
+
+            List<Fix> fixes = new ArrayList<>();
+            fixes.add(management.getFixById(sona[num % 3]));
+
+            List<Track> tracks = new ArrayList<>();
+            tracks.add(management.getTrackById(sona[num % 3]));
+
+            List<Engage> engages = new ArrayList<>();
+            Engage weapon = management.getEngageById(boom[num % 3]);
+            weapon.setNumber(1);
+            engages.add(weapon);
+            List<Asses> assesList = new ArrayList<>();
+            assesList.add(management.getAssesById(light[num % 3]));
+            assesList.add(management.getAssesById(sona[num % 3]));
+            num++;
+
+            List<ResourceModel> find = poolingService.findToList(finds);
+            List<ResourceModel> fix = poolingService.fixToList(fixes);
+            List<ResourceModel> track = poolingService.trackToList(tracks);
+            List<ResourceModel> engage = poolingService.engageToList(engages);
+            List<ResourceModel> asses = poolingService.assesToList(assesList);
+
+            killingChain.setTargetName(target.getName());
+            killingChain.setCommandType(command.getType());
+            killingChain.setFind(find);
+            killingChain.setFix(fix);
+            killingChain.setTrack(track);
+            killingChain.setEngage(engage);
+            killingChain.setAsses(asses);
+
+            list.add(killingChain);
+        }
+
+
+        return list;
     }
 
     public CommandType getCommandTpye(CommandAttack command) {
