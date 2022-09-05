@@ -67,6 +67,7 @@ public class PoolingManagement {
     public Map<String, Platform> getPlatformPool() {
         return platformPool;
     }
+    
 
     public Find getFindById(String id) {
         Find find = findPool.get(id);

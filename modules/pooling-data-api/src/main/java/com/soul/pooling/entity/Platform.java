@@ -66,7 +66,7 @@ public class Platform extends BaseEntity {
     @Transient
     @Display("位置信息")
     private PlatformMoveData platformMoveData;
-
+    
     @Transient
     @JoinColumn(name = "code")
     @OneToMany(targetEntity = Sensor.class, mappedBy = "platformCode")

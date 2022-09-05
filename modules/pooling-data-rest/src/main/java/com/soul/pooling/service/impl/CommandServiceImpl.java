@@ -12,7 +12,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -49,7 +48,7 @@ public class CommandServiceImpl implements CommandService {
         } else if (command.getType() == CommandType.SEARCH.getValue()) {
             return getSearchResource();
         }
-        CommandType type = getCommandTpye(command);
+        CommandType type = getCommandType(command);
 
         KillingChain killingChain = new KillingChain();
         List<ResourceModel> find = new ArrayList<>();
@@ -136,28 +135,6 @@ public class CommandServiceImpl implements CommandService {
         return killingChain;
     }
 
-
-    @Override
-    public KillingChain getSquid() {
-        KillingChain killingChain = new KillingChain();
-        List<ResourceModel> find = poolingService.findToList(management.getFindPool(null)).stream().filter(q -> q.getPlatformName().contains("-S")).collect(Collectors.toList());
-        List<ResourceModel> fix = poolingService.fixToList(management.getFixPool(CommandType.ATTACK_UNDERSEA).stream().filter(q -> q.getPlatformName().contains("-S")).collect(Collectors.toList()));
-        List<ResourceModel> track = poolingService.trackToList(management.getTrackPool(null).stream().filter(q -> q.getPlatformName().contains("-S")).collect(Collectors.toList()));
-        List<ResourceModel> target = poolingService.targetToList(management.getTargetPool(null));
-        List<ResourceModel> engage = poolingService.engageToList(management.getEngagePool(CommandType.ATTACK_UNDERSEA)).stream().filter(q -> q.getName().contains("灭雷炸弹")).collect(Collectors.toList());
-        List<ResourceModel> asses = poolingService.assesToList(management.getAssesPool(null).stream().filter(q -> q.getPlatformName().contains("-S")).collect(Collectors.toList()));
-
-        killingChain.setFind(find);
-        killingChain.setFix(fix);
-        killingChain.setTrack(track);
-        killingChain.setTarget(target);
-        killingChain.setEngage(engage);
-        killingChain.setAsses(asses);
-
-
-        return killingChain;
-    }
-
     @Override
     public KillingChain getSearchResource() {
         KillingChain killingChain = new KillingChain();
@@ -176,7 +153,7 @@ public class CommandServiceImpl implements CommandService {
     public List<KillingChain> getKillChain(CommandAttack command) {
 
         if (command.getType() == 25) {
-            return mineSweep(command);
+            return getMineSweep(command);
         }
 
         /**
@@ -333,7 +310,74 @@ public class CommandServiceImpl implements CommandService {
         return list;
     }
 
-    @Override
+    public List<KillingChain> getSearch(CommandSearch command) {
+        /**
+         * 获取搜索平台列表 List<Platform> UAV-S UUV-S
+         * 根据多边形计算面积 S
+         * 计算无人机UAV-S单位时间扫描面积s1 无人艇UUV-S单位时间扫描面积s2
+         * 根据时间计算所需平台数量
+         * 返回对应killingChain
+         */
+        List<KillingChain> list = new ArrayList<>();
+        List<Find> uav = getUAV_S();
+        List<Find> uuv = getUUV_S();
+
+
+        for (Polygon polygon : command.getPolygons()) {
+            KillingChain killingChain = new KillingChain();
+            List<Point> points = polygon.getPoints();
+            double area = getAreaByPolygon(points);
+            double speedUAV = management.getPlatformPool().get(52).getSpeed();
+            double speedUUV = management.getPlatformPool().get(88).getSpeed();
+            double rangeUAV = management.getFindPool(CommandType.ATTACK_AIR).get(132).getMaxDetectRangeSea();
+            double rangeUUV = management.getFindPool(CommandType.ATTACK_UNDERSEA).get(95).getMaxDetectRangeUnderSea();
+            //单位时间内单个平台扫描面积
+            double areaUAV = speedUAV * rangeUAV;
+            double areaUUV = speedUUV * rangeUUV;
+            int numUAV = 0;
+            int numUUV = 0;
+
+            if (command.getLimitTime() != null) {
+                numUAV = (int) (area / (command.getLimitTime() * areaUAV));
+                numUUV = (int) (area / (command.getLimitTime() * areaUUV));
+                if (numUAV > uav.size()) {
+                    numUAV = uav.size();
+                }
+                if (numUUV > uuv.size()) {
+                    numUUV = uuv.size();
+                }
+            } else {
+                numUAV = uav.size();
+                numUUV = uuv.size();
+            }
+            List<Find> res = new ArrayList<>();
+            for (int i = 0; i < numUAV; i++) {
+                res.add(uav.get(i));
+            }
+            for (int i = 0; i < numUUV; i++) {
+                res.add(uuv.get(i));
+            }
+            killingChain.setFind(poolingService.findToList(res));
+            list.add(killingChain);
+
+        }
+
+        return list;
+    }
+
+    public Double getAreaByPolygon(List<Point> points) {
+        double s = 0;
+        int point_num = points.size();
+        if (point_num < 3) {
+            return 0.0;
+        }
+        s = points.get(0).getLat() * (points.get(point_num - 1).getLon() - points.get(1).getLon());
+        for (int i = 1; i < point_num; ++i) {
+            s += points.get(i).getLat() * (points.get(i - 1).getLon() - points.get((i + 1) % point_num).getLon());
+        }
+        return Math.abs(s / 2.0);
+    }
+
     public GeometryUtils.Point moveData2Point(PlatformMoveData moveData) {
         GeometryUtils.Point point = new GeometryUtils.Point();
         point.setX(moveData.getLon());
@@ -341,62 +385,145 @@ public class CommandServiceImpl implements CommandService {
         return point;
     }
 
-    public List<KillingChain> mineSweep(CommandAttack command) {
+    public KillingChain getSquid() {
+        KillingChain killingChain = new KillingChain();
+        List<ResourceModel> find = poolingService.findToList(management.getFindPool(null)).stream().filter(q -> q.getPlatformName().contains("-S")).collect(Collectors.toList());
+        List<ResourceModel> fix = poolingService.fixToList(management.getFixPool(CommandType.ATTACK_UNDERSEA).stream().filter(q -> q.getPlatformName().contains("-S")).collect(Collectors.toList()));
+        List<ResourceModel> track = poolingService.trackToList(management.getTrackPool(null).stream().filter(q -> q.getPlatformName().contains("-S")).collect(Collectors.toList()));
+        List<ResourceModel> target = poolingService.targetToList(management.getTargetPool(null));
+        List<ResourceModel> engage = poolingService.engageToList(management.getEngagePool(CommandType.ATTACK_UNDERSEA)).stream().filter(q -> q.getName().contains("灭雷炸弹")).collect(Collectors.toList());
+        List<ResourceModel> asses = poolingService.assesToList(management.getAssesPool(null).stream().filter(q -> q.getPlatformName().contains("-S")).collect(Collectors.toList()));
+
+        killingChain.setFind(find);
+        killingChain.setFix(fix);
+        killingChain.setTrack(track);
+        killingChain.setTarget(target);
+        killingChain.setEngage(engage);
+        killingChain.setAsses(asses);
+
+
+        return killingChain;
+    }
+
+    public List<KillingChain> getMineSweep(CommandAttack command) {
         List<KillingChain> list = new ArrayList<>();
-        if (CollectionUtils.isEmpty(command.getTargets())) {
-            return list;
+
+        /**
+         * 1.确定可以调用来扫雷的艇及其资源 List<KillingChain> USV_S;
+         * 每个killingChain对应一个USV-S的全部资源
+         * 2.轮询调度艇
+         * 对目标targets按UAV_S.size()划分，进行轮询
+         * 3.分配给艇离当前距离最近的雷
+         * 没有被分配过任务，计算离platformMoveData最近的雷作为目标
+         * 有被分配过任务，计算离上一次任务目标target.getMoveData最近的雷作为新目标
+         **/
+
+//        确定可以调用来扫雷的艇及其资源 List<KillingChain> USV_S;
+        List<KillingChain> USV = getUSV_S();
+//        轮询调度艇
+//        对目标targets按UAV_S.size()划分，进行轮询
+        int num = USV.size();
+        int count = 0;
+        List<TargetData> targets = new ArrayList<>();
+        for (TargetData t : command.getTargets()) {
+            targets.add(t);
         }
-//        81,86,87
-        String[] light = {"162", "167", "168"};
-        String[] sona = {"88", "93", "94"};
-        String[] boom = {"102", "107", "108"};
-        int num = 0;
-        for (TargetData target : command.getTargets()) {
+
+        while (targets.size() != 0) {
             KillingChain killingChain = new KillingChain();
+            killingChain.setFind(USV.get(count % num).getFind());
+            killingChain.setFix(USV.get(count % num).getFix());
+            killingChain.setTrack(USV.get(count % num).getTrack());
+            killingChain.setTarget(USV.get(count % num).getTarget());
+            killingChain.setEngage(USV.get(count % num).getEngage());
+            killingChain.setAsses(USV.get(count % num).getAsses());
+
+            killingChain.setCommandType(25);
+            GeometryUtils.Point point = new GeometryUtils.Point();
+            PlatformMoveData moveData = new PlatformMoveData();
+//            没有被分配过任务，计算离platformMoveData最近的雷作为目标
+            if (count < num) {
+                moveData = management.getPlatformPool().get(killingChain.getFind().get(0).getPlatformCode()).getPlatformMoveData();
+            }
+//            有被分配过任务，计算离上一次任务目标target.getMoveData最近的雷作为新目标
+            else {
+                moveData = getTargetById(command.getTargets(), list.get(count - num).getTargetId()).getMoveDetect();
+            }
+            point.setX(moveData.getLon());
+            point.setY(moveData.getLat());
+//            计算距离point最近的雷
+            TargetData target = getClosestTarget(point, targets);
+            targets.remove(target);
+            killingChain.setTargetName(target.getName());
             killingChain.setTargetId(target.getInstId());
-            killingChain.setTargetName(target.getName());
-
-            List<Find> finds = new ArrayList<>();
-            finds.add(management.getFindById(light[num % 3]));
-            finds.add(management.getFindById(sona[num % 3]));
-
-            List<Fix> fixes = new ArrayList<>();
-            fixes.add(management.getFixById(sona[num % 3]));
-
-            List<Track> tracks = new ArrayList<>();
-            tracks.add(management.getTrackById(sona[num % 3]));
-
-            List<Engage> engages = new ArrayList<>();
-            Engage weapon = management.getEngageById(boom[num % 3]);
-            weapon.setNumber(1);
-            engages.add(weapon);
-            List<Asses> assesList = new ArrayList<>();
-            assesList.add(management.getAssesById(light[num % 3]));
-            assesList.add(management.getAssesById(sona[num % 3]));
-            num++;
-
-            List<ResourceModel> find = poolingService.findToList(finds);
-            List<ResourceModel> fix = poolingService.fixToList(fixes);
-            List<ResourceModel> track = poolingService.trackToList(tracks);
-            List<ResourceModel> engage = poolingService.engageToList(engages);
-            List<ResourceModel> asses = poolingService.assesToList(assesList);
-
-            killingChain.setTargetName(target.getName());
-            killingChain.setCommandType(command.getType());
-            killingChain.setFind(find);
-            killingChain.setFix(fix);
-            killingChain.setTrack(track);
-            killingChain.setEngage(engage);
-            killingChain.setAsses(asses);
-
             list.add(killingChain);
+            count++;
         }
-
+//        分配给艇离当前距离最近的雷
 
         return list;
     }
 
-    public CommandType getCommandTpye(CommandAttack command) {
+    public List<KillingChain> getUSV_S() {
+        List<KillingChain> list = new ArrayList<>();
+        List<Platform> platforms = management.getPlatformPool().values().stream().collect(Collectors.toList());
+        platforms = platforms.stream().filter(q -> q.getBeRealEquipment() != null && (q.getBeRealEquipment().equals(false))
+                && q.getBeMineSweep() != null && (q.getBeMineSweep().equals(true))
+                && q.getName().contains("USV-S")).collect(Collectors.toList());
+        for (Platform platform : platforms) {
+            KillingChain killingChain = new KillingChain();
+            killingChain.setFind(poolingService.findToList(platform.getFinds()));
+            killingChain.setFix(poolingService.fixToList(platform.getFixes()));
+            killingChain.setTarget(poolingService.targetToList(platform.getTargets()));
+            killingChain.setTrack(poolingService.trackToList(platform.getTracks()));
+            killingChain.setEngage(poolingService.engageToList(platform.getEngages()));
+            killingChain.setAsses(poolingService.assesToList(platform.getAsses()));
+            list.add(killingChain);
+        }
+
+        return list;
+    }
+
+    public List<Find> getUAV_S() {
+
+        List<Find> finds = management.getFindPool(CommandType.ATTACK_SEA).stream().collect(Collectors.toList());
+        finds = finds.stream().filter(q -> management.getPlatformPool().get(q.getPlatformCode()).getBeRealEquipment() != null && (management.getPlatformPool().get(q.getPlatformCode()).getBeRealEquipment().equals(false))
+                && management.getPlatformPool().get(q.getPlatformCode()).getBeMineSweep() != null && (management.getPlatformPool().get(q.getPlatformCode()).getBeMineSweep().equals(true))
+                && q.getName().contains("UAV-S")).collect(Collectors.toList());
+
+
+        return finds;
+    }
+
+    public List<Find> getUUV_S() {
+
+        List<Find> finds = management.getFindPool(CommandType.ATTACK_SEA).stream().collect(Collectors.toList());
+        finds = finds.stream().filter(q -> management.getPlatformPool().get(q.getPlatformCode()).getBeRealEquipment() != null && (management.getPlatformPool().get(q.getPlatformCode()).getBeRealEquipment().equals(false))
+                && management.getPlatformPool().get(q.getPlatformCode()).getBeMineSweep() != null && (management.getPlatformPool().get(q.getPlatformCode()).getBeMineSweep().equals(true))
+                && q.getName().contains("UUV-S")).collect(Collectors.toList());
+
+
+        return finds;
+    }
+
+    public TargetData getClosestTarget(GeometryUtils.Point point, List<TargetData> targets) {
+        TargetData res = new TargetData();
+        double distance = Double.MAX_VALUE;
+        GeometryUtils.Point tPoint = new GeometryUtils.Point();
+        for (TargetData target : targets) {
+            tPoint.setX(target.getMoveDetect().getLon());
+            tPoint.setY(target.getMoveDetect().getLat());
+            double pDistance = GeometryUtils.getDistance(point.getX(), point.getY(), tPoint.getX(), tPoint.getY());
+            if (distance > pDistance) {
+                distance = pDistance;
+                res = target;
+            }
+        }
+
+        return res;
+    }
+
+    public CommandType getCommandType(CommandAttack command) {
         CommandType type = CommandType.ATTACK;
         if (command.getType() == CommandType.ATTACK_AIR.getValue()) {
             type = CommandType.ATTACK_AIR;
@@ -439,13 +566,13 @@ public class CommandServiceImpl implements CommandService {
     public ResourceModel getTrackByEngage(ResourceModel engage, CommandAttack command) {
 
         List<Track> tracks = management.getPlatformPool().get(engage.getPlatformCode()).getTracks();
-        if (getCommandTpye(command).getValue() == 21) {
+        if (getCommandType(command).getValue() == 21) {
             tracks.sort(Comparator.comparing(Track::getMaxDetectRangeAir));
-        } else if (getCommandTpye(command).getValue() == 22) {
+        } else if (getCommandType(command).getValue() == 22) {
             tracks.sort(Comparator.comparing(Track::getMaxDetectRangeSea));
-        } else if (getCommandTpye(command).getValue() == 23) {
+        } else if (getCommandType(command).getValue() == 23) {
             tracks.sort(Comparator.comparing(Track::getMaxDetectRangeLand));
-        } else if (getCommandTpye(command).getValue() == 24) {
+        } else if (getCommandType(command).getValue() == 24) {
             tracks.sort(Comparator.comparing(Track::getMaxDetectRangeUnderSea));
         }
         List<ResourceModel> list = poolingService.trackToList(tracks);
@@ -457,9 +584,18 @@ public class CommandServiceImpl implements CommandService {
         return model;
     }
 
+    public TargetData getTargetById(List<TargetData> targets, String id) {
+        for (TargetData target : targets) {
+            if (target.getInstId().equals(id)) {
+                return target;
+            }
+        }
+        return null;
+    }
+
     public List<ResourceModel> getFind(GeometryUtils.Point start, GeometryUtils.Point end, CommandAttack command) {
         List<Find> list = new ArrayList<>();
-        List<Find> finds = management.getFindPool(getCommandTpye(command));
+        List<Find> finds = management.getFindPool(getCommandType(command));
 
         for (Find find : finds) {
             PlatformMoveData moveData = management.getPlatformPool().get(find.getPlatformCode()).getPlatformMoveData();
@@ -468,19 +604,19 @@ public class CommandServiceImpl implements CommandService {
 
                 double distance = GeometryUtils.minDistanceFromPointToLine(start, end, point);
                 find.setDistance(distance);
-                if (getCommandTpye(command).getValue() == 21 && (find.getMaxDetectRangeAir() * 1000 > distance)) {
+                if (getCommandType(command).getValue() == 21 && (find.getMaxDetectRangeAir() * 1000 > distance)) {
                     distance = GeometryUtils.getDistance(start.getX(), start.getY(), point.getX(), point.getY());
                     find.setDistance(distance);
                     list.add(find);
-                } else if (getCommandTpye(command).getValue() == 22 && (find.getMaxDetectRangeSea() * 1000 > distance)) {
+                } else if (getCommandType(command).getValue() == 22 && (find.getMaxDetectRangeSea() * 1000 > distance)) {
                     distance = GeometryUtils.getDistance(start.getX(), start.getY(), point.getX(), point.getY());
                     find.setDistance(distance);
                     list.add(find);
-                } else if (getCommandTpye(command).getValue() == 23 && (find.getMaxDetectRangeLand() * 1000 > distance)) {
+                } else if (getCommandType(command).getValue() == 23 && (find.getMaxDetectRangeLand() * 1000 > distance)) {
                     distance = GeometryUtils.getDistance(start.getX(), start.getY(), point.getX(), point.getY());
                     find.setDistance(distance);
                     list.add(find);
-                } else if (getCommandTpye(command).getValue() == 24 && (find.getMaxDetectRangeUnderSea() * 1000 > distance)) {
+                } else if (getCommandType(command).getValue() == 24 && (find.getMaxDetectRangeUnderSea() * 1000 > distance)) {
                     distance = GeometryUtils.getDistance(start.getX(), start.getY(), point.getX(), point.getY());
                     find.setDistance(distance);
                     list.add(find);
@@ -494,10 +630,9 @@ public class CommandServiceImpl implements CommandService {
         return poolingService.findToList(list);
     }
 
-
     public List<ResourceModel> getFix(GeometryUtils.Point start, GeometryUtils.Point end, CommandAttack command) {
         List<Fix> list = new ArrayList<>();
-        List<Fix> fixes = management.getFixPool(getCommandTpye(command));
+        List<Fix> fixes = management.getFixPool(getCommandType(command));
 
         for (Fix fix : fixes) {
             PlatformMoveData moveData = management.getPlatformPool().get(fix.getPlatformCode()).getPlatformMoveData();
@@ -506,19 +641,19 @@ public class CommandServiceImpl implements CommandService {
 
                 double distance = GeometryUtils.minDistanceFromPointToLine(start, end, point);
                 fix.setDistance(distance);
-                if (getCommandTpye(command).getValue() == 21 && (fix.getMaxDetectRangeAir() * 1000 > distance)) {
+                if (getCommandType(command).getValue() == 21 && (fix.getMaxDetectRangeAir() * 1000 > distance)) {
                     distance = GeometryUtils.getDistance(start.getX(), start.getY(), point.getX(), point.getY());
                     fix.setDistance(distance);
                     list.add(fix);
-                } else if (getCommandTpye(command).getValue() == 22 && (fix.getMaxDetectRangeSea() * 1000 > distance)) {
+                } else if (getCommandType(command).getValue() == 22 && (fix.getMaxDetectRangeSea() * 1000 > distance)) {
                     distance = GeometryUtils.getDistance(start.getX(), start.getY(), point.getX(), point.getY());
                     fix.setDistance(distance);
                     list.add(fix);
-                } else if (getCommandTpye(command).getValue() == 23 && (fix.getMaxDetectRangeLand() * 1000 > distance)) {
+                } else if (getCommandType(command).getValue() == 23 && (fix.getMaxDetectRangeLand() * 1000 > distance)) {
                     distance = GeometryUtils.getDistance(start.getX(), start.getY(), point.getX(), point.getY());
                     fix.setDistance(distance);
                     list.add(fix);
-                } else if (getCommandTpye(command).getValue() == 24 && (fix.getMaxDetectRangeUnderSea() * 1000 > distance)) {
+                } else if (getCommandType(command).getValue() == 24 && (fix.getMaxDetectRangeUnderSea() * 1000 > distance)) {
                     distance = GeometryUtils.getDistance(start.getX(), start.getY(), point.getX(), point.getY());
                     fix.setDistance(distance);
                     list.add(fix);
@@ -531,10 +666,9 @@ public class CommandServiceImpl implements CommandService {
         return poolingService.fixToList(list);
     }
 
-
     public List<ResourceModel> getTarget(GeometryUtils.Point start, GeometryUtils.Point end, CommandAttack command) {
         List<Target> list = new ArrayList<>();
-        List<Target> targets = management.getTargetPool(getCommandTpye(command));
+        List<Target> targets = management.getTargetPool(getCommandType(command));
 
         for (Target target : targets) {
             PlatformMoveData moveData = management.getPlatformPool().get(target.getPlatformCode()).getPlatformMoveData();
@@ -546,10 +680,9 @@ public class CommandServiceImpl implements CommandService {
         return poolingService.targetToList(list);
     }
 
-
     public List<ResourceModel> getTrack(GeometryUtils.Point start, GeometryUtils.Point end, CommandAttack command) {
         List<Track> list = new ArrayList<>();
-        List<Track> tracks = management.getTrackPool(getCommandTpye(command));
+        List<Track> tracks = management.getTrackPool(getCommandType(command));
 
         for (Track track : tracks) {
             PlatformMoveData moveData = management.getPlatformPool().get(track.getPlatformCode()).getPlatformMoveData();
@@ -558,19 +691,19 @@ public class CommandServiceImpl implements CommandService {
 
                 double distance = GeometryUtils.minDistanceFromPointToLine(start, end, point);
                 track.setDistance(distance);
-                if (getCommandTpye(command).getValue() == 21 && (track.getMaxDetectRangeAir() * 1000 > distance)) {
+                if (getCommandType(command).getValue() == 21 && (track.getMaxDetectRangeAir() * 1000 > distance)) {
                     distance = GeometryUtils.getDistance(start.getX(), start.getY(), point.getX(), point.getY());
                     track.setDistance(distance);
                     list.add(track);
-                } else if (getCommandTpye(command).getValue() == 22 && (track.getMaxDetectRangeSea() * 1000 > distance)) {
+                } else if (getCommandType(command).getValue() == 22 && (track.getMaxDetectRangeSea() * 1000 > distance)) {
                     distance = GeometryUtils.getDistance(start.getX(), start.getY(), point.getX(), point.getY());
                     track.setDistance(distance);
                     list.add(track);
-                } else if (getCommandTpye(command).getValue() == 23 && (track.getMaxDetectRangeLand() * 1000 > distance)) {
+                } else if (getCommandType(command).getValue() == 23 && (track.getMaxDetectRangeLand() * 1000 > distance)) {
                     distance = GeometryUtils.getDistance(start.getX(), start.getY(), point.getX(), point.getY());
                     track.setDistance(distance);
                     list.add(track);
-                } else if (getCommandTpye(command).getValue() == 24 && (track.getMaxDetectRangeUnderSea() * 1000 > distance)) {
+                } else if (getCommandType(command).getValue() == 24 && (track.getMaxDetectRangeUnderSea() * 1000 > distance)) {
                     distance = GeometryUtils.getDistance(start.getX(), start.getY(), point.getX(), point.getY());
                     track.setDistance(distance);
                     list.add(track);
@@ -585,7 +718,7 @@ public class CommandServiceImpl implements CommandService {
 
     public List<ResourceModel> getAsses(GeometryUtils.Point start, GeometryUtils.Point end, CommandAttack command) {
         List<Asses> list = new ArrayList<>();
-        List<Asses> assesList = management.getAssesPool(getCommandTpye(command));
+        List<Asses> assesList = management.getAssesPool(getCommandType(command));
 
         for (Asses asses : assesList) {
             PlatformMoveData moveData = management.getPlatformPool().get(asses.getPlatformCode()).getPlatformMoveData();
@@ -594,19 +727,19 @@ public class CommandServiceImpl implements CommandService {
 
                 double distance = GeometryUtils.minDistanceFromPointToLine(start, end, point);
                 asses.setDistance(distance);
-                if (getCommandTpye(command).getValue() == 21 && (asses.getMaxDetectRangeAir() * 1000 > distance)) {
+                if (getCommandType(command).getValue() == 21 && (asses.getMaxDetectRangeAir() * 1000 > distance)) {
                     distance = GeometryUtils.getDistance(end.getX(), end.getY(), point.getX(), point.getY());
                     asses.setDistance(distance);
                     list.add(asses);
-                } else if (getCommandTpye(command).getValue() == 22 && (asses.getMaxDetectRangeSea() * 1000 > distance)) {
+                } else if (getCommandType(command).getValue() == 22 && (asses.getMaxDetectRangeSea() * 1000 > distance)) {
                     distance = GeometryUtils.getDistance(end.getX(), end.getY(), point.getX(), point.getY());
                     asses.setDistance(distance);
                     list.add(asses);
-                } else if (getCommandTpye(command).getValue() == 23 && (asses.getMaxDetectRangeLand() * 1000 > distance)) {
+                } else if (getCommandType(command).getValue() == 23 && (asses.getMaxDetectRangeLand() * 1000 > distance)) {
                     distance = GeometryUtils.getDistance(end.getX(), end.getY(), point.getX(), point.getY());
                     asses.setDistance(distance);
                     list.add(asses);
-                } else if (getCommandTpye(command).getValue() == 24 && (asses.getMaxDetectRangeUnderSea() * 1000 > distance)) {
+                } else if (getCommandType(command).getValue() == 24 && (asses.getMaxDetectRangeUnderSea() * 1000 > distance)) {
                     distance = GeometryUtils.getDistance(end.getX(), end.getY(), point.getX(), point.getY());
                     asses.setDistance(distance);
                     list.add(asses);
@@ -619,10 +752,9 @@ public class CommandServiceImpl implements CommandService {
         return poolingService.assesToList(list);
     }
 
-
     public List<ResourceModel> getEngage(GeometryUtils.Point start, GeometryUtils.Point end, CommandAttack command) {
         List<Engage> list = new ArrayList<>();
-        List<Engage> engages = management.getEngagePool(getCommandTpye(command));
+        List<Engage> engages = management.getEngagePool(getCommandType(command));
 
         for (Engage engage : engages) {
             PlatformMoveData moveData = management.getPlatformPool().get(engage.getPlatformCode()).getPlatformMoveData();
@@ -631,19 +763,19 @@ public class CommandServiceImpl implements CommandService {
 
                 double distance = GeometryUtils.minDistanceFromPointToLine(start, end, point);
                 engage.setDistance(distance);
-                if (getCommandTpye(command).getValue() == 21 && (engage.getMaxFireRangeAir() * 1000 > distance)) {
+                if (getCommandType(command).getValue() == 21 && (engage.getMaxFireRangeAir() * 1000 > distance)) {
                     distance = GeometryUtils.getDistance(start.getX(), start.getY(), point.getX(), point.getY());
                     engage.setDistance(distance);
                     list.add(engage);
-                } else if (getCommandTpye(command).getValue() == 22 && (engage.getMaxFireRangeSea() * 1000 > distance)) {
+                } else if (getCommandType(command).getValue() == 22 && (engage.getMaxFireRangeSea() * 1000 > distance)) {
                     distance = GeometryUtils.getDistance(start.getX(), start.getY(), point.getX(), point.getY());
                     engage.setDistance(distance);
                     list.add(engage);
-                } else if (getCommandTpye(command).getValue() == 23 && (engage.getMaxFireRangeLand() * 1000 > distance)) {
+                } else if (getCommandType(command).getValue() == 23 && (engage.getMaxFireRangeLand() * 1000 > distance)) {
                     distance = GeometryUtils.getDistance(start.getX(), start.getY(), point.getX(), point.getY());
                     engage.setDistance(distance);
                     list.add(engage);
-                } else if (getCommandTpye(command).getValue() == 24 && (engage.getMaxFireRangeUnderSea() * 1000 > distance)) {
+                } else if (getCommandType(command).getValue() == 24 && (engage.getMaxFireRangeUnderSea() * 1000 > distance)) {
                     distance = GeometryUtils.getDistance(start.getX(), start.getY(), point.getX(), point.getY());
                     engage.setDistance(distance);
                     list.add(engage);

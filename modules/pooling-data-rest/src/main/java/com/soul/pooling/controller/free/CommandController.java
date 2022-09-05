@@ -2,7 +2,7 @@ package com.soul.pooling.controller.free;
 
 import com.egova.web.annotation.Api;
 import com.flagwind.commons.StringUtils;
-import com.soul.pooling.entity.*;
+import com.soul.pooling.entity.Find;
 import com.soul.pooling.model.*;
 import com.soul.pooling.service.CommandService;
 import com.soul.pooling.service.PoolingManagement;
@@ -41,54 +41,6 @@ public class CommandController {
         return commandService.getKillChain(command);
     }
 
-
-    @Api
-    @PostMapping("/mission/fake")
-    public List<KillingChain> getKillChainFake(@RequestBody CommandAttack command) {
-
-        List<KillingChain> list = new ArrayList<>();
-        if (CollectionUtils.isEmpty(command.getTargets())) {
-            return list;
-        }
-        for (TargetData target : command.getTargets()) {
-            KillingChain killingChain = new KillingChain();
-            killingChain.setTargetId(target.getInstId());
-            killingChain.setTargetName(target.getName());
-
-            List<Find> finds = new ArrayList<>();
-            finds.add(management.getFindById("62"));
-            List<Fix> fixes = new ArrayList<>();
-            fixes.add(management.getFixById("62"));
-            List<Track> tracks = new ArrayList<>();
-            tracks.add(management.getTrackById("62"));
-            tracks.add(management.getTrackById("26"));
-            List<Engage> engages = new ArrayList<>();
-            Engage weapon = management.getEngageById("27");
-            weapon.setNumber(2);
-            engages.add(weapon);
-            List<Asses> assesList = new ArrayList<>();
-            assesList.add(management.getAssesById("62"));
-            assesList.add(management.getAssesById("26"));
-
-            List<ResourceModel> find = poolingService.findToList(finds);
-            List<ResourceModel> fix = poolingService.fixToList(fixes);
-            List<ResourceModel> track = poolingService.trackToList(tracks);
-            List<ResourceModel> engage = poolingService.engageToList(engages);
-            List<ResourceModel> asses = poolingService.assesToList(assesList);
-
-            killingChain.setFind(find);
-            killingChain.setFix(fix);
-            killingChain.setTrack(track);
-            killingChain.setEngage(engage);
-            killingChain.setAsses(asses);
-
-            list.add(killingChain);
-        }
-
-
-        return list;
-    }
-
     @Api
     @PostMapping("/mission-search")
     public List<KillingChain> getKillChain(@RequestBody CommandSearch command) {
@@ -111,6 +63,7 @@ public class CommandController {
                 finds.add(management.getFindById("139"));
                 finds.add(management.getFindById("96"));
                 finds.add(management.getFindById("100"));
+                finds.add(management.getFindById("99"));
                 finds.add(management.getFindById("97"));
                 finds.add(management.getFindById("98"));
             }
