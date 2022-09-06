@@ -326,6 +326,8 @@ public class CommandServiceImpl implements CommandService {
 
         for (Polygon polygon : command.getPolygons()) {
             KillingChain killingChain = new KillingChain();
+            killingChain.setTargetName(polygon.getName());
+            killingChain.setPolygon(polygon);
             List<GeometryUtils.Point> points = new ArrayList<>();
             for (Point point : polygon.getPoints()) {
                 GeometryUtils.Point gPoint = new GeometryUtils.Point();
