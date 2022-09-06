@@ -327,9 +327,8 @@ public class CommandServiceImpl implements CommandService {
         for (Polygon polygon : command.getPolygons()) {
             KillingChain killingChain = new KillingChain();
             List<Point> points = polygon.getPoints();
-//            double area = getAreaByPolygon(points);
-            double area = 10000000 * GeometryUtils.getDistance(points.get(0).getLon(), points.get(0).getLat(), points.get(1).getLon(), points.get(1).getLat()) *
-                    GeometryUtils.getDistance(points.get(1).getLon(), points.get(1).getLat(), points.get(2).getLon(), points.get(2).getLat());
+            double area = getAreaByPolygon(points);
+//            double area = GeometryUtils.getDistance(points.get(0).getLon(), points.get(0).getLat(), points.get(1).getLon(), points.get(1).getLat()) * GeometryUtils.getDistance(points.get(1).getLon(), points.get(1).getLat(), points.get(2).getLon(), points.get(2).getLat());
             double speedUAV = management.getPlatformPool().get("52").getSpeed();
             double speedUUV = management.getPlatformPool().get("88").getSpeed();
             double rangeUAV = management.getPlatformPool().get("52").getFinds().get(0).getMaxDetectRangeSea();
