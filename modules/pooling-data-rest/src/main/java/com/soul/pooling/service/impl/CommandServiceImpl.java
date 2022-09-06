@@ -310,6 +310,7 @@ public class CommandServiceImpl implements CommandService {
         return list;
     }
 
+    @Override
     public List<KillingChain> getSearch(CommandSearch command) {
         /**
          * 获取搜索平台列表 List<Platform> UAV-S UUV-S
@@ -326,14 +327,16 @@ public class CommandServiceImpl implements CommandService {
         for (Polygon polygon : command.getPolygons()) {
             KillingChain killingChain = new KillingChain();
             List<Point> points = polygon.getPoints();
-            double area = getAreaByPolygon(points);
-            double speedUAV = management.getPlatformPool().get(52).getSpeed();
-            double speedUUV = management.getPlatformPool().get(88).getSpeed();
-            double rangeUAV = management.getFindPool(CommandType.ATTACK_AIR).get(132).getMaxDetectRangeSea();
-            double rangeUUV = management.getFindPool(CommandType.ATTACK_UNDERSEA).get(95).getMaxDetectRangeUnderSea();
-            //单位时间内单个平台扫描面积
-            double areaUAV = speedUAV * rangeUAV;
-            double areaUUV = speedUUV * rangeUUV;
+//            double area = getAreaByPolygon(points);
+            double area = 10000000 * GeometryUtils.getDistance(points.get(0).getLon(), points.get(0).getLat(), points.get(1).getLon(), points.get(1).getLat()) *
+                    GeometryUtils.getDistance(points.get(1).getLon(), points.get(1).getLat(), points.get(2).getLon(), points.get(2).getLat());
+            double speedUAV = management.getPlatformPool().get("52").getSpeed();
+            double speedUUV = management.getPlatformPool().get("88").getSpeed();
+            double rangeUAV = management.getPlatformPool().get("52").getFinds().get(0).getMaxDetectRangeSea();
+            double rangeUUV = management.getPlatformPool().get("88").getFinds().get(0).getMaxDetectRangeUnderSea();
+            //单位时间内单个平台扫描面积 m²/s
+            double areaUAV = speedUAV * rangeUAV * 2000;
+            double areaUUV = speedUUV * rangeUUV * 2000;
             int numUAV = 0;
             int numUUV = 0;
 
@@ -375,7 +378,7 @@ public class CommandServiceImpl implements CommandService {
         for (int i = 1; i < point_num; ++i) {
             s += points.get(i).getLat() * (points.get(i - 1).getLon() - points.get((i + 1) % point_num).getLon());
         }
-        return Math.abs(s / 2.0);
+        return Math.abs(s / 2.0) * 9101160000.085981;
     }
 
     public GeometryUtils.Point moveData2Point(PlatformMoveData moveData) {
@@ -486,21 +489,20 @@ public class CommandServiceImpl implements CommandService {
 
     public List<Find> getUAV_S() {
 
-        List<Find> finds = management.getFindPool(CommandType.ATTACK_SEA).stream().collect(Collectors.toList());
+        List<Find> finds = management.getFindPool(null).stream().collect(Collectors.toList());
         finds = finds.stream().filter(q -> management.getPlatformPool().get(q.getPlatformCode()).getBeRealEquipment() != null && (management.getPlatformPool().get(q.getPlatformCode()).getBeRealEquipment().equals(false))
                 && management.getPlatformPool().get(q.getPlatformCode()).getBeMineSweep() != null && (management.getPlatformPool().get(q.getPlatformCode()).getBeMineSweep().equals(true))
-                && q.getName().contains("UAV-S")).collect(Collectors.toList());
-
+                && management.getPlatformPool().get(q.getPlatformCode()).getName().contains("UAV-S")).collect(Collectors.toList());
 
         return finds;
     }
 
     public List<Find> getUUV_S() {
 
-        List<Find> finds = management.getFindPool(CommandType.ATTACK_SEA).stream().collect(Collectors.toList());
+        List<Find> finds = management.getFindPool(null).stream().collect(Collectors.toList());
         finds = finds.stream().filter(q -> management.getPlatformPool().get(q.getPlatformCode()).getBeRealEquipment() != null && (management.getPlatformPool().get(q.getPlatformCode()).getBeRealEquipment().equals(false))
                 && management.getPlatformPool().get(q.getPlatformCode()).getBeMineSweep() != null && (management.getPlatformPool().get(q.getPlatformCode()).getBeMineSweep().equals(true))
-                && q.getName().contains("UUV-S")).collect(Collectors.toList());
+                && management.getPlatformPool().get(q.getPlatformCode()).getName().contains("UUV-S")).collect(Collectors.toList());
 
 
         return finds;
