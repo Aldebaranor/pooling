@@ -326,8 +326,14 @@ public class CommandServiceImpl implements CommandService {
 
         for (Polygon polygon : command.getPolygons()) {
             KillingChain killingChain = new KillingChain();
-            List<Point> points = polygon.getPoints();
-            double area = getAreaByPolygon(points);
+            List<GeometryUtils.Point> points = new ArrayList<>();
+            for (Point point : polygon.getPoints()) {
+                GeometryUtils.Point gPoint = new GeometryUtils.Point();
+                gPoint.setX(point.getLon());
+                gPoint.setY(point.getLat());
+                points.add(gPoint);
+            }
+            double area = GeometryUtils.getPolygonArea(points);
 //            double area = GeometryUtils.getDistance(points.get(0).getLon(), points.get(0).getLat(), points.get(1).getLon(), points.get(1).getLat()) * GeometryUtils.getDistance(points.get(1).getLon(), points.get(1).getLat(), points.get(2).getLon(), points.get(2).getLat());
             double speedUAV = management.getPlatformPool().get("52").getSpeed();
             double speedUUV = management.getPlatformPool().get("88").getSpeed();
@@ -340,8 +346,8 @@ public class CommandServiceImpl implements CommandService {
             int numUUV = 0;
 
             if (command.getLimitTime() != null) {
-                numUAV = (int) (area / (command.getLimitTime() * areaUAV));
-                numUUV = (int) (area / (command.getLimitTime() * areaUUV));
+                numUAV = (int) Math.ceil((area / (command.getLimitTime() * areaUAV)));
+                numUUV = (int) Math.ceil((area / (command.getLimitTime() * areaUUV)));
                 if (numUAV > uav.size()) {
                     numUAV = uav.size();
                 }
@@ -365,19 +371,6 @@ public class CommandServiceImpl implements CommandService {
         }
 
         return list;
-    }
-
-    public Double getAreaByPolygon(List<Point> points) {
-        double s = 0;
-        int point_num = points.size();
-        if (point_num < 3) {
-            return 0.0;
-        }
-        s = points.get(0).getLat() * (points.get(point_num - 1).getLon() - points.get(1).getLon());
-        for (int i = 1; i < point_num; ++i) {
-            s += points.get(i).getLat() * (points.get(i - 1).getLon() - points.get((i + 1) % point_num).getLon());
-        }
-        return Math.abs(s / 2.0) * 9101160000.085981;
     }
 
     public GeometryUtils.Point moveData2Point(PlatformMoveData moveData) {
