@@ -1,5 +1,6 @@
 package com.soul.pooling.controller.free;
 
+import com.alibaba.fastjson.JSONObject;
 import com.egova.exception.ExceptionUtils;
 import com.egova.json.utils.JsonUtils;
 import com.egova.web.annotation.Api;
@@ -203,39 +204,39 @@ public class PoolingController {
 
 
     @Api
-    @GetMapping(value = "/find/{id}")
-    public Find getFindById(@PathVariable String id) {
-        return management.getFindById(id);
+    @PostMapping(value = "/find")
+    public Find getFindById(@RequestBody JSONObject id) {
+        return management.getFindById(id.getString("id"));
     }
 
     @Api
-    @GetMapping(value = "/fix/{id}")
-    public Fix getFixById(@PathVariable String id) {
-        return management.getFixById(id);
+    @PostMapping(value = "/fix")
+    public Fix getFixById(@RequestBody JSONObject id) {
+        return management.getFixById(id.getString("id"));
     }
 
     @Api
-    @GetMapping(value = "/track/{id}")
-    public Track getTrackById(@PathVariable String id) {
-        return management.getTrackById(id);
+    @PostMapping(value = "/track")
+    public Track getTrackById(@RequestBody JSONObject id) {
+        return management.getTrackById(id.getString("id"));
     }
 
     @Api
-    @GetMapping(value = "/target/{id}")
-    public Target getTargetById(@PathVariable String id) {
-        return management.getTargetById(id);
+    @PostMapping(value = "/target")
+    public Target getTargetById(@RequestBody JSONObject id) {
+        return management.getTargetById(id.getString("id"));
     }
 
     @Api
-    @GetMapping(value = "/engage/{id}")
-    public Engage getEngageById(@PathVariable String id) {
-        return management.getEngageById(id);
+    @PostMapping(value = "/engage")
+    public Engage getEngageById(@RequestBody JSONObject id) {
+        return management.getEngageById(id.getString("id"));
     }
 
     @Api
-    @GetMapping(value = "/asses/{id}")
-    public Asses getAssesById(@PathVariable String id) {
-        return management.getAssesById(id);
+    @PostMapping(value = "/asses")
+    public Asses getAssesById(@RequestBody JSONObject id) {
+        return management.getAssesById(id.getString("id"));
     }
 
     @Api
