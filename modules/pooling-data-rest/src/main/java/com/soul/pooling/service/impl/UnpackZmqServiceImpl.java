@@ -28,7 +28,7 @@ public class UnpackZmqServiceImpl implements UnpackMessageService {
     public void unpackZmq(String s) {
         ResourceModel model = JsonUtils.deserialize(s, ResourceModel.class);
 
-        Engage engage = management.getEngageByPlatform(model.getPlatformCode()).stream().filter(q -> q.getName().equals(model.getName())).collect(Collectors.toList()).get(0);
+        Engage engage = management.getEngageByPlatform(model.getPlatformCode()).stream().filter(q -> q.getDeviceCode().equals(model.getDeviceCode())).collect(Collectors.toList()).get(0);
         int num = engage.getNumber() - model.getNum();
         engage.setNumber(num);
 
