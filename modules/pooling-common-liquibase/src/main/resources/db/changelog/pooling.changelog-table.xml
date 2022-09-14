@@ -1691,5 +1691,23 @@
         <dropColumn tableName="pooling_engage" columnName="hitRateUnderSea"/>
     </changeSet>
 
+    <changeSet author="41656 (generated)" id="1647400803042-141">
+        <addColumn tableName="pooling_find">
+            <column name="deviceType" remarks="设备类型" type="VARCHAR(50)"></column>
+        </addColumn>
+        <addColumn tableName="pooling_fix">
+            <column name="deviceType" remarks="设备类型" type="VARCHAR(50)"></column>
+        </addColumn>
+        <addColumn tableName="pooling_track">
+            <column name="deviceType" remarks="设备类型" type="VARCHAR(50)"></column>
+        </addColumn>
+        <addColumn tableName="pooling_engage">
+            <column name="deviceType" remarks="设备类型" type="VARCHAR(50)"></column>
+        </addColumn>
+        <addColumn tableName="pooling_asses">
+            <column name="deviceType" remarks="设备类型" type="VARCHAR(50)"></column>
+        </addColumn>
+    </changeSet>
+
 
 </databaseChangeLog>

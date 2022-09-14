@@ -1,18 +1,16 @@
 package com.soul.pooling.service.impl;
 
 import com.egova.json.utils.JsonUtils;
-import com.flagwind.commons.StringUtils;
-import com.soul.pooling.entity.Platform;
+import com.soul.pooling.entity.Engage;
 import com.soul.pooling.facade.UnpackMessageService;
-import com.soul.pooling.model.SituationMoveData;
+import com.soul.pooling.model.ResourceModel;
 import com.soul.pooling.service.PoolingManagement;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
-import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * @Author: Song
@@ -28,16 +26,11 @@ public class UnpackZmqServiceImpl implements UnpackMessageService {
 
     @Override
     public void unpackZmq(String s) {
-        List<SituationMoveData> situationMoveDataList = JsonUtils.deserializeList(s, SituationMoveData.class);
-        for (Map.Entry<String, Platform> map : management.getPlatformPool().entrySet()) {
+        ResourceModel model = JsonUtils.deserialize(s, ResourceModel.class);
 
-            SituationMoveData situationMovedata = situationMoveDataList.stream().filter(q -> StringUtils.equals(q.getId(), map.getKey())).findFirst().orElse(null);
-            if (situationMovedata == null) {
-                continue;
-            }
-            map.getValue().setPlatformMoveData(situationMovedata.getMove());
-
-        }
+        Engage engage = management.getEngageByPlatform(model.getPlatformCode()).stream().filter(q -> q.getName().equals(model.getName())).collect(Collectors.toList()).get(0);
+        int num = engage.getNumber() - model.getNum();
+        engage.setNumber(num);
 
     }
 }

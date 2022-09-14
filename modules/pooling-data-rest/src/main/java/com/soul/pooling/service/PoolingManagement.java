@@ -67,7 +67,7 @@ public class PoolingManagement {
     public Map<String, Platform> getPlatformPool() {
         return platformPool;
     }
-    
+
 
     public Find getFindById(String id) {
         Find find = findPool.get(id);
@@ -229,9 +229,6 @@ public class PoolingManagement {
 
     public List<Target> getTargetPool(CommandType type) {
         List<Target> result = targetPool.values().stream().collect(Collectors.toList());
-        if (type == null) {
-            return result;
-        }
 
         return result;
     }

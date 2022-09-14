@@ -32,6 +32,10 @@ public class Find extends BaseEntity {
     @Column(name = "deviceCode")
     private String deviceCode;
 
+    @Display("设备类型")
+    @Column(name = "deviceType")
+    private String deviceType;
+
     @Display("名称")
     @Column(name = "name")
     private String name;

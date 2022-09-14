@@ -43,36 +43,7 @@ public class CommandController {
     @Api
     @PostMapping("/mission-search")
     public List<KillingChain> getKillChain(@RequestBody CommandSearch command) {
-//        List<KillingChain> list = new ArrayList<>();
-//        if (CollectionUtils.isEmpty(command.getPolygons())) {
-//            return list;
-//        }
-//        for (Polygon polygon : command.getPolygons()) {
-//            KillingChain killingChain = new KillingChain();
-//            killingChain.setTargetName(polygon.getName());
-//            killingChain.setPolygon(polygon);
-//            List<Find> finds = new ArrayList<>();
-//            if (StringUtils.equals(polygon.getName(), "area_4")) {
-//                finds.add(management.getFindById("132"));
-//                finds.add(management.getFindById("95"));
-//            }
-//            if (StringUtils.equals(polygon.getName(), "area_1")) {
-//                finds.add(management.getFindById("135"));
-//                finds.add(management.getFindById("136"));
-//                finds.add(management.getFindById("139"));
-//                finds.add(management.getFindById("96"));
-//                finds.add(management.getFindById("100"));
-//                finds.add(management.getFindById("99"));
-//                finds.add(management.getFindById("97"));
-//                finds.add(management.getFindById("98"));
-//            }
-//            List<ResourceModel> find = poolingService.findToList(finds);
-//            killingChain.setFind(find);
-//            list.add(killingChain);
-//
-//
-//        }
-//        return list;
+
         return commandService.getSearch(command);
     }
 

@@ -440,6 +440,14 @@ public class PoolingController {
     }
 
     @Api
+    @PostMapping(value = "/weaponNum")
+    public void weaponNum(@RequestBody ResourceModel model) {
+        Engage engage = management.getEngageByPlatform(model.getPlatformCode()).stream().filter(q -> q.getName().equals(model.getName())).collect(Collectors.toList()).get(0);
+        int num = engage.getNumber() - model.getNum();
+        engage.setNumber(num);
+    }
+
+    @Api
     @PostMapping(value = "/list/asses")
     public List<ResourceModel> getAssesList(@RequestBody ResourceCondition condition) {
 
