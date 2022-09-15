@@ -34,6 +34,7 @@ public class PoolingServiceImpl implements PoolingService {
             model.setPlatformCode(find.getPlatformCode());
             model.setPlatformName(find.getPlatformName());
             model.setStatus(find.getStatus());
+            model.setDeviceTpye(find.getDeviceType());
             list.add(model);
         }
         return list;
@@ -51,6 +52,7 @@ public class PoolingServiceImpl implements PoolingService {
             model.setPlatformCode(fix.getPlatformCode());
             model.setPlatformName(fix.getPlatformName());
             model.setStatus(fix.getStatus());
+            model.setDeviceTpye(fix.getDeviceType());
             list.add(model);
         }
         return list;
@@ -68,6 +70,7 @@ public class PoolingServiceImpl implements PoolingService {
             model.setPlatformCode(track.getPlatformCode());
             model.setPlatformName(track.getPlatformName());
             model.setStatus(track.getStatus());
+            model.setDeviceTpye(track.getDeviceType());
             list.add(model);
         }
         return list;
@@ -85,6 +88,7 @@ public class PoolingServiceImpl implements PoolingService {
             model.setPlatformCode(target.getPlatformCode());
             model.setPlatformName(target.getPlatformName());
             model.setStatus(target.getStatus());
+            model.setDeviceTpye("指控系统");
             list.add(model);
         }
         return list;
@@ -104,6 +108,7 @@ public class PoolingServiceImpl implements PoolingService {
             model.setPlatformName(engage.getPlatformName());
             model.setStatus(engage.getStatus());
             model.setNum(Integer.valueOf(engage.getNumber()));
+            model.setDeviceTpye(engage.getDeviceType());
             list.add(model);
         }
         return list;
@@ -122,6 +127,7 @@ public class PoolingServiceImpl implements PoolingService {
             model.setPlatformCode(asses.getPlatformCode());
             model.setPlatformName(asses.getPlatformName());
             model.setStatus(asses.getStatus());
+            model.setDeviceTpye(asses.getDeviceType());
             list.add(model);
         }
         return list;
