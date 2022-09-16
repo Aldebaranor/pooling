@@ -32,7 +32,7 @@ public class ResourceModel extends BaseEntity {
 
     private Integer num;
 
-    private String deviceTpye;
+    private String deviceType;
 
 
 }

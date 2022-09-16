@@ -292,7 +292,7 @@ public class PoolingController {
         }
 
         if (!StringUtils.isBlank(condition.getName())) {
-            list = list.stream().filter(q -> q.getDeviceTpye().contains(condition.getName())).collect(Collectors.toList());
+            list = list.stream().filter(q -> q.getDeviceType().contains(condition.getName())).collect(Collectors.toList());
         }
         if (!StringUtils.isBlank(condition.getId())) {
             list = list.stream().filter(q -> StringUtils.equals(condition.getId(), q.getId())).collect(Collectors.toList());
@@ -324,7 +324,7 @@ public class PoolingController {
         }
 
         if (!StringUtils.isBlank(condition.getName())) {
-            list = list.stream().filter(q -> q.getDeviceTpye().contains(condition.getName())).collect(Collectors.toList());
+            list = list.stream().filter(q -> q.getDeviceType().contains(condition.getName())).collect(Collectors.toList());
         }
         if (!StringUtils.isBlank(condition.getId())) {
             list = list.stream().filter(q -> StringUtils.equals(condition.getId(), q.getId())).collect(Collectors.toList());
@@ -356,7 +356,7 @@ public class PoolingController {
         }
 
         if (!StringUtils.isBlank(condition.getName())) {
-            list = list.stream().filter(q -> q.getDeviceTpye().contains(condition.getName())).collect(Collectors.toList());
+            list = list.stream().filter(q -> q.getDeviceType().contains(condition.getName())).collect(Collectors.toList());
         }
         if (!StringUtils.isBlank(condition.getId())) {
             list = list.stream().filter(q -> StringUtils.equals(condition.getId(), q.getId())).collect(Collectors.toList());
@@ -388,7 +388,7 @@ public class PoolingController {
         }
 
         if (!StringUtils.isBlank(condition.getName())) {
-            list = list.stream().filter(q -> q.getDeviceTpye().contains(condition.getName())).collect(Collectors.toList());
+            list = list.stream().filter(q -> q.getDeviceType().contains(condition.getName())).collect(Collectors.toList());
         }
         if (!StringUtils.isBlank(condition.getId())) {
             list = list.stream().filter(q -> StringUtils.equals(condition.getId(), q.getId())).collect(Collectors.toList());
@@ -420,7 +420,7 @@ public class PoolingController {
         }
 
         if (!StringUtils.isBlank(condition.getName())) {
-            list = list.stream().filter(q -> q.getDeviceTpye().contains(condition.getName())).collect(Collectors.toList());
+            list = list.stream().filter(q -> q.getDeviceType().contains(condition.getName())).collect(Collectors.toList());
         }
         if (!StringUtils.isBlank(condition.getId())) {
             list = list.stream().filter(q -> StringUtils.equals(condition.getId(), q.getId())).collect(Collectors.toList());
@@ -459,7 +459,7 @@ public class PoolingController {
         }
 
         if (!StringUtils.isBlank(condition.getName())) {
-            list = list.stream().filter(q -> q.getDeviceTpye().contains(condition.getName())).collect(Collectors.toList());
+            list = list.stream().filter(q -> q.getDeviceType().contains(condition.getName())).collect(Collectors.toList());
         }
         if (!StringUtils.isBlank(condition.getId())) {
             list = list.stream().filter(q -> StringUtils.equals(condition.getId(), q.getId())).collect(Collectors.toList());
