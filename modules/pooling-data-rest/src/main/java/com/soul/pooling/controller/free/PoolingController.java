@@ -469,6 +469,57 @@ public class PoolingController {
 
     }
 
+    @Api
+    @GetMapping(value = "/all/platform")
+    public List<Platform> getPlatformAll() {
+        return management.getPlatformPool().values().stream().collect(Collectors.toList());
+    }
+
+    @Api
+    @GetMapping(value = "/all/find")
+    public List<Find> getFindAll() {
+        return management.getFindPool(null);
+    }
+
+
+    @Api
+    @GetMapping(value = "/all/fix")
+    public List<Fix> getFixAll() {
+
+        return management.getFixPool(null);
+    }
+
+
+    @Api
+    @GetMapping(value = "/all/track")
+    public List<Track> getTrackAll() {
+
+        return  management.getTrackPool(null);
+    }
+
+    @Api
+    @GetMapping(value = "/all/target")
+    public List<Target> getTargetAll() {
+
+        return management.getTargetPool(null);
+
+    }
+
+
+    @Api
+    @GetMapping(value = "/all/engage")
+    public List<Engage> getEngageAll() {
+
+        return management.getEngagePool(null);
+    }
+
+    @Api
+    @GetMapping(value = "/all/asses")
+    public List<Asses> getAssesAll() {
+
+        return management.getAssesPool(null);
+    }
+
 }
 
 

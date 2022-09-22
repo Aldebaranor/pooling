@@ -23,4 +23,5 @@ public class CommandSearch implements Serializable {
     //任务执行时间
     private Long limitTime;
 
+
 }
