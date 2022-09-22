@@ -11,7 +11,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
-import org.zeromq.*;
+import org.zeromq.SocketType;
+import org.zeromq.ZAuth;
+import org.zeromq.ZContext;
+import org.zeromq.ZMQ;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
@@ -36,11 +39,11 @@ public class ZeroMqSubscriber {
     private String address;
 
     private String topic;
-    private  ZContext zContext;
+    private ZContext zContext;
 
-    private  ZAuth zAuth;
+    private ZAuth zAuth;
 
-    private  ZMQ.Socket zmqSocket;
+    private ZMQ.Socket zmqSocket;
 
     @Autowired
     private SubscriptionListener subscriptionListener;
@@ -48,7 +51,7 @@ public class ZeroMqSubscriber {
     @PostConstruct
     public void subscribe() {
         init();
-        if(StringUtils.isBlank(topic)){
+        if (StringUtils.isBlank(topic)) {
             zmqSocket.subscribe(ZMQ.SUBSCRIPTION_ALL);
         }
         zmqSocket.subscribe(topic);
@@ -59,7 +62,7 @@ public class ZeroMqSubscriber {
         zmqSocket.unsubscribe(ZMQ.SUBSCRIPTION_ALL);
     }
 
-    public void init()  {
+    public void init() {
         zContext = new ZContext();
 
         //zAuth = new ZAuth(zContext);
@@ -69,7 +72,7 @@ public class ZeroMqSubscriber {
 //       zmqSocket.setCurveServer(true);
 //        zmqSocket.setCurvePublicKey(Z85.decode(publicKey));
 //        zmqSocket.setCurveSecretKey(Z85.decode(secretKey));
-        zmqSocket.bind(address);
+        zmqSocket.connect(address);
 
         Thread zeroMqSubscriberThread = new ZeroMqSubscriberThread();
         zeroMqSubscriberThread.setName(zeroMqSubscriberThread.getClass().getSimpleName());

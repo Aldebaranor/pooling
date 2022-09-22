@@ -1,5 +1,6 @@
 package com.soul.pooling.controller.free;
 
+import com.alibaba.fastjson.JSONObject;
 import com.egova.exception.ExceptionUtils;
 import com.egova.json.utils.JsonUtils;
 import com.egova.web.annotation.Api;
@@ -203,39 +204,39 @@ public class PoolingController {
 
 
     @Api
-    @GetMapping(value = "/find/{id}")
-    public Find getFindById(@PathVariable String id) {
-        return management.getFindById(id);
+    @PostMapping(value = "/find")
+    public Find getFindById(@RequestBody JSONObject id) {
+        return management.getFindById(id.getString("id"));
     }
 
     @Api
-    @GetMapping(value = "/fix/{id}")
-    public Fix getFixById(@PathVariable String id) {
-        return management.getFixById(id);
+    @PostMapping(value = "/fix")
+    public Fix getFixById(@RequestBody JSONObject id) {
+        return management.getFixById(id.getString("id"));
     }
 
     @Api
-    @GetMapping(value = "/track/{id}")
-    public Track getTrackById(@PathVariable String id) {
-        return management.getTrackById(id);
+    @PostMapping(value = "/track")
+    public Track getTrackById(@RequestBody JSONObject id) {
+        return management.getTrackById(id.getString("id"));
     }
 
     @Api
-    @GetMapping(value = "/target/{id}")
-    public Target getTargetById(@PathVariable String id) {
-        return management.getTargetById(id);
+    @PostMapping(value = "/target")
+    public Target getTargetById(@RequestBody JSONObject id) {
+        return management.getTargetById(id.getString("id"));
     }
 
     @Api
-    @GetMapping(value = "/engage/{id}")
-    public Engage getEngageById(@PathVariable String id) {
-        return management.getEngageById(id);
+    @PostMapping(value = "/engage")
+    public Engage getEngageById(@RequestBody JSONObject id) {
+        return management.getEngageById(id.getString("id"));
     }
 
     @Api
-    @GetMapping(value = "/asses/{id}")
-    public Asses getAssesById(@PathVariable String id) {
-        return management.getAssesById(id);
+    @PostMapping(value = "/asses")
+    public Asses getAssesById(@RequestBody JSONObject id) {
+        return management.getAssesById(id.getString("id"));
     }
 
     @Api
@@ -291,7 +292,7 @@ public class PoolingController {
         }
 
         if (!StringUtils.isBlank(condition.getName())) {
-            list = list.stream().filter(q -> q.getName().contains(condition.getName())).collect(Collectors.toList());
+            list = list.stream().filter(q -> q.getDeviceType().contains(condition.getName())).collect(Collectors.toList());
         }
         if (!StringUtils.isBlank(condition.getId())) {
             list = list.stream().filter(q -> StringUtils.equals(condition.getId(), q.getId())).collect(Collectors.toList());
@@ -323,7 +324,7 @@ public class PoolingController {
         }
 
         if (!StringUtils.isBlank(condition.getName())) {
-            list = list.stream().filter(q -> q.getName().contains(condition.getName())).collect(Collectors.toList());
+            list = list.stream().filter(q -> q.getDeviceType().contains(condition.getName())).collect(Collectors.toList());
         }
         if (!StringUtils.isBlank(condition.getId())) {
             list = list.stream().filter(q -> StringUtils.equals(condition.getId(), q.getId())).collect(Collectors.toList());
@@ -355,7 +356,7 @@ public class PoolingController {
         }
 
         if (!StringUtils.isBlank(condition.getName())) {
-            list = list.stream().filter(q -> q.getName().contains(condition.getName())).collect(Collectors.toList());
+            list = list.stream().filter(q -> q.getDeviceType().contains(condition.getName())).collect(Collectors.toList());
         }
         if (!StringUtils.isBlank(condition.getId())) {
             list = list.stream().filter(q -> StringUtils.equals(condition.getId(), q.getId())).collect(Collectors.toList());
@@ -387,7 +388,7 @@ public class PoolingController {
         }
 
         if (!StringUtils.isBlank(condition.getName())) {
-            list = list.stream().filter(q -> q.getName().contains(condition.getName())).collect(Collectors.toList());
+            list = list.stream().filter(q -> q.getDeviceType().contains(condition.getName())).collect(Collectors.toList());
         }
         if (!StringUtils.isBlank(condition.getId())) {
             list = list.stream().filter(q -> StringUtils.equals(condition.getId(), q.getId())).collect(Collectors.toList());
@@ -419,7 +420,7 @@ public class PoolingController {
         }
 
         if (!StringUtils.isBlank(condition.getName())) {
-            list = list.stream().filter(q -> q.getName().contains(condition.getName())).collect(Collectors.toList());
+            list = list.stream().filter(q -> q.getDeviceType().contains(condition.getName())).collect(Collectors.toList());
         }
         if (!StringUtils.isBlank(condition.getId())) {
             list = list.stream().filter(q -> StringUtils.equals(condition.getId(), q.getId())).collect(Collectors.toList());
@@ -439,6 +440,14 @@ public class PoolingController {
     }
 
     @Api
+    @PostMapping(value = "/weaponNum")
+    public void weaponNum(@RequestBody ResourceModel model) {
+        Engage engage = management.getEngageByPlatform(model.getPlatformCode()).stream().filter(q -> q.getName().equals(model.getName())).collect(Collectors.toList()).get(0);
+        int num = engage.getNumber() - model.getNum();
+        engage.setNumber(num);
+    }
+
+    @Api
     @PostMapping(value = "/list/asses")
     public List<ResourceModel> getAssesList(@RequestBody ResourceCondition condition) {
 
@@ -450,7 +459,7 @@ public class PoolingController {
         }
 
         if (!StringUtils.isBlank(condition.getName())) {
-            list = list.stream().filter(q -> q.getName().contains(condition.getName())).collect(Collectors.toList());
+            list = list.stream().filter(q -> q.getDeviceType().contains(condition.getName())).collect(Collectors.toList());
         }
         if (!StringUtils.isBlank(condition.getId())) {
             list = list.stream().filter(q -> StringUtils.equals(condition.getId(), q.getId())).collect(Collectors.toList());

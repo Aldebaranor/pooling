@@ -1,15 +1,14 @@
 package com.soul.pooling.zeromq;
 
-import com.soul.pooling.netty.handler.NettyUdpClientHandler;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
-import io.netty.channel.*;
-import io.netty.channel.socket.nio.NioDatagramChannel;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
-import org.zeromq.*;
-import zmq.util.Z85;
+import org.zeromq.SocketType;
+import org.zeromq.ZAuth;
+import org.zeromq.ZContext;
+import org.zeromq.ZMQ;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
@@ -32,19 +31,19 @@ public class ZeroMqPublisher {
     private String address;
 
     private String topic;
-    private  ZContext zContext;
+    private ZContext zContext;
 
-    private  ZAuth zAuth;
+    private ZAuth zAuth;
 
-    private  ZMQ.Socket zmqSocket;
+    private ZMQ.Socket zmqSocket;
 
 
     public void publish(String s) {
-        zmqSocket.send(String.format("%s:%s",topic,s));
+        zmqSocket.send(String.format("%s:%s", topic, s));
     }
 
     @PostConstruct
-    public void start()  {
+    public void start() {
         zContext = new ZContext();
         //zAuth = new ZAuth(zContext);
         //zAuth.configureCurve(ZAuth.CURVE_ALLOW_ANY);
@@ -54,7 +53,7 @@ public class ZeroMqPublisher {
 //        zmqSocket.setCurvePublicKey(zCert.getPublicKey());
 //        zmqSocket.setCurveSecretKey(zCert.getSecretKey());
 //        zmqSocket.setCurveServerKey(Z85.decode(serverKey));
-        zmqSocket.connect(address);
+        zmqSocket.bind(address);
         log.info("----------------------------ZeroMqPublisher start success");
     }
 

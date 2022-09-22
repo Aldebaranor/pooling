@@ -5,7 +5,6 @@ import com.soul.pooling.entity.enums.ResourceStatus;
 import lombok.Data;
 
 import javax.persistence.Entity;
-import java.io.Serializable;
 
 /**
  * @Description: 资源服务$
@@ -33,6 +32,7 @@ public class ResourceModel extends BaseEntity {
 
     private Integer num;
 
+    private String deviceType;
 
 
 }

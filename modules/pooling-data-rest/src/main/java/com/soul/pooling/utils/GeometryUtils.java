@@ -314,6 +314,25 @@ public final class GeometryUtils {
         return target;
     }
 
+    /**
+     * 获取多边形面积
+     *
+     * @param points
+     * @return
+     */
+    public static double getPolygonArea(List<Point> points) {
+        double s = 0.0;
+
+        int point_num = points.size();
+        if (point_num < 3) {
+            return 0.0;
+        }
+        s = points.get(0).getY() * (points.get(point_num - 1).getX() - points.get(1).getX());
+        for (int i = 1; i < point_num; ++i) {
+            s += points.get(i).getY() * (points.get(i - 1).getX() - points.get((i + 1) % point_num).getX());
+        }
+        return Math.abs(s / 2.0) * 9101160000.085981;
+    }
 
     public static int rgba2int(String s) {
         if (StringUtils.isBlank(s)) {

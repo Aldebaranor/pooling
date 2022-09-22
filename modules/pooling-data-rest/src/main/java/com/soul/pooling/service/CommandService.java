@@ -1,6 +1,7 @@
 package com.soul.pooling.service;
 
 import com.soul.pooling.model.CommandAttack;
+import com.soul.pooling.model.CommandSearch;
 import com.soul.pooling.model.KillingChain;
 
 import java.util.List;
@@ -14,9 +15,11 @@ import java.util.List;
 public interface CommandService {
 
     KillingChain getTargetResource(CommandAttack command);
-    
+
     KillingChain getSearchResource();
 
     List<KillingChain> getKillChain(CommandAttack command);
+
+    List<KillingChain> getSearch(CommandSearch command);
 
 }
