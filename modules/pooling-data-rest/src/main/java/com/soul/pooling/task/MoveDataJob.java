@@ -6,6 +6,7 @@ import com.soul.pooling.config.Constants;
 import com.soul.pooling.config.MetaConfig;
 import com.soul.pooling.entity.Platform;
 import com.soul.pooling.model.PlatformMoveData;
+import com.soul.pooling.model.PlatformStatus;
 import com.soul.pooling.model.SituationMoveData;
 import com.soul.pooling.model.SituationTemArmy;
 import com.soul.pooling.service.PoolingManagement;
@@ -74,6 +75,12 @@ public class MoveDataJob {
             if (platform != null) {
                 platform.setPlatformMoveData(situationMoveData.getMove());
             }
+            PlatformStatus platformStatus = management.getAll().get(situationMoveData.getId());
+            if (platformStatus != null) {
+                platformStatus.setMoveData(situationMoveData.getMove());
+            }
+
+
 
         }
 

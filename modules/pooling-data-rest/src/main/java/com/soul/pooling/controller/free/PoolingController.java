@@ -480,8 +480,9 @@ public class PoolingController {
 
     @Api
     @GetMapping(value = "/all/platform")
-    public List<Platform> getPlatformAll() {
-        return management.getPlatformPool().values().stream().collect(Collectors.toList());
+    public List<PlatformStatus> getPlatformAll() {
+
+        return management.getAll().values().stream().collect(Collectors.toList());
     }
 
     @Api

@@ -67,15 +67,15 @@ public class Platform extends BaseEntity {
     @Display("位置信息")
     private PlatformMoveData platformMoveData;
     
-    @Transient
-    @JoinColumn(name = "code")
-    @OneToMany(targetEntity = Sensor.class, mappedBy = "platformCode")
-    private List<Sensor> sensors;
-
-    @Transient
-    @JoinColumn(name = "code")
-    @OneToMany(targetEntity = Weapon.class, mappedBy = "platformCode")
-    private List<Weapon> weapons;
+//    @Transient
+//    @JoinColumn(name = "code")
+//    @OneToMany(targetEntity = Sensor.class, mappedBy = "platformCode")
+//    private List<Sensor> sensors;
+//
+//    @Transient
+//    @JoinColumn(name = "code")
+//    @OneToMany(targetEntity = Weapon.class, mappedBy = "platformCode")
+//    private List<Weapon> weapons;
 
     //2F2TEA
 
