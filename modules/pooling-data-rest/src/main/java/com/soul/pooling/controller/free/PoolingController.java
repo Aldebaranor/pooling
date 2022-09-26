@@ -202,6 +202,14 @@ public class PoolingController {
         return management.getPlatformPool().get(platformId).getPlatformMoveData();
     }
 
+    @Api
+    @PostMapping(value = "/weapon/status")
+    public void weaponNum(@RequestBody ResourceModel model) {
+        Engage engage = management.getEngageByPlatform(model.getPlatformCode()).stream().filter(q -> q.getDeviceCode().equals(model.getDeviceCode())).collect(Collectors.toList()).get(0);
+        int num = engage.getNumber() - model.getNum();
+        engage.setNumber(num);
+    }
+
 
     @Api
     @PostMapping(value = "/find")
@@ -437,14 +445,6 @@ public class PoolingController {
 
         return list;
 
-    }
-
-    @Api
-    @PostMapping(value = "/weaponNum")
-    public void weaponNum(@RequestBody ResourceModel model) {
-        Engage engage = management.getEngageByPlatform(model.getPlatformCode()).stream().filter(q -> q.getName().equals(model.getName())).collect(Collectors.toList()).get(0);
-        int num = engage.getNumber() - model.getNum();
-        engage.setNumber(num);
     }
 
     @Api
