@@ -7,6 +7,7 @@ import com.soul.pooling.entity.*;
 import com.soul.pooling.entity.enums.CommandType;
 import com.soul.pooling.entity.enums.ResourceStatus;
 import com.soul.pooling.model.ActivatedModel;
+import com.soul.pooling.model.CommandAttack;
 import com.soul.pooling.model.PlatformStatus;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -83,6 +84,25 @@ public class PoolingManagement {
         }
 
         return find;
+    }
+
+    public CommandType getCommandType(CommandAttack command) {
+        CommandType type = CommandType.ATTACK;
+        if (command.getType() == CommandType.ATTACK_AIR.getValue()) {
+            type = CommandType.ATTACK_AIR;
+        } else if (command.getType() == CommandType.ATTACK_SEA.getValue()) {
+            type = CommandType.ATTACK_SEA;
+        } else if (command.getType() == CommandType.ATTACK_LAND.getValue()) {
+            type = CommandType.ATTACK_LAND;
+        } else if (command.getType() == CommandType.ATTACK_UNDERSEA.getValue()) {
+            type = CommandType.ATTACK_UNDERSEA;
+        } else if (command.getType() == CommandType.SEARCH.getValue()) {
+            type = CommandType.SEARCH;
+        } else {
+            log.info("commandType 错误，取值不在10，21，22，23，24");
+            return null;
+        }
+        return type;
     }
 
 
@@ -353,6 +373,8 @@ public class PoolingManagement {
             Platform platform = platformService.getById(id);
             if (platform != null) {
                 status.setCode(platform.getCode());
+                status.setBeMineSweep(platform.getBeMineSweep());
+                status.setBeRealEquipment(platform.getBeRealEquipment());
                 status.setName(platform.getName());
                 status.setType(platform.getType());
             }
@@ -392,6 +414,8 @@ public class PoolingManagement {
             forcesStatus.setCode(platform.getCode());
             forcesStatus.setName(platform.getName());
             forcesStatus.setType(platform.getType());
+            forcesStatus.setBeMineSweep(platform.getBeMineSweep());
+            forcesStatus.setBeRealEquipment(platform.getBeRealEquipment());
             forceStatusData.put(id, forcesStatus);
             if (platform == null) {
                 throw ExceptionUtils.api(String.format("数据库没有平台数据"));

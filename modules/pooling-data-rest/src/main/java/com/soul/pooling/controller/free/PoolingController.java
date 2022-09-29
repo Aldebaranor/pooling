@@ -9,6 +9,8 @@ import com.soul.pooling.condition.PoolingCondition;
 import com.soul.pooling.condition.ResourceCondition;
 import com.soul.pooling.config.PoolingConfig;
 import com.soul.pooling.entity.*;
+import com.soul.pooling.entity.enums.CommandType;
+import com.soul.pooling.model.CommandAttack;
 import com.soul.pooling.model.PlatformMoveData;
 import com.soul.pooling.model.PlatformStatus;
 import com.soul.pooling.model.ResourceModel;
@@ -22,6 +24,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -504,7 +507,7 @@ public class PoolingController {
     @GetMapping(value = "/all/track")
     public List<Track> getTrackAll() {
 
-        return  management.getTrackPool(null);
+        return management.getTrackPool(null);
     }
 
     @Api
@@ -530,6 +533,35 @@ public class PoolingController {
         return management.getAssesPool(null);
     }
 
+    @Api
+    @PostMapping(value = "/all-resource")
+    public Map<String, Object> allResource(@RequestBody CommandAttack command) {
+        Map<String, Object> result = new HashMap<String, Object>();
+        CommandType type = management.getCommandType(command);
+        List<Find> finds = management.getFindPool(type);
+        List<Fix> fixes = new ArrayList<>();
+        List<Track> tracks = new ArrayList<>();
+        List<Target> targets = new ArrayList<>();
+        List<Engage> engages = new ArrayList<>();
+        List<Asses> asses = new ArrayList<>();
+
+        if (type != CommandType.SEARCH) {
+            fixes = management.getFixPool(type);
+            tracks = management.getTrackPool(type);
+            targets = management.getTargetPool(type);
+            engages = management.getEngagePool(type);
+            asses = management.getAssesPool(type);
+
+        }
+        List<PlatformStatus> platforms = management.getAll().values().stream().collect(Collectors.toList());
+        result.put("find", finds);
+        result.put("fix", fixes);
+        result.put("track", tracks);
+        result.put("target", targets);
+        result.put("engage", engages);
+        result.put("asses", asses);
+        result.put("platform", platforms);
+        return result;
+    }
+
 }
-
-

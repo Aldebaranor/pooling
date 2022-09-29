@@ -1,6 +1,5 @@
 package com.soul.pooling.model;
 
-import com.egova.model.BaseEntity;
 import lombok.Data;
 
 import javax.persistence.Entity;
@@ -13,7 +12,7 @@ import java.io.Serializable;
  */
 @Data
 @Entity
-public class PlatformStatus  implements Serializable {
+public class PlatformStatus implements Serializable {
 
     private static final long serialVersionUID = 5770184557706043686L;
 
@@ -30,6 +29,10 @@ public class PlatformStatus  implements Serializable {
     private Boolean activeStatus;
 
     private PlatformMoveData moveData;
+
+    private Boolean beRealEquipment;
+
+    private Boolean beMineSweep;
 
 
 }
