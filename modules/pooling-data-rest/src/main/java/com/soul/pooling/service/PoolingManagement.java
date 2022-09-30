@@ -7,7 +7,7 @@ import com.soul.pooling.entity.*;
 import com.soul.pooling.entity.enums.CommandType;
 import com.soul.pooling.entity.enums.ResourceStatus;
 import com.soul.pooling.model.ActivatedModel;
-import com.soul.pooling.model.CommandAttack;
+import com.soul.pooling.model.Command;
 import com.soul.pooling.model.PlatformStatus;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -86,7 +86,7 @@ public class PoolingManagement {
         return find;
     }
 
-    public CommandType getCommandType(CommandAttack command) {
+    public CommandType getCommandType(Command command) {
         CommandType type = CommandType.ATTACK;
         if (command.getType() == CommandType.ATTACK_AIR.getValue()) {
             type = CommandType.ATTACK_AIR;

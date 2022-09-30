@@ -10,7 +10,7 @@ import com.soul.pooling.condition.ResourceCondition;
 import com.soul.pooling.config.PoolingConfig;
 import com.soul.pooling.entity.*;
 import com.soul.pooling.entity.enums.CommandType;
-import com.soul.pooling.model.CommandAttack;
+import com.soul.pooling.model.Command;
 import com.soul.pooling.model.PlatformMoveData;
 import com.soul.pooling.model.PlatformStatus;
 import com.soul.pooling.model.ResourceModel;
@@ -535,7 +535,7 @@ public class PoolingController {
 
     @Api
     @PostMapping(value = "/all-resource")
-    public Map<String, Object> allResource(@RequestBody CommandAttack command) {
+    public Map<String, Object> allResource(@RequestBody Command command) {
         Map<String, Object> result = new HashMap<String, Object>();
         CommandType type = management.getCommandType(command);
         List<Find> finds = management.getFindPool(type);

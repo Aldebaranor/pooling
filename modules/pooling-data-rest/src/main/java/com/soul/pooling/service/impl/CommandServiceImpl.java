@@ -35,7 +35,7 @@ public class CommandServiceImpl implements CommandService {
 
 
     @Override
-    public KillingChain getTargetResource(CommandAttack command) {
+    public KillingChain getTargetResource(Command command) {
 
         //0确定那个方面战，对空按照下面的逻辑
         //1.根据每个目标当前位置A与 航向，航速外推200s得到B
@@ -154,7 +154,7 @@ public class CommandServiceImpl implements CommandService {
     }
 
     @Override
-    public List<KillingChain> getKillChain(CommandAttack command) {
+    public List<KillingChain> getKillChain(Command command) {
 
         if (command.getType() == 25) {
             return getMineSweep(command);
@@ -350,7 +350,7 @@ public class CommandServiceImpl implements CommandService {
     }
 
     @Override
-    public List<KillingChain> getSearch(CommandSearch command) {
+    public List<KillingChain> getSearch(Command command) {
         /**
          * 获取搜索平台列表 List<Platform> UAV-S UUV-S
          * 根据多边形计算面积 S
@@ -446,7 +446,7 @@ public class CommandServiceImpl implements CommandService {
         return killingChain;
     }
 
-    public List<KillingChain> getMineSweep(CommandAttack command) {
+    public List<KillingChain> getMineSweep(Command command) {
         List<KillingChain> list = new ArrayList<>();
 
         /**
@@ -566,7 +566,8 @@ public class CommandServiceImpl implements CommandService {
         return res;
     }
 
-    public CommandType getCommandType(CommandAttack command) {
+    @Override
+    public CommandType getCommandType(Command command) {
         CommandType type = CommandType.ATTACK;
         if (command.getType() == CommandType.ATTACK_AIR.getValue()) {
             type = CommandType.ATTACK_AIR;
@@ -606,7 +607,7 @@ public class CommandServiceImpl implements CommandService {
      * @param command
      * @return
      */
-    public ResourceModel getTrackByEngage(ResourceModel engage, CommandAttack command) {
+    public ResourceModel getTrackByEngage(ResourceModel engage, Command command) {
 
         List<Track> tracks = management.getPlatformPool().get(engage.getPlatformCode()).getTracks();
         if (getCommandType(command).getValue() == 21) {
@@ -648,7 +649,7 @@ public class CommandServiceImpl implements CommandService {
         return t;
     }
 
-    public List<ResourceModel> getFind(GeometryUtils.Point start, GeometryUtils.Point end, CommandAttack command) {
+    public List<ResourceModel> getFind(GeometryUtils.Point start, GeometryUtils.Point end, Command command) {
         List<Find> list = new ArrayList<>();
         List<Find> finds = management.getFindPool(getCommandType(command));
 
@@ -685,7 +686,7 @@ public class CommandServiceImpl implements CommandService {
         return poolingService.findToList(list);
     }
 
-    public List<ResourceModel> getFix(GeometryUtils.Point start, GeometryUtils.Point end, CommandAttack command) {
+    public List<ResourceModel> getFix(GeometryUtils.Point start, GeometryUtils.Point end, Command command) {
         List<Fix> list = new ArrayList<>();
         List<Fix> fixes = management.getFixPool(getCommandType(command));
 
@@ -732,7 +733,7 @@ public class CommandServiceImpl implements CommandService {
         return poolingService.targetToList(list);
     }
 
-    public List<ResourceModel> getTrack(GeometryUtils.Point start, GeometryUtils.Point end, CommandAttack command) {
+    public List<ResourceModel> getTrack(GeometryUtils.Point start, GeometryUtils.Point end, Command command) {
         List<Track> list = new ArrayList<>();
         List<Track> tracks = management.getTrackPool(getCommandType(command));
 
@@ -768,7 +769,7 @@ public class CommandServiceImpl implements CommandService {
         return poolingService.trackToList(list);
     }
 
-    public List<ResourceModel> getAsses(GeometryUtils.Point start, GeometryUtils.Point end, CommandAttack command) {
+    public List<ResourceModel> getAsses(GeometryUtils.Point start, GeometryUtils.Point end, Command command) {
         List<Asses> list = new ArrayList<>();
         List<Asses> assesList = management.getAssesPool(getCommandType(command));
 
@@ -804,7 +805,7 @@ public class CommandServiceImpl implements CommandService {
         return poolingService.assesToList(list);
     }
 
-    public List<ResourceModel> getEngage(GeometryUtils.Point start, GeometryUtils.Point end, CommandAttack command) {
+    public List<ResourceModel> getEngage(GeometryUtils.Point start, GeometryUtils.Point end, Command command) {
         List<Engage> list = new ArrayList<>();
         List<Engage> engages = management.getEngagePool(getCommandType(command));
 

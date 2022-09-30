@@ -1,7 +1,7 @@
 package com.soul.pooling.service;
 
-import com.soul.pooling.model.CommandAttack;
-import com.soul.pooling.model.CommandSearch;
+import com.soul.pooling.entity.enums.CommandType;
+import com.soul.pooling.model.Command;
 import com.soul.pooling.model.KillingChain;
 
 import java.util.List;
@@ -14,12 +14,14 @@ import java.util.List;
 
 public interface CommandService {
 
-    KillingChain getTargetResource(CommandAttack command);
+    KillingChain getTargetResource(Command command);
 
     KillingChain getSearchResource();
 
-    List<KillingChain> getKillChain(CommandAttack command);
+    List<KillingChain> getKillChain(Command command);
 
-    List<KillingChain> getSearch(CommandSearch command);
+    List<KillingChain> getSearch(Command command);
+
+    CommandType getCommandType(Command command);
 
 }

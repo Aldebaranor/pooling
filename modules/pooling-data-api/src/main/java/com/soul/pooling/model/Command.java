@@ -1,27 +1,23 @@
 package com.soul.pooling.model;
 
-
 import lombok.Data;
 
 import java.io.Serializable;
 import java.util.List;
 
-
 /**
- * @Description:命令
- * @Author: nemo
- * @Date: 2022/7/1
+ * @Author: Song
+ * @Date 2022/9/30 9:36
  */
 @Data
-public class CommandSearch implements Serializable {
+public class Command implements Serializable {
 
-    private static final long serialVersionUID = 1705953663540673315L;
-    //命令类型
+    private static final long serialVersionUID = -8622170908219931541L;
     private Integer type;
     //目标ID
     private List<Polygon> polygons;
     //任务执行时间
     private Long limitTime;
 
-
+    private List<TargetData> targets;
 }

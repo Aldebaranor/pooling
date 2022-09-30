@@ -1,8 +1,8 @@
 package com.soul.pooling.controller.free;
 
 import com.egova.web.annotation.Api;
-import com.soul.pooling.model.CommandAttack;
-import com.soul.pooling.model.CommandSearch;
+import com.soul.pooling.entity.enums.CommandType;
+import com.soul.pooling.model.Command;
 import com.soul.pooling.model.KillingChain;
 import com.soul.pooling.model.ResourceModel;
 import com.soul.pooling.service.CommandService;
@@ -36,15 +36,13 @@ public class CommandController {
 
     @Api
     @PostMapping("/mission")
-    public List<KillingChain> getKillChain(@RequestBody CommandAttack command) {
-        return commandService.getKillChain(command);
-    }
-
-    @Api
-    @PostMapping("/mission-search")
-    public List<KillingChain> getKillChain(@RequestBody CommandSearch command) {
-
-        return commandService.getSearch(command);
+    public List<KillingChain> getKillChain(@RequestBody Command command) {
+        CommandType type = commandService.getCommandType(command);
+        if (type != CommandType.SEARCH) {
+            return commandService.getKillChain(command);
+        } else {
+            return commandService.getSearch(command);
+        }
     }
 
     @Api
@@ -77,7 +75,7 @@ public class CommandController {
      */
     @Api
     @PostMapping("/resource")
-    public KillingChain getTargetResource(@RequestBody CommandAttack command) {
+    public KillingChain getTargetResource(@RequestBody Command command) {
 
         return commandService.getTargetResource(command);
     }
