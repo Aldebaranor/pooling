@@ -24,5 +24,7 @@ public class MetaConfig {
 
     private Integer situationDb;
 
+    private Boolean beTest = false;
+
 
 }

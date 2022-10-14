@@ -377,6 +377,7 @@ public class PoolingManagement {
                 status.setBeRealEquipment(platform.getBeRealEquipment());
                 status.setName(platform.getName());
                 status.setType(platform.getType());
+                status.setSpeed(platform.getSpeed());
             }
 
             forceStatusData.put(id, status);
@@ -416,6 +417,7 @@ public class PoolingManagement {
             forcesStatus.setType(platform.getType());
             forcesStatus.setBeMineSweep(platform.getBeMineSweep());
             forcesStatus.setBeRealEquipment(platform.getBeRealEquipment());
+            forcesStatus.setSpeed(platform.getSpeed());
             forceStatusData.put(id, forcesStatus);
             if (platform == null) {
                 throw ExceptionUtils.api(String.format("数据库没有平台数据"));

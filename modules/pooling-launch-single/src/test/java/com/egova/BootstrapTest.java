@@ -1,7 +1,5 @@
 package com.egova;
 
-import com.egova.json.utils.JsonUtils;
-import com.egova.redis.RedisUtils;
 import com.soul.Bootstrap;
 import com.soul.pooling.config.PoolingConfig;
 import com.soul.pooling.mqtt.producer.MqttMsgProducer;
@@ -20,8 +18,6 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.Collections;
 
-import static com.soul.pooling.task.RangeTask.SCENARIO_RANGE;
-
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = {Bootstrap.class})
 public class BootstrapTest {
@@ -37,11 +33,7 @@ public class BootstrapTest {
 
     @Test
     public void crud() {
-        String s = "String";
-        RedisUtils.getService().opsForHash().put(SCENARIO_RANGE, String.valueOf(1), JsonUtils.serialize(s));
-        RedisUtils.getService().opsForHash().put(SCENARIO_RANGE, String.valueOf(2), s);
-        stringRedisTemplate.opsForHash().put(SCENARIO_RANGE, String.valueOf(3), JsonUtils.serialize(s));
-        stringRedisTemplate.opsForHash().put(SCENARIO_RANGE, String.valueOf(4), s);
+        
     }
 
 

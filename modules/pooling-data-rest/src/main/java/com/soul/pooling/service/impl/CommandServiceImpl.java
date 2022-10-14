@@ -577,8 +577,10 @@ public class CommandServiceImpl implements CommandService {
             type = CommandType.ATTACK_LAND;
         } else if (command.getType() == CommandType.ATTACK_UNDERSEA.getValue()) {
             type = CommandType.ATTACK_UNDERSEA;
+        } else if (command.getType() == CommandType.SEARCH.getValue()) {
+            type = CommandType.SEARCH;
         } else {
-            log.info("commandType 错误，取值不在21，22，23，24");
+            log.info("commandType 错误，取值不在10，21，22，23，24");
             return null;
         }
         return type;

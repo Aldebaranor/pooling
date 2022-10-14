@@ -34,5 +34,6 @@ public class PlatformStatus implements Serializable {
 
     private Boolean beMineSweep;
 
+    private Float speed;
 
 }
