@@ -74,7 +74,7 @@ public class Engage extends BaseEntity {
 
     @Display("系统反应时间")
     @Column(name = "reactionTime")
-    private String reactionTime;
+    private Float reactionTime;
 
     @Display("最大飞行速度")
     @Column(name = "maxSpeed")

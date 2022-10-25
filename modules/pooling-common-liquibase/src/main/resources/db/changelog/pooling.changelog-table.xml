@@ -1709,5 +1709,25 @@
         </addColumn>
     </changeSet>
 
+    <changeSet author="41656 (generated)" id="1647400803042-142">
+        <renameColumn tableName="pooling_engage" oldColumnName="reactionTime"
+                      newColumnName="reactionTime" columnDataType="FLOAT"/>
+        <addColumn tableName="pooling_find">
+            <column name="reactionTime" remarks="系统反应时间" type="FLOAT"></column>
+        </addColumn>
+        <addColumn tableName="pooling_fix">
+            <column name="reactionTime" remarks="系统反应时间" type="FLOAT"></column>
+        </addColumn>
+        <addColumn tableName="pooling_track">
+            <column name="reactionTime" remarks="系统反应时间" type="FLOAT"></column>
+        </addColumn>
+        <addColumn tableName="pooling_target">
+            <column name="reactionTime" remarks="系统反应时间" type="FLOAT"></column>
+        </addColumn>
+        <addColumn tableName="pooling_asses">
+            <column name="reactionTime" remarks="系统反应时间" type="FLOAT"></column>
+        </addColumn>
+    </changeSet>
+
 
 </databaseChangeLog>

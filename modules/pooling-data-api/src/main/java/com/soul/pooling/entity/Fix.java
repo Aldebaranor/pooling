@@ -45,6 +45,10 @@ public class Fix extends BaseEntity {
     @Column(name = "type")
     private String type;
 
+    @Display("系统反应时间")
+    @Column(name = "reactionTime")
+    private Float reactionTime;
+
     @Transient
     @Display("设备状态")
     private ResourceStatus status;

@@ -46,6 +46,9 @@ public class Track extends BaseEntity {
     @Column(name = "type")
     private String type;
 
+    @Display("系统反应时间")
+    @Column(name = "reactionTime")
+    private Float reactionTime;
 
     @Display("平台编号")
     @Column(name = "platformCode")
