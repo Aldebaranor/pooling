@@ -278,31 +278,25 @@ public class CommandServiceImpl implements CommandService {
 //            在前两个中根据先余弹量后距离排序选出一个的武器进行打击，根据命中概率计算需要几发弹
 //            选择这个武器所属平台的传感器开机作为跟踪资源
             if (tempEngages.size() != 0) {
-                ResourceModel killEngage = new ResourceModel();
-                if (tempEngages.get(1).getNum() > tempEngages.get(0).getNum()) {
-                    killEngage.setId(tempEngages.get(1).getId());
-                    killEngage.setName(tempEngages.get(1).getName());
-                    killEngage.setDeviceCode(tempEngages.get(1).getDeviceCode());
-                    killEngage.setType(tempEngages.get(1).getType());
-                    killEngage.setStatus(tempEngages.get(1).getStatus());
-                    killEngage.setPlatformCode(tempEngages.get(1).getPlatformCode());
-                    killEngage.setPlatformName(tempEngages.get(1).getPlatformName());
-                    killEngage.setNum(getWeaponNum(management.getEngageById(killEngage.getId()).getHitRate()));
+                //对海对陆采用饱和攻击
+                if (command.getType() == 22 || command.getType() == 23) {
+                    int wpSize = tempEngages.size() > 5 ? 5 : tempEngages.size();
+                    for (int i = 0; i < wpSize; i++) {
+                        ResourceModel killEngage = new ResourceModel();
+                        killEngage = setWeapon(killEngage, tempEngages, i);
+                        killChainEngage.add(killEngage);
+                        killChainTrack.add(getTrackByEngage(killEngage, command));
+                    }
+                } else if (tempEngages.get(1).getNum() > tempEngages.get(0).getNum()) {
+                    ResourceModel killEngage = new ResourceModel();
+                    killEngage = setWeapon(killEngage, tempEngages, 1);
                     killChainEngage.add(killEngage);
                     killChainTrack.add(getTrackByEngage(killEngage, command));
-                    tempEngages.get(1).setNum(tempEngages.get(1).getNum() - killEngage.getNum());
                 } else {
-                    killEngage.setId(tempEngages.get(0).getId());
-                    killEngage.setName(tempEngages.get(0).getName());
-                    killEngage.setDeviceCode(tempEngages.get(0).getDeviceCode());
-                    killEngage.setType(tempEngages.get(0).getType());
-                    killEngage.setStatus(tempEngages.get(0).getStatus());
-                    killEngage.setPlatformCode(tempEngages.get(0).getPlatformCode());
-                    killEngage.setPlatformName(tempEngages.get(0).getPlatformName());
-                    killEngage.setNum(getWeaponNum(management.getEngageById(killEngage.getId()).getHitRate()));
+                    ResourceModel killEngage = new ResourceModel();
+                    killEngage = setWeapon(killEngage, tempEngages, 0);
                     killChainEngage.add(killEngage);
                     killChainTrack.add(getTrackByEngage(killEngage, command));
-                    tempEngages.get(0).setNum(tempEngages.get(0).getNum() - killEngage.getNum());
                 }
             }
 
@@ -412,6 +406,19 @@ public class CommandServiceImpl implements CommandService {
         }
 
         return list;
+    }
+
+    public ResourceModel setWeapon(ResourceModel killEngage, List<ResourceModel> tempEngages, int i) {
+        killEngage.setId(tempEngages.get(i).getId());
+        killEngage.setName(tempEngages.get(i).getName());
+        killEngage.setDeviceCode(tempEngages.get(i).getDeviceCode());
+        killEngage.setType(tempEngages.get(i).getType());
+        killEngage.setStatus(tempEngages.get(i).getStatus());
+        killEngage.setPlatformCode(tempEngages.get(i).getPlatformCode());
+        killEngage.setPlatformName(tempEngages.get(i).getPlatformName());
+        killEngage.setNum(getWeaponNum(management.getEngageById(killEngage.getId()).getHitRate()));
+        tempEngages.get(i).setNum(tempEngages.get(i).getNum() - killEngage.getNum());
+        return killEngage;
     }
 
     public GeometryUtils.Point moveData2Point(PlatformMoveData moveData) {
@@ -613,13 +620,13 @@ public class CommandServiceImpl implements CommandService {
 
         List<Track> tracks = management.getPlatformPool().get(engage.getPlatformCode()).getTracks();
         if (getCommandType(command).getValue() == 21) {
-            tracks.sort(Comparator.comparing(Track::getMaxDetectRangeAir));
+            tracks.sort(Comparator.comparing(Track::getMaxDetectRangeAir).reversed());
         } else if (getCommandType(command).getValue() == 22) {
-            tracks.sort(Comparator.comparing(Track::getMaxDetectRangeSea));
+            tracks.sort(Comparator.comparing(Track::getMaxDetectRangeSea).reversed());
         } else if (getCommandType(command).getValue() == 23) {
-            tracks.sort(Comparator.comparing(Track::getMaxDetectRangeLand));
+            tracks.sort(Comparator.comparing(Track::getMaxDetectRangeLand).reversed());
         } else if (getCommandType(command).getValue() == 24) {
-            tracks.sort(Comparator.comparing(Track::getMaxDetectRangeUnderSea));
+            tracks.sort(Comparator.comparing(Track::getMaxDetectRangeUnderSea).reversed());
         }
         List<ResourceModel> list = poolingService.trackToList(tracks);
         ResourceModel model = new ResourceModel();
