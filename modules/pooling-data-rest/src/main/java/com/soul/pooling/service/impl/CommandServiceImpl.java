@@ -222,6 +222,8 @@ public class CommandServiceImpl implements CommandService {
             }
             if (find.size() != 0) {
                 killChainFind.add(find.get(0));
+            } else {
+
             }
 
 //            选择离A点最近的fix
@@ -285,18 +287,24 @@ public class CommandServiceImpl implements CommandService {
                         ResourceModel killEngage = new ResourceModel();
                         killEngage = setWeapon(killEngage, tempEngages, i);
                         killChainEngage.add(killEngage);
-                        killChainTrack.add(getTrackByEngage(killEngage, command));
+                        if (getTrackByEngage(killEngage, command) != null) {
+                            killChainTrack.add(getTrackByEngage(killEngage, command));
+                        }
                     }
                 } else if (tempEngages.get(1).getNum() > tempEngages.get(0).getNum()) {
                     ResourceModel killEngage = new ResourceModel();
                     killEngage = setWeapon(killEngage, tempEngages, 1);
                     killChainEngage.add(killEngage);
-                    killChainTrack.add(getTrackByEngage(killEngage, command));
+                    if (getTrackByEngage(killEngage, command) != null) {
+                        killChainTrack.add(getTrackByEngage(killEngage, command));
+                    }
                 } else {
                     ResourceModel killEngage = new ResourceModel();
                     killEngage = setWeapon(killEngage, tempEngages, 0);
                     killChainEngage.add(killEngage);
-                    killChainTrack.add(getTrackByEngage(killEngage, command));
+                    if (getTrackByEngage(killEngage, command) != null) {
+                        killChainTrack.add(getTrackByEngage(killEngage, command));
+                    }
                 }
             }
 
@@ -617,24 +625,39 @@ public class CommandServiceImpl implements CommandService {
      * @return
      */
     public ResourceModel getTrackByEngage(ResourceModel engage, Command command) {
-
+        ResourceModel model = new ResourceModel();
         List<Track> tracks = management.getPlatformPool().get(engage.getPlatformCode()).getTracks();
         if (getCommandType(command).getValue() == 21) {
             tracks.sort(Comparator.comparing(Track::getMaxDetectRangeAir).reversed());
+            if (tracks.size() != 0 && tracks.get(0).getMaxDetectRangeAir() > 0) {
+                List<ResourceModel> list = poolingService.trackToList(tracks);
+                model = list.get(0);
+                return model;
+            }
         } else if (getCommandType(command).getValue() == 22) {
             tracks.sort(Comparator.comparing(Track::getMaxDetectRangeSea).reversed());
+            if (tracks.size() != 0 && tracks.get(0).getMaxDetectRangeSea() > 0) {
+                List<ResourceModel> list = poolingService.trackToList(tracks);
+                model = list.get(0);
+                return model;
+            }
         } else if (getCommandType(command).getValue() == 23) {
             tracks.sort(Comparator.comparing(Track::getMaxDetectRangeLand).reversed());
+            if (tracks.size() != 0 && tracks.get(0).getMaxDetectRangeLand() > 0) {
+                List<ResourceModel> list = poolingService.trackToList(tracks);
+                model = list.get(0);
+                return model;
+            }
         } else if (getCommandType(command).getValue() == 24) {
             tracks.sort(Comparator.comparing(Track::getMaxDetectRangeUnderSea).reversed());
-        }
-        List<ResourceModel> list = poolingService.trackToList(tracks);
-        ResourceModel model = new ResourceModel();
-        if (list.size() != 0) {
-            model = list.get(0);
+            if (tracks.size() != 0 && tracks.get(0).getMaxDetectRangeUnderSea() > 0) {
+                List<ResourceModel> list = poolingService.trackToList(tracks);
+                model = list.get(0);
+                return model;
+            }
         }
 
-        return model;
+        return null;
     }
 
     public TargetData getTargetById(List<TargetData> targets, String id) {
@@ -736,6 +759,8 @@ public class CommandServiceImpl implements CommandService {
         for (ResourceModel model : Engage) {
             if (management.getTargetByPlatform(model.getPlatformCode()).size() != 0) {
                 list.add(management.getTargetByPlatform(model.getPlatformCode()).get(0));
+            } else {
+                list.add(management.getTargetByPlatform("36").get(0));
             }
         }
 

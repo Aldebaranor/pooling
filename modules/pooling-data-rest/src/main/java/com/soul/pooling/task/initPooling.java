@@ -24,7 +24,9 @@ public class initPooling implements ApplicationRunner {
     @Override
     public void run(ApplicationArguments args) throws Exception {
         if (metaConfig.getBeTest()) {
-            for (int i = 2; i <= 111; i++) {
+            management.initForce(String.valueOf(101));
+            initPooling(String.valueOf(101));
+            for (int i = 2; i <= 91; i++) {
                 management.initForce(String.valueOf(i));
                 initPooling(String.valueOf(i));
             }
