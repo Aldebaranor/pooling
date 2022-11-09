@@ -35,6 +35,10 @@ public class Platform extends BaseEntity {
     @Column(name = "code")
     private String code;
 
+    @Display("作战域")
+    @Column(name = "kind")
+    private Integer kind;
+
     @Display("名称")
     @Column(name = "name")
     private String name;
@@ -66,7 +70,7 @@ public class Platform extends BaseEntity {
     @Transient
     @Display("位置信息")
     private PlatformMoveData platformMoveData;
-    
+
 //    @Transient
 //    @JoinColumn(name = "code")
 //    @OneToMany(targetEntity = Sensor.class, mappedBy = "platformCode")

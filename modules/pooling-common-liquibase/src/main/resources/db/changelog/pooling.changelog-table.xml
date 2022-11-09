@@ -1729,5 +1729,11 @@
         </addColumn>
     </changeSet>
 
+    <changeSet author="41656 (generated)" id="1647400803042-143">
+        <addColumn tableName="pooling_platform">
+            <column name="kind" remarks="作战域" type="INT"></column>
+        </addColumn>
+    </changeSet>
+
 
 </databaseChangeLog>

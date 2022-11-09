@@ -3,17 +3,16 @@ package com.soul.pooling.controller.free;
 import com.alibaba.fastjson.JSONObject;
 import com.egova.exception.ExceptionUtils;
 import com.egova.json.utils.JsonUtils;
+import com.egova.redis.RedisUtils;
 import com.egova.web.annotation.Api;
 import com.flagwind.commons.StringUtils;
 import com.soul.pooling.condition.PoolingCondition;
 import com.soul.pooling.condition.ResourceCondition;
+import com.soul.pooling.config.MetaConfig;
 import com.soul.pooling.config.PoolingConfig;
 import com.soul.pooling.entity.*;
 import com.soul.pooling.entity.enums.CommandType;
-import com.soul.pooling.model.Command;
-import com.soul.pooling.model.PlatformMoveData;
-import com.soul.pooling.model.PlatformStatus;
-import com.soul.pooling.model.ResourceModel;
+import com.soul.pooling.model.*;
 import com.soul.pooling.mqtt.producer.MqttMsgProducer;
 import com.soul.pooling.netty.NettyUdpClient;
 import com.soul.pooling.service.PoolingManagement;
@@ -50,6 +49,9 @@ public class PoolingController {
 
     @Autowired
     private PoolingConfig poolingConfig;
+
+    @Autowired
+    private MetaConfig metaConfig;
 
     @Autowired
     private PoolingService poolingService;
@@ -123,6 +125,40 @@ public class PoolingController {
     }
 
     /**
+     * 接收试验管理的注册指令，通知节点进行上下线
+     *
+     * @param data
+     * @return
+     */
+    @Api
+    @PostMapping(value = "/link/platform")
+    public Boolean forcesLink(@RequestBody OnOffLineData data) throws InterruptedException {
+        //判断上下线
+        List<String> forces = data.getNodes();
+        if (data.getSign() != 0) {
+            for (String platformId : forces) {
+                PlatformStatus forcesData = management.getForcesData(platformId);
+
+                //通知下线
+                management.sendDisActivated(platformId);
+
+                management.disActiveForce(platformId);
+                forcesData.setActiveStatus(false);
+            }
+
+        } else {
+            for (String s : forces) {
+                List<String> list = new ArrayList<>();
+                list.add(s);
+                mqttMsgProducer.producerMsg(poolingConfig.getActivateTopic(), JsonUtils.serialize(list));
+                Thread.sleep(1);
+            }
+        }
+
+        return true;
+    }
+
+    /**
      * 接收resource的入云注册
      *
      * @param platformId
@@ -140,7 +176,8 @@ public class PoolingController {
         }
 
         forcesData.setActiveStatus(true);
-
+        //往redis写上线时间
+        RedisUtils.getService(metaConfig.getSituationDb()).getTemplate().opsForHash().put("onLine", platformId, String.valueOf(System.currentTimeMillis()));
         //通知上线
         management.sendActivated(platformId);
 

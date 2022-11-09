@@ -26,5 +26,7 @@ public class MetaConfig {
 
     private Boolean beTest = false;
 
+    private Integer onLineDb;
+
 
 }
