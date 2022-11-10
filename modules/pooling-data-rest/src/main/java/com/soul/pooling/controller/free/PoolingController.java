@@ -19,6 +19,7 @@ import com.soul.pooling.service.PoolingManagement;
 import com.soul.pooling.service.PoolingService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.tomcat.jni.Time;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -138,6 +139,8 @@ public class PoolingController {
         if (data.getSign() != 0) {
             for (String platformId : forces) {
                 PlatformStatus forcesData = management.getForcesData(platformId);
+                //往Redis写下线时间
+                RedisUtils.getService(metaConfig.getSituationDb()).getTemplate().opsForHash().put("offLine", platformId, String.valueOf(Time.now()));
 
                 //通知下线
                 management.sendDisActivated(platformId);
@@ -177,7 +180,7 @@ public class PoolingController {
 
         forcesData.setActiveStatus(true);
         //往redis写上线时间
-        RedisUtils.getService(metaConfig.getSituationDb()).getTemplate().opsForHash().put("onLine", platformId, String.valueOf(System.currentTimeMillis()));
+        RedisUtils.getService(metaConfig.getSituationDb()).getTemplate().opsForHash().put("onLine", platformId, String.valueOf(Time.now()));
         //通知上线
         management.sendActivated(platformId);
 

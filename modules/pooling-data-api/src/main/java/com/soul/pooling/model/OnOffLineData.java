@@ -13,6 +13,7 @@ import java.util.List;
 public class OnOffLineData implements Serializable {
 
     private static final long serialVersionUID = -77994155233027500L;
+    //    0上线，1下线
     private Integer sign;
 
     private String mainNode;
