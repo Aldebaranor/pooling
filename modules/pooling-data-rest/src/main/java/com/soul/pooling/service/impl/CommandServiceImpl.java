@@ -13,9 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -164,7 +162,7 @@ public class CommandServiceImpl implements CommandService {
          * 智能调度
          *
          * @param command
-         * @return <目标,打击连></>
+         * @return <目标,打击链></>
          * //0确定那个方面战，对空按照下面的逻辑
          * //1.根据每个目标当前位置A与 航向，航速外推200s得到B
          * //2.筛选出所有武器到AB的最小距离小于武器射程
@@ -378,10 +376,26 @@ public class CommandServiceImpl implements CommandService {
             }
             double area = GeometryUtils.getPolygonArea(points);
 //            double area = GeometryUtils.getDistance(points.get(0).getLon(), points.get(0).getLat(), points.get(1).getLon(), points.get(1).getLat()) * GeometryUtils.getDistance(points.get(1).getLon(), points.get(1).getLat(), points.get(2).getLon(), points.get(2).getLat());
-            double speedUAV = management.getPlatformPool().get("52").getSpeed();
-            double speedUUV = management.getPlatformPool().get("88").getSpeed();
-            double rangeUAV = management.getPlatformPool().get("52").getFinds().get(0).getMaxDetectRangeSea();
-            double rangeUUV = management.getPlatformPool().get("88").getFinds().get(0).getMaxDetectRangeUnderSea();
+            double speedUAV = 0;
+            double speedUUV = 0;
+            double rangeUAV = 0;
+            double rangeUUV = 0;
+
+            Iterator<Map.Entry<String, Platform>> it = management.getPlatformPool().entrySet().iterator();
+            while (it.hasNext()) {
+                Map.Entry<String, Platform> entry = it.next();
+                if (entry.getValue().getName().contains("UAV") && entry.getValue().getBeMineSweep()) {
+                    speedUAV = entry.getValue().getSpeed();
+                    rangeUAV = entry.getValue().getFinds().get(0).getMaxDetectRangeSea();
+                } else if (entry.getValue().getName().contains("UUV") && entry.getValue().getBeMineSweep()) {
+                    speedUUV = entry.getValue().getSpeed();
+                    rangeUUV = entry.getValue().getFinds().get(0).getMaxDetectRangeUnderSea();
+                }
+                if (speedUAV * speedUUV * rangeUUV * rangeUAV != 0) {
+                    break;
+                }
+            }
+
             //单位时间内单个平台扫描面积 m²/s
             double areaUAV = speedUAV * rangeUAV * 2000;
             double areaUUV = speedUUV * rangeUUV * 2000;
@@ -523,9 +537,12 @@ public class CommandServiceImpl implements CommandService {
     public List<KillingChain> getUSV_S() {
         List<KillingChain> list = new ArrayList<>();
         List<Platform> platforms = management.getPlatformPool().values().stream().collect(Collectors.toList());
-        platforms = platforms.stream().filter(q -> q.getBeRealEquipment() != null && (q.getBeRealEquipment().equals(false))
+//        platforms = platforms.stream().filter(q -> q.getBeRealEquipment() != null && (q.getBeRealEquipment().equals(false))
+        //考虑实装
+        platforms = platforms.stream().filter(q -> q.getBeRealEquipment() != null
                 && q.getBeMineSweep() != null && (q.getBeMineSweep().equals(true))
                 && q.getName().contains("USV-S")).collect(Collectors.toList());
+        //无人机指控id为100，后续可以新增寻找最近的带指控的平台作为指控
         Target t = getTargetById("100");
         List<Target> tl = new ArrayList<>();
         tl.add(t);
@@ -546,7 +563,9 @@ public class CommandServiceImpl implements CommandService {
     public List<Find> getUAV_S() {
 
         List<Find> finds = management.getFindPool(null).stream().collect(Collectors.toList());
-        finds = finds.stream().filter(q -> management.getPlatformPool().get(q.getPlatformCode()).getBeRealEquipment() != null && (management.getPlatformPool().get(q.getPlatformCode()).getBeRealEquipment().equals(false))
+//        finds = finds.stream().filter(q -> management.getPlatformPool().get(q.getPlatformCode()).getBeRealEquipment() != null && (management.getPlatformPool().get(q.getPlatformCode()).getBeRealEquipment().equals(false))
+        //考虑实装
+        finds = finds.stream().filter(q -> management.getPlatformPool().get(q.getPlatformCode()).getBeRealEquipment() != null
                 && management.getPlatformPool().get(q.getPlatformCode()).getBeMineSweep() != null && (management.getPlatformPool().get(q.getPlatformCode()).getBeMineSweep().equals(true))
                 && management.getPlatformPool().get(q.getPlatformCode()).getName().contains("UAV-S")).collect(Collectors.toList());
 
@@ -556,10 +575,10 @@ public class CommandServiceImpl implements CommandService {
     public List<Find> getUUV_S() {
 
         List<Find> finds = management.getFindPool(null).stream().collect(Collectors.toList());
-        finds = finds.stream().filter(q -> management.getPlatformPool().get(q.getPlatformCode()).getBeRealEquipment() != null && (management.getPlatformPool().get(q.getPlatformCode()).getBeRealEquipment().equals(false))
+//        finds = finds.stream().filter(q -> management.getPlatformPool().get(q.getPlatformCode()).getBeRealEquipment() != null && (management.getPlatformPool().get(q.getPlatformCode()).getBeRealEquipment().equals(false))
+        finds = finds.stream().filter(q -> management.getPlatformPool().get(q.getPlatformCode()).getBeRealEquipment() != null
                 && management.getPlatformPool().get(q.getPlatformCode()).getBeMineSweep() != null && (management.getPlatformPool().get(q.getPlatformCode()).getBeMineSweep().equals(true))
                 && management.getPlatformPool().get(q.getPlatformCode()).getName().contains("UUV-S")).collect(Collectors.toList());
-
 
         return finds;
     }
