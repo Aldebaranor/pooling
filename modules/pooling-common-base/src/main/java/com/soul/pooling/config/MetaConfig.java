@@ -28,5 +28,6 @@ public class MetaConfig {
 
     private Integer onLineDb;
 
+    private Boolean beRealEquipment;
 
 }

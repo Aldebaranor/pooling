@@ -1,6 +1,7 @@
 package com.soul.pooling.service.impl;
 
 
+import com.soul.pooling.config.MetaConfig;
 import com.soul.pooling.entity.*;
 import com.soul.pooling.entity.enums.CommandType;
 import com.soul.pooling.model.*;
@@ -30,6 +31,9 @@ public class CommandServiceImpl implements CommandService {
 
     @Autowired
     private PoolingService poolingService;
+
+    @Autowired
+    private MetaConfig metaConfig;
 
 
     @Override
@@ -490,10 +494,12 @@ public class CommandServiceImpl implements CommandService {
 
 //        确定可以调用来扫雷的艇及其资源 List<KillingChain> USV_S;
         List<KillingChain> USV = getUSV_S();
+
 //        轮询调度艇
 //        对目标targets按UAV_S.size()划分，进行轮询
         int num = USV.size();
         int count = 0;
+        int realEquip = 0;
         List<TargetData> targets = new ArrayList<>();
         for (TargetData t : command.getTargets()) {
             targets.add(t);
@@ -501,33 +507,60 @@ public class CommandServiceImpl implements CommandService {
 
         while (targets.size() != 0) {
             KillingChain killingChain = new KillingChain();
-            killingChain.setFind(USV.get(count % num).getFind());
-            killingChain.setFix(USV.get(count % num).getFix());
-            killingChain.setTrack(USV.get(count % num).getTrack());
-            killingChain.setTarget(USV.get(count % num).getTarget());
-            killingChain.setEngage(USV.get(count % num).getEngage());
-            killingChain.setAsses(USV.get(count % num).getAsses());
-
             killingChain.setCommandType(25);
-            GeometryUtils.Point point = new GeometryUtils.Point();
-            PlatformMoveData moveData = new PlatformMoveData();
-//            没有被分配过任务，计算离platformMoveData最近的雷作为目标
-            if (count < num) {
+            if (metaConfig.getBeRealEquipment() && realEquip < 2) {
+//              设置资源
+                killingChain.setFind(USV.get(0).getFind());
+                killingChain.setFix(USV.get(0).getFix());
+                killingChain.setTrack(USV.get(0).getTrack());
+                killingChain.setTarget(USV.get(0).getTarget());
+                killingChain.setEngage(USV.get(0).getEngage());
+                killingChain.setAsses(USV.get(0).getAsses());
+                GeometryUtils.Point point = new GeometryUtils.Point();
+                PlatformMoveData moveData = new PlatformMoveData();
+//              计算离platformMoveData最近的雷作为目标
                 moveData = management.getPlatformPool().get(killingChain.getFind().get(0).getPlatformCode()).getPlatformMoveData();
-            }
+                point.setX(moveData.getLon());
+                point.setY(moveData.getLat());
+//              计算距离point最近的雷
+                TargetData target = getClosestTarget(point, targets);
+                targets.remove(target);
+                killingChain.setTargetName(target.getName());
+                killingChain.setTargetId(target.getInstId());
+                list.add(killingChain);
+
+//              调度的UUV、USV实装一次之后就要从列表里面删除
+                realEquip++;
+                USV.remove(0);
+                num--;
+            } else {
+                killingChain.setFind(USV.get(count % num).getFind());
+                killingChain.setFix(USV.get(count % num).getFix());
+                killingChain.setTrack(USV.get(count % num).getTrack());
+                killingChain.setTarget(USV.get(count % num).getTarget());
+                killingChain.setEngage(USV.get(count % num).getEngage());
+                killingChain.setAsses(USV.get(count % num).getAsses());
+
+                GeometryUtils.Point point = new GeometryUtils.Point();
+                PlatformMoveData moveData = new PlatformMoveData();
+//            没有被分配过任务，计算离platformMoveData最近的雷作为目标
+                if (count < num) {
+                    moveData = management.getPlatformPool().get(killingChain.getFind().get(0).getPlatformCode()).getPlatformMoveData();
+                }
 //            有被分配过任务，计算离上一次任务目标target.getMoveData最近的雷作为新目标
-            else {
-                moveData = getTargetById(command.getTargets(), list.get(count - num).getTargetId()).getMoveDetect();
-            }
-            point.setX(moveData.getLon());
-            point.setY(moveData.getLat());
+                else {
+                    moveData = getTargetById(command.getTargets(), list.get(count - num).getTargetId()).getMoveDetect();
+                }
+                point.setX(moveData.getLon());
+                point.setY(moveData.getLat());
 //            计算距离point最近的雷
-            TargetData target = getClosestTarget(point, targets);
-            targets.remove(target);
-            killingChain.setTargetName(target.getName());
-            killingChain.setTargetId(target.getInstId());
-            list.add(killingChain);
-            count++;
+                TargetData target = getClosestTarget(point, targets);
+                targets.remove(target);
+                killingChain.setTargetName(target.getName());
+                killingChain.setTargetId(target.getInstId());
+                list.add(killingChain);
+                count++;
+            }
         }
 //        分配给艇离当前距离最近的雷
 
@@ -537,11 +570,25 @@ public class CommandServiceImpl implements CommandService {
     public List<KillingChain> getUSV_S() {
         List<KillingChain> list = new ArrayList<>();
         List<Platform> platforms = management.getPlatformPool().values().stream().collect(Collectors.toList());
-//        platforms = platforms.stream().filter(q -> q.getBeRealEquipment() != null && (q.getBeRealEquipment().equals(false))
-        //考虑实装
-        platforms = platforms.stream().filter(q -> q.getBeRealEquipment() != null
-                && q.getBeMineSweep() != null && (q.getBeMineSweep().equals(true))
-                && q.getName().contains("USV-S")).collect(Collectors.toList());
+        if (metaConfig.getBeRealEquipment()) {
+            //考虑全部实装
+//            platforms = platforms.stream().filter(q -> q.getBeRealEquipment() != null
+//                    && q.getBeMineSweep() != null && (q.getBeMineSweep().equals(true))
+//                    && q.getName().contains("USV-S")).collect(Collectors.toList());
+            //暂时只考虑一个实装USV-S_4
+            //如果考虑实装，扫雷资源里面会添加实装的UUV-S_15
+            platforms = platforms.stream().filter(q -> q.getBeRealEquipment() != null && (q.getBeRealEquipment().equals(false))
+                    && q.getBeMineSweep() != null && (q.getBeMineSweep().equals(true))
+                    && q.getName().contains("USV-S")).collect(Collectors.toList());
+            platforms.add(0, management.getPlatformPool().get("78"));
+            platforms.add(0, management.getPlatformPool().get("87"));
+        } else {
+            //不考虑实装
+            platforms = platforms.stream().filter(q -> q.getBeRealEquipment() != null && (q.getBeRealEquipment().equals(false))
+                    && q.getBeMineSweep() != null && (q.getBeMineSweep().equals(true))
+                    && q.getName().contains("USV-S")).collect(Collectors.toList());
+        }
+
         //无人机指控id为100，后续可以新增寻找最近的带指控的平台作为指控
         Target t = getTargetById("100");
         List<Target> tl = new ArrayList<>();
@@ -563,23 +610,43 @@ public class CommandServiceImpl implements CommandService {
     public List<Find> getUAV_S() {
 
         List<Find> finds = management.getFindPool(null).stream().collect(Collectors.toList());
-//        finds = finds.stream().filter(q -> management.getPlatformPool().get(q.getPlatformCode()).getBeRealEquipment() != null && (management.getPlatformPool().get(q.getPlatformCode()).getBeRealEquipment().equals(false))
-        //考虑实装
-        finds = finds.stream().filter(q -> management.getPlatformPool().get(q.getPlatformCode()).getBeRealEquipment() != null
-                && management.getPlatformPool().get(q.getPlatformCode()).getBeMineSweep() != null && (management.getPlatformPool().get(q.getPlatformCode()).getBeMineSweep().equals(true))
-                && management.getPlatformPool().get(q.getPlatformCode()).getName().contains("UAV-S")).collect(Collectors.toList());
-
+        if (metaConfig.getBeRealEquipment()) {
+            //考虑全部实装
+//            finds = finds.stream().filter(q -> management.getPlatformPool().get(q.getPlatformCode()).getBeRealEquipment() != null
+//                    && management.getPlatformPool().get(q.getPlatformCode()).getBeMineSweep() != null && (management.getPlatformPool().get(q.getPlatformCode()).getBeMineSweep().equals(true))
+//                    && management.getPlatformPool().get(q.getPlatformCode()).getName().contains("UAV-S")).collect(Collectors.toList());
+            //只考虑一个实装UAV-S_4
+            finds = finds.stream().filter(q -> management.getPlatformPool().get(q.getPlatformCode()).getBeRealEquipment() != null && (management.getPlatformPool().get(q.getPlatformCode()).getBeRealEquipment().equals(false))
+                    && management.getPlatformPool().get(q.getPlatformCode()).getBeMineSweep() != null && (management.getPlatformPool().get(q.getPlatformCode()).getBeMineSweep().equals(true))
+                    && management.getPlatformPool().get(q.getPlatformCode()).getName().contains("UAV-S")).collect(Collectors.toList());
+            finds.add(0, management.getFindPool(null).stream().filter(q -> q.getPlatformCode().equals("42")).collect(Collectors.toList()).get(0));
+        } else {
+            //不考虑实装
+            finds = finds.stream().filter(q -> management.getPlatformPool().get(q.getPlatformCode()).getBeRealEquipment() != null && (management.getPlatformPool().get(q.getPlatformCode()).getBeRealEquipment().equals(false))
+                    && management.getPlatformPool().get(q.getPlatformCode()).getBeMineSweep() != null && (management.getPlatformPool().get(q.getPlatformCode()).getBeMineSweep().equals(true))
+                    && management.getPlatformPool().get(q.getPlatformCode()).getName().contains("UAV-S")).collect(Collectors.toList());
+        }
         return finds;
     }
 
     public List<Find> getUUV_S() {
 
         List<Find> finds = management.getFindPool(null).stream().collect(Collectors.toList());
-//        finds = finds.stream().filter(q -> management.getPlatformPool().get(q.getPlatformCode()).getBeRealEquipment() != null && (management.getPlatformPool().get(q.getPlatformCode()).getBeRealEquipment().equals(false))
-        finds = finds.stream().filter(q -> management.getPlatformPool().get(q.getPlatformCode()).getBeRealEquipment() != null
-                && management.getPlatformPool().get(q.getPlatformCode()).getBeMineSweep() != null && (management.getPlatformPool().get(q.getPlatformCode()).getBeMineSweep().equals(true))
-                && management.getPlatformPool().get(q.getPlatformCode()).getName().contains("UUV-S")).collect(Collectors.toList());
-
+        if (metaConfig.getBeRealEquipment()) {
+            //考虑全部实装
+//            finds = finds.stream().filter(q -> management.getPlatformPool().get(q.getPlatformCode()).getBeRealEquipment() != null
+//                    && management.getPlatformPool().get(q.getPlatformCode()).getBeMineSweep() != null && (management.getPlatformPool().get(q.getPlatformCode()).getBeMineSweep().equals(true))
+//                    && management.getPlatformPool().get(q.getPlatformCode()).getName().contains("UUV-S")).collect(Collectors.toList());
+            //只考虑一个实装，但是这个UUV-S_15不会用于搜索，只能用于打击，这里不加进去
+            finds = finds.stream().filter(q -> management.getPlatformPool().get(q.getPlatformCode()).getBeRealEquipment() != null && (management.getPlatformPool().get(q.getPlatformCode()).getBeRealEquipment().equals(false))
+                    && management.getPlatformPool().get(q.getPlatformCode()).getBeMineSweep() != null && (management.getPlatformPool().get(q.getPlatformCode()).getBeMineSweep().equals(true))
+                    && management.getPlatformPool().get(q.getPlatformCode()).getName().contains("UUV-S")).collect(Collectors.toList());
+        } else {
+            //不考虑实装
+            finds = finds.stream().filter(q -> management.getPlatformPool().get(q.getPlatformCode()).getBeRealEquipment() != null && (management.getPlatformPool().get(q.getPlatformCode()).getBeRealEquipment().equals(false))
+                    && management.getPlatformPool().get(q.getPlatformCode()).getBeMineSweep() != null && (management.getPlatformPool().get(q.getPlatformCode()).getBeMineSweep().equals(true))
+                    && management.getPlatformPool().get(q.getPlatformCode()).getName().contains("UUV-S")).collect(Collectors.toList());
+        }
         return finds;
     }
 
