@@ -43,7 +43,6 @@ public class PoolingManagement {
     @Autowired
     private PoolingConfig poolingConfig;
 
-
     private final ConcurrentMap<String, PlatformStatus> forceStatusData = new ConcurrentHashMap();
 
     private final ConcurrentMap<String, Platform> platformPool = new ConcurrentHashMap<>();
@@ -64,11 +63,9 @@ public class PoolingManagement {
         return forceStatusData;
     }
 
-
     public Map<String, Platform> getPlatformPool() {
         return platformPool;
     }
-
 
     public Find getFindById(String id) {
         Find find = findPool.get(id);
@@ -104,7 +101,6 @@ public class PoolingManagement {
         }
         return type;
     }
-
 
     public Fix getFixById(String id) {
         Fix fix = fixPool.get(id);
@@ -294,7 +290,6 @@ public class PoolingManagement {
         return result;
     }
 
-
     public List<Find> getFindByPlatform(String code) {
         List<Find> list = new ArrayList<>();
         for (String id : findPool.keySet()) {
@@ -454,7 +449,6 @@ public class PoolingManagement {
         }
     }
 
-
     /**
      * 从资源中心注销
      *
@@ -501,7 +495,6 @@ public class PoolingManagement {
             throw ExceptionUtils.api(String.format("该兵力未初始化"));
         }
     }
-
 
     /**
      * 兵力删除

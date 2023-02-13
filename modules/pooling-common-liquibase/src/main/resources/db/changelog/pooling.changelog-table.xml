@@ -1735,5 +1735,13 @@
         </addColumn>
     </changeSet>
 
+    <changeSet author="41656 (generated)" id="1647400803042-144">
+        <addColumn tableName="pooling_platform">
+            <column name="lon" remarks="经度" type="DOUBLE(20, 10)"/>
+            <column name="lat" remarks="纬度" type="DOUBLE(20, 10)"/>
+            <column name="alt" remarks="海拔" type="DOUBLE(20, 10)"/>
+        </addColumn>
+    </changeSet>
+
 
 </databaseChangeLog>

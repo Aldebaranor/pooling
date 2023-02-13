@@ -67,6 +67,18 @@ public class Platform extends BaseEntity {
     @Column(name = "beMineSweep")
     private Boolean beMineSweep;
 
+    @Display("默认经度")
+    @Column(name = "lon")
+    private Double lon;
+
+    @Display("默认纬度")
+    @Column(name = "lat")
+    private Double lat;
+
+    @Display("默认高度")
+    @Column(name = "alt")
+    private Double alt;
+
     @Transient
     @Display("位置信息")
     private PlatformMoveData platformMoveData;

@@ -4,6 +4,7 @@ import com.egova.model.PageResult;
 import com.egova.model.QueryModel;
 import com.soul.pooling.condition.PlatformCondition;
 import com.soul.pooling.entity.Platform;
+import com.soul.pooling.model.InitPosition;
 import org.springframework.cache.annotation.Cacheable;
 
 import java.util.List;
@@ -77,5 +78,12 @@ public interface PlatformService {
      * @return
      */
     Platform seekById(String id);
+
+    /**
+     * 获取平台默认的位置信息
+     *
+     * @return
+     */
+    List<InitPosition> getInitPositionList();
 
 }
