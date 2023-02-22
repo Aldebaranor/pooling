@@ -7,7 +7,7 @@ import com.egova.model.QueryModel;
 import com.soul.pooling.condition.PlatformCondition;
 import com.soul.pooling.domain.PlatformRepository;
 import com.soul.pooling.entity.Platform;
-import com.soul.pooling.model.InitPosition;
+import com.soul.pooling.model.NetPosition;
 import com.soul.pooling.service.PlatformService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -50,18 +50,20 @@ public class PlatformServiceImpl extends TemplateService<Platform, String> imple
     }
 
     @Override
-    public List<InitPosition> getInitPositionList() {
+    public List<NetPosition> getInitPositionList() {
         List<Platform> platforms = super.getAll();
-        List<InitPosition> initPositions = new ArrayList<>();
+        List<NetPosition> netPositions = new ArrayList<>();
         for (Platform platform : platforms) {
-            InitPosition initPosition = new InitPosition();
-            initPosition.setId(platform.getId());
-            initPosition.setLon(platform.getLon());
-            initPosition.setLat(platform.getLat());
-            initPosition.setAlt(platform.getAlt());
-            initPositions.add(initPosition);
+            NetPosition netPosition = new NetPosition();
+            netPosition.setId(platform.getId());
+            netPosition.setKind(platform.getKind());
+            netPosition.setLon(platform.getLon());
+            netPosition.setLat(platform.getLat());
+            netPosition.setAlt(platform.getAlt());
+            netPositions.add(netPosition);
         }
-        return initPositions;
+        return netPositions;
     }
+
 
 }

@@ -18,5 +18,5 @@ public class OnOffLineData implements Serializable {
 
     private String mainNode;
 
-    private List<String> Nodes;
+    private List<String> nodes;
 }

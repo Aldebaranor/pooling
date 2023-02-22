@@ -2,12 +2,12 @@ package com.soul.pooling.controller.free;
 
 import com.alibaba.fastjson.JSONObject;
 import com.egova.exception.ExceptionUtils;
-import com.egova.json.utils.JsonUtils;
 import com.egova.redis.RedisUtils;
 import com.egova.web.annotation.Api;
 import com.flagwind.commons.StringUtils;
 import com.soul.pooling.condition.PoolingCondition;
 import com.soul.pooling.condition.ResourceCondition;
+import com.soul.pooling.config.Constants;
 import com.soul.pooling.config.MetaConfig;
 import com.soul.pooling.config.PoolingConfig;
 import com.soul.pooling.entity.*;
@@ -15,6 +15,7 @@ import com.soul.pooling.entity.enums.CommandType;
 import com.soul.pooling.model.*;
 import com.soul.pooling.mqtt.producer.MqttMsgProducer;
 import com.soul.pooling.netty.NettyUdpClient;
+import com.soul.pooling.service.PlatformService;
 import com.soul.pooling.service.PoolingManagement;
 import com.soul.pooling.service.PoolingService;
 import lombok.RequiredArgsConstructor;
@@ -22,10 +23,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 
@@ -39,7 +38,6 @@ import java.util.stream.Collectors;
 @RequestMapping("/free/pooling")
 @RequiredArgsConstructor
 public class PoolingController {
-
 
     @Autowired
     private PoolingManagement management;
@@ -56,12 +54,41 @@ public class PoolingController {
     @Autowired
     private PoolingService poolingService;
 
+    @Autowired
+    private PlatformService platformService;
+
     @Autowired(required = false)
     private NettyUdpClient nettyUdpClient;
 
+    /**
+     * 接收网络通断情况
+     *
+     * @param data
+     */
+    @Api
+    @PostMapping(value = "/net/state")
+    public Boolean getNetState(@RequestBody NetStatusData data) {
+        management.setNetData(data);
+        //TODO:处理网络通断表
+        return true;
+    }
 
     /**
-     * 开始试验，清楚缓存
+     * 重启节点
+     *
+     * @param forces
+     * @return
+     */
+    @Api
+    @PostMapping(value = "/restart/platform")
+    public Boolean restart(@RequestBody List<String> forces) throws InterruptedException {
+        management.offLine(forces);
+        management.onLine(forces);
+        return true;
+    }
+
+    /**
+     * 开始试验，清除缓存
      *
      * @param experiment
      * @return
@@ -89,6 +116,23 @@ public class PoolingController {
     }
 
     /**
+     * 获取上电节点上电时间
+     *
+     * @return
+     */
+    @Api
+    @GetMapping(value = "/online/time")
+    public Map<String, Object> getOnLineTime() {
+        Map<String, Object> time = new ConcurrentHashMap<>();
+        Set<Object> keys = RedisUtils.getService(19).getTemplate().opsForHash().keys(Constants.POOLING_TIME_ONLINE);
+        for (Object key : keys) {
+            time.put(key.toString(), RedisUtils.getService(19).getTemplate().opsForHash().get(Constants.POOLING_TIME_ONLINE, key.toString()));
+        }
+        return time;
+    }
+
+
+    /**
      * 接收resource的初始化
      *
      * @param forces
@@ -112,51 +156,7 @@ public class PoolingController {
     @Api
     @PostMapping(value = "/activate/platform")
     public Boolean forcesActivate(@RequestBody List<String> forces) throws InterruptedException {
-        //通知仿真节点（resources）执行激活
-
-        for (String s : forces) {
-            List<String> list = new ArrayList<>();
-            list.add(s);
-            mqttMsgProducer.producerMsg(poolingConfig.getActivateTopic(), JsonUtils.serialize(list));
-            Thread.sleep(1);
-        }
-
-        return true;
-    }
-
-    /**
-     * 接收试验管理的注册指令，通知节点进行上下线
-     *
-     * @param data
-     * @return
-     */
-    @Api
-    @PostMapping(value = "/link/platform")
-    public Boolean forcesLink(@RequestBody OnOffLineData data) throws InterruptedException {
-        //判断上下线
-        List<String> forces = data.getNodes();
-        if (data.getSign() != 0) {
-            for (String platformId : forces) {
-                PlatformStatus forcesData = management.getForcesData(platformId);
-                //往Redis写下线时间
-                RedisUtils.getService(metaConfig.getSituationDb()).getTemplate().opsForHash().put("offLine", platformId, String.valueOf(System.currentTimeMillis()));
-
-                //通知下线
-                management.sendDisActivated(platformId);
-
-                management.disActiveForce(platformId);
-                forcesData.setActiveStatus(false);
-            }
-
-        } else {
-            for (String s : forces) {
-                List<String> list = new ArrayList<>();
-                list.add(s);
-                mqttMsgProducer.producerMsg(poolingConfig.getActivateTopic(), JsonUtils.serialize(list));
-                Thread.sleep(1);
-            }
-        }
-
+        management.onLine(forces);
         return true;
     }
 
@@ -179,7 +179,7 @@ public class PoolingController {
 
         forcesData.setActiveStatus(true);
         //往redis写上线时间
-        RedisUtils.getService(metaConfig.getSituationDb()).getTemplate().opsForHash().put("onLine", platformId, String.valueOf(System.currentTimeMillis()));
+        RedisUtils.getService(19).getTemplate().opsForHash().put(Constants.POOLING_TIME_ONLINE, platformId, String.valueOf(System.currentTimeMillis()));
         //通知上线
         management.sendActivated(platformId);
 
@@ -220,15 +220,7 @@ public class PoolingController {
     @Api
     @PostMapping(value = "/dis-activated/platformIds")
     public Boolean forcesDisActivatedBatch(@RequestBody List<String> platformIds) {
-        for (String platformId : platformIds) {
-            PlatformStatus forcesData = management.getForcesData(platformId);
-
-            //通知下线
-            management.sendDisActivated(platformId);
-
-            management.disActiveForce(platformId);
-            forcesData.setActiveStatus(false);
-        }
+        management.offLine(platformIds);
         return true;
     }
 
@@ -600,6 +592,7 @@ public class PoolingController {
         result.put("engage", engages);
         result.put("asses", asses);
         result.put("platform", platforms);
+//        result.put("netState",)
         return result;
     }
 

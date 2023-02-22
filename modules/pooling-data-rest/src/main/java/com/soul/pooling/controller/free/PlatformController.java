@@ -7,7 +7,7 @@ import com.egova.web.annotation.Api;
 import com.flagwind.commons.StringUtils;
 import com.soul.pooling.condition.PlatformCondition;
 import com.soul.pooling.entity.Platform;
-import com.soul.pooling.model.InitPosition;
+import com.soul.pooling.model.NetPosition;
 import com.soul.pooling.service.PlatformService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -34,9 +34,14 @@ public class PlatformController {
     @Autowired
     private PlatformService platformService;
 
+    /**
+     * 发送初始位置信息
+     *
+     * @return
+     */
     @Api
     @GetMapping(value = "/init/position")
-    public List<InitPosition> getPosition() {
+    public List<NetPosition> getPosition() {
         return platformService.getInitPositionList();
     }
 

@@ -1,14 +1,15 @@
 package com.soul.pooling.service;
 
+import com.alibaba.fastjson.JSON;
 import com.egova.exception.ExceptionUtils;
+import com.egova.json.utils.JsonUtils;
 import com.soul.pooling.config.Constants;
 import com.soul.pooling.config.PoolingConfig;
 import com.soul.pooling.entity.*;
 import com.soul.pooling.entity.enums.CommandType;
 import com.soul.pooling.entity.enums.ResourceStatus;
-import com.soul.pooling.model.ActivatedModel;
-import com.soul.pooling.model.Command;
-import com.soul.pooling.model.PlatformStatus;
+import com.soul.pooling.model.*;
+import com.soul.pooling.mqtt.producer.MqttMsgProducer;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
@@ -41,6 +42,9 @@ public class PoolingManagement {
     private RestTemplate restTemplate;
 
     @Autowired
+    private MqttMsgProducer mqttMsgProducer;
+
+    @Autowired
     private PoolingConfig poolingConfig;
 
     private final ConcurrentMap<String, PlatformStatus> forceStatusData = new ConcurrentHashMap();
@@ -58,6 +62,16 @@ public class PoolingManagement {
     private final ConcurrentMap<String, Engage> engagePool = new ConcurrentHashMap<>();
 
     private final ConcurrentMap<String, Asses> assesPool = new ConcurrentHashMap<>();
+
+    private NetStatusData netStatusData = new NetStatusData();
+
+    public NetStatusData getNetData() {
+        return netStatusData;
+    }
+
+    public void setNetData(NetStatusData data) {
+        netStatusData = data;
+    }
 
     public Map<String, PlatformStatus> getAll() {
         return forceStatusData;
@@ -406,41 +420,43 @@ public class PoolingManagement {
             forcesStatus.setActiveStatus(true);
             log.info("--->兵力" + id + "激活成功");
             Platform platform = platformService.seekById(id);
-            forcesStatus.setPlatformId(id);
-            forcesStatus.setCode(platform.getCode());
-            forcesStatus.setName(platform.getName());
-            forcesStatus.setType(platform.getType());
-            forcesStatus.setBeMineSweep(platform.getBeMineSweep());
-            forcesStatus.setBeRealEquipment(platform.getBeRealEquipment());
-            forcesStatus.setSpeed(platform.getSpeed());
-            forceStatusData.put(id, forcesStatus);
-            if (platform == null) {
-                throw ExceptionUtils.api(String.format("数据库没有平台数据"));
-            } else {
-                platformPool.put(id, platform);
-                for (Find find : platform.getFinds()) {
-                    find.setStatus(ResourceStatus.AVAILABLE);
-                    findPool.put(find.getId(), find);
-                }
-                for (Fix fix : platform.getFixes()) {
-                    fix.setStatus(ResourceStatus.AVAILABLE);
-                    fixPool.put(fix.getId(), fix);
-                }
-                for (Track track : platform.getTracks()) {
-                    track.setStatus(ResourceStatus.AVAILABLE);
-                    trackPool.put(track.getId(), track);
-                }
-                for (Target target : platform.getTargets()) {
-                    target.setStatus(ResourceStatus.AVAILABLE);
-                    targetPool.put(target.getId(), target);
-                }
-                for (Engage engage : platform.getEngages()) {
-                    engage.setStatus(ResourceStatus.AVAILABLE);
-                    engagePool.put(engage.getId(), engage);
-                }
-                for (Asses asses : platform.getAsses()) {
-                    asses.setStatus(ResourceStatus.AVAILABLE);
-                    assesPool.put(asses.getId(), asses);
+            if (platform != null) {
+                forcesStatus.setPlatformId(id);
+                forcesStatus.setCode(platform.getCode());
+                forcesStatus.setName(platform.getName());
+                forcesStatus.setType(platform.getType());
+                forcesStatus.setBeMineSweep(platform.getBeMineSweep());
+                forcesStatus.setBeRealEquipment(platform.getBeRealEquipment());
+                forcesStatus.setSpeed(platform.getSpeed());
+                forceStatusData.put(id, forcesStatus);
+                if (platform == null) {
+                    throw ExceptionUtils.api(String.format("数据库没有平台数据"));
+                } else {
+                    platformPool.put(id, platform);
+                    for (Find find : platform.getFinds()) {
+                        find.setStatus(ResourceStatus.AVAILABLE);
+                        findPool.put(find.getId(), find);
+                    }
+                    for (Fix fix : platform.getFixes()) {
+                        fix.setStatus(ResourceStatus.AVAILABLE);
+                        fixPool.put(fix.getId(), fix);
+                    }
+                    for (Track track : platform.getTracks()) {
+                        track.setStatus(ResourceStatus.AVAILABLE);
+                        trackPool.put(track.getId(), track);
+                    }
+                    for (Target target : platform.getTargets()) {
+                        target.setStatus(ResourceStatus.AVAILABLE);
+                        targetPool.put(target.getId(), target);
+                    }
+                    for (Engage engage : platform.getEngages()) {
+                        engage.setStatus(ResourceStatus.AVAILABLE);
+                        engagePool.put(engage.getId(), engage);
+                    }
+                    for (Asses asses : platform.getAsses()) {
+                        asses.setStatus(ResourceStatus.AVAILABLE);
+                        assesPool.put(asses.getId(), asses);
+                    }
                 }
             }
 
@@ -598,4 +614,79 @@ public class PoolingManagement {
     }
 
 
+    public void onLine(List<String> forces) throws InterruptedException {
+        NetNoticeData netNoticeData = new NetNoticeData();
+        List<NetPosition> netPositions = new ArrayList<>();
+        netNoticeData.setSign(0);
+        for (String s : forces) {
+            List<String> list = new ArrayList<>();
+            list.add(s);
+            mqttMsgProducer.producerMsg(poolingConfig.getActivateTopic(), JsonUtils.serialize(list));
+            Thread.sleep(1);
+
+            Platform platform = platformService.seekById(s);
+            NetPosition position = new NetPosition();
+            position.setId(s);
+            if (platform != null) {
+                position.setKind(platform.getKind());
+            }
+            //获取离线节点位置信息
+            if (getPlatformPool().get(s) != null && getPlatformPool().get(s).getPlatformMoveData() != null) {
+                PlatformMoveData moveData = getPlatformPool().get(s).getPlatformMoveData();
+                position.setLon(moveData.getLon());
+                position.setLat(moveData.getLat());
+                position.setAlt(moveData.getAlt());
+            } else {
+                position.setLon(platform.getLon());
+                position.setLat(platform.getLat());
+                position.setAlt(platform.getAlt());
+            }
+            netPositions.add(position);
+        }
+        netNoticeData.setNodesInfo(netPositions);
+
+        String url = "http://192.168.1.9:8900/free/pooling/resource/init/position";
+        String json = JSON.toJSONString(netNoticeData);
+
+        RestTemplate template = new RestTemplate();
+        try {
+            template.postForEntity(url, json, String.class);
+        } catch (Exception e) {
+
+        }
+        System.out.println("已向网络仿真发送节点位置信息");
+
+        return;
+    }
+
+    public void offLine(List<String> forces) {
+        NetNoticeData netNoticeData = new NetNoticeData();
+        List<NetPosition> netPositions = new ArrayList<>();
+        for (String platformId : forces) {
+            PlatformStatus forcesData = getForcesData(platformId);
+
+            //通知下线
+            NetPosition position = new NetPosition();
+            position.setId(platformId);
+            netPositions.add(position);
+            sendDisActivated(platformId);
+
+            disActiveForce(platformId);
+            forcesData.setActiveStatus(false);
+        }
+        netNoticeData.setNodesInfo(netPositions);
+
+        String url = "http://192.168.1.9:8900/free/pooling/resource/init/position";
+        String json = JSON.toJSONString(netNoticeData);
+
+        RestTemplate template = new RestTemplate();
+        try {
+            template.postForEntity(url, json, String.class);
+        } catch (Exception e) {
+
+        }
+        System.out.println("已向网络仿真发送节点位置信息");
+
+        return;
+    }
 }
