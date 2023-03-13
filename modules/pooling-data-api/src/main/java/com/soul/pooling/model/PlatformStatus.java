@@ -36,4 +36,10 @@ public class PlatformStatus implements Serializable {
 
     private Float speed;
 
+    private Integer kind;
+
+    private Long lastOnlineTime;
+    
+    private Long lastOperationUsedTime;
+
 }

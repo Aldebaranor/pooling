@@ -18,5 +18,9 @@ public class NetStatusData implements Serializable {
 
     int mgmt_index;
 
-    Short mgmt_data[];
+    double times;
+
+    Short mgmt_150[];
+
+    Short mgmt_150x150[][];
 }

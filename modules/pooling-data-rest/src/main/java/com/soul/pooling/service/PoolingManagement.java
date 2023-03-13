@@ -3,6 +3,7 @@ package com.soul.pooling.service;
 import com.alibaba.fastjson.JSON;
 import com.egova.exception.ExceptionUtils;
 import com.egova.json.utils.JsonUtils;
+import com.egova.redis.RedisUtils;
 import com.soul.pooling.config.Constants;
 import com.soul.pooling.config.PoolingConfig;
 import com.soul.pooling.entity.*;
@@ -17,9 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import javax.annotation.Priority;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.stream.Collectors;
@@ -65,12 +64,51 @@ public class PoolingManagement {
 
     private NetStatusData netStatusData = new NetStatusData();
 
+    private Map<String, Long> timeRecords = new HashMap<>();
+
+    public Map<String, Long> getTimeRecords() {
+        return timeRecords;
+    }
+
+    public void setTimeRecords(String id, Long time) {
+        timeRecords.put(id, time);
+    }
+
+    public void clearTimeRecords() {
+        timeRecords.clear();
+    }
+
     public NetStatusData getNetData() {
         return netStatusData;
     }
 
     public void setNetData(NetStatusData data) {
-        netStatusData = data;
+        int head = 19020;
+        if (data.getMgmt_head() == head) {
+            Short[] index = data.getMgmt_150();
+            Short[][] arr = data.getMgmt_150x150();
+            Short[][] res = new Short[150][150];
+            for (int i = 0; i < index.length; i++) {
+                for (int j = 0; j < index.length; j++) {
+                    res[i][j] = -1;
+                }
+            }
+            for (int i = 0; i < index.length; i++) {
+                for (int j = 0; j < index.length; j++) {
+                    if (index[i] * index[j] != 0 && index[i] < index.length && index[j] < index.length && index[i] >= -1 && index[j] >= -1) {
+                        res[index[i] - 1][index[j] - 1] = arr[i][j];
+                    }
+                }
+            }
+            netStatusData.setMgmt_150x150(res);
+        } else {
+            netStatusData.setTimes(data.getTimes());
+            System.out.println("上下线组网返回时间" + data.getTimes());
+            //重连截止时间
+            Long endTime = System.currentTimeMillis();
+            timeRecords.put("endTime", endTime);
+        }
+        return;
     }
 
     public Map<String, PlatformStatus> getAll() {
@@ -387,6 +425,7 @@ public class PoolingManagement {
                 status.setName(platform.getName());
                 status.setType(platform.getType());
                 status.setSpeed(platform.getSpeed());
+                status.setKind(platform.getKind());
             }
 
             forceStatusData.put(id, status);
@@ -428,6 +467,7 @@ public class PoolingManagement {
                 forcesStatus.setBeMineSweep(platform.getBeMineSweep());
                 forcesStatus.setBeRealEquipment(platform.getBeRealEquipment());
                 forcesStatus.setSpeed(platform.getSpeed());
+                forcesStatus.setKind(platform.getKind());
                 forceStatusData.put(id, forcesStatus);
                 if (platform == null) {
                     throw ExceptionUtils.api(String.format("数据库没有平台数据"));
@@ -528,6 +568,7 @@ public class PoolingManagement {
             forcesStatus.setName("");
             forcesStatus.setPlatformId("");
             forcesStatus.setType("");
+            forcesStatus.setKind(-1);
             forceStatusData.put(id, forcesStatus);
             log.info("--->兵力" + id + "注销成功");
             Platform platform = platformService.seekById(id);
@@ -569,6 +610,9 @@ public class PoolingManagement {
         trackPool.clear();
         engagePool.clear();
         assesPool.clear();
+        Set<String> sKeys = RedisUtils.getService(19).keys(Constants.POOLING_TIME_ONLINE);
+        List<String> lKeys = new ArrayList<String>(sKeys);
+        RedisUtils.getService(19).deletes(lKeys);
     }
 
     public boolean isInited(String id) {
@@ -644,7 +688,6 @@ public class PoolingManagement {
             netPositions.add(position);
         }
         netNoticeData.setNodesInfo(netPositions);
-
         String url = "http://192.168.1.9:8900/free/pooling/resource/init/position";
         String json = JSON.toJSONString(netNoticeData);
 
@@ -654,7 +697,7 @@ public class PoolingManagement {
         } catch (Exception e) {
 
         }
-        System.out.println("已向网络仿真发送节点位置信息");
+        System.out.println("上线：已向网络仿真发送节点位置信息");
 
         return;
     }
@@ -662,6 +705,8 @@ public class PoolingManagement {
     public void offLine(List<String> forces) {
         NetNoticeData netNoticeData = new NetNoticeData();
         List<NetPosition> netPositions = new ArrayList<>();
+        netNoticeData.setSign(1);
+
         for (String platformId : forces) {
             PlatformStatus forcesData = getForcesData(platformId);
 
@@ -675,7 +720,6 @@ public class PoolingManagement {
             forcesData.setActiveStatus(false);
         }
         netNoticeData.setNodesInfo(netPositions);
-
         String url = "http://192.168.1.9:8900/free/pooling/resource/init/position";
         String json = JSON.toJSONString(netNoticeData);
 
@@ -685,7 +729,7 @@ public class PoolingManagement {
         } catch (Exception e) {
 
         }
-        System.out.println("已向网络仿真发送节点位置信息");
+        System.out.println("下线：已向网络仿真发送节点位置信息");
 
         return;
     }

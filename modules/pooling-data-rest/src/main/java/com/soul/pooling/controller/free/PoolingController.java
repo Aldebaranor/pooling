@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Collectors;
 
 
@@ -68,8 +69,8 @@ public class PoolingController {
     @Api
     @PostMapping(value = "/net/state")
     public Boolean getNetState(@RequestBody NetStatusData data) {
+        //获取网络通断表及时间并进行处理
         management.setNetData(data);
-        //TODO:处理网络通断表
         return true;
     }
 
@@ -81,10 +82,23 @@ public class PoolingController {
      */
     @Api
     @PostMapping(value = "/restart/platform")
-    public Boolean restart(@RequestBody List<String> forces) throws InterruptedException {
+    public Long restart(@RequestBody List<String> forces) throws InterruptedException {
+        Long startTime = System.currentTimeMillis();
         management.offLine(forces);
+        try {
+            Thread.sleep(5000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        management.clearTimeRecords();
         management.onLine(forces);
-        return true;
+        while (management.getTimeRecords().get("endTime") == null) {
+
+        }
+        Long endTime = management.getTimeRecords().get("endTime");
+        management.clearTimeRecords();
+        Long totalTime = endTime - startTime;
+        return totalTime;
     }
 
     /**
@@ -100,6 +114,7 @@ public class PoolingController {
             throw ExceptionUtils.api("structName can not be null");
         }
         management.cleanForce();
+
         return true;
     }
 
@@ -155,9 +170,16 @@ public class PoolingController {
      */
     @Api
     @PostMapping(value = "/activate/platform")
-    public Boolean forcesActivate(@RequestBody List<String> forces) throws InterruptedException {
+    public Long forcesActivate(@RequestBody List<String> forces) throws InterruptedException {
+        Long startTime = System.currentTimeMillis();
         management.onLine(forces);
-        return true;
+        while (management.getTimeRecords().get("endTime") == null) {
+
+        }
+        Long endTime = management.getTimeRecords().get("endTime");
+        management.clearTimeRecords();
+        Long totalTime = endTime - startTime;
+        return totalTime;
     }
 
     /**
@@ -219,9 +241,19 @@ public class PoolingController {
 
     @Api
     @PostMapping(value = "/dis-activated/platformIds")
-    public Boolean forcesDisActivatedBatch(@RequestBody List<String> platformIds) {
+    public Long forcesDisActivatedBatch(@RequestBody List<String> platformIds) {
+        Long startTime = System.currentTimeMillis();
         management.offLine(platformIds);
-        return true;
+        while (management.getTimeRecords().get("endTime") == null) {
+
+        }
+        Long endTime = management.getTimeRecords().get("endTime");
+        management.clearTimeRecords();
+        Long totalTime = endTime - startTime;
+        for (String id : platformIds) {
+            management.setTimeRecords(id, totalTime);
+        }
+        return totalTime;
     }
 
     /**
@@ -288,6 +320,11 @@ public class PoolingController {
         List<PlatformStatus> list = new ArrayList<>();
         for (Map.Entry<String, PlatformStatus> map : management.getAll().entrySet()) {
             list.add(map.getValue());
+        }
+
+        for (PlatformStatus platform : list) {
+            platform.setLastOnlineTime(Long.valueOf(String.valueOf(RedisUtils.getService(19).getTemplate().opsForHash().get(Constants.POOLING_TIME_ONLINE, platform.getPlatformId()))));
+            platform.setLastOperationUsedTime(management.getTimeRecords().get(platform.getPlatformId()));
         }
 
         if (condition == null) {
@@ -575,7 +612,16 @@ public class PoolingController {
         List<Target> targets = new ArrayList<>();
         List<Engage> engages = new ArrayList<>();
         List<Asses> asses = new ArrayList<>();
+        Short[][] netState1 = new Short[150][150];
+        for (int i = 0; i < 150; i++) {
+            for (int j = 0; j < 150; j++) {
+                ThreadLocalRandom tlr = ThreadLocalRandom.current();
+                int random = tlr.nextInt(-1, 1000);
+                netState1[i][j] = (short) random;
+            }
+        }
 
+        Short[][] netState = management.getNetData().getMgmt_150x150();
         if (type != CommandType.SEARCH) {
             fixes = management.getFixPool(type);
             tracks = management.getTrackPool(type);
@@ -592,7 +638,7 @@ public class PoolingController {
         result.put("engage", engages);
         result.put("asses", asses);
         result.put("platform", platforms);
-//        result.put("netState",)
+        result.put("netState", netState1);
         return result;
     }
 
