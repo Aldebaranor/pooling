@@ -26,6 +26,8 @@ public class MetaConfig {
 
     private Boolean beTest = false;
 
+    private Boolean beNet = false;
+
 //    private Integer onLineDb;
 
     private Boolean beRealEquipment;

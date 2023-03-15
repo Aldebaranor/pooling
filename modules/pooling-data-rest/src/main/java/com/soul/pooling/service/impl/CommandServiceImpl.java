@@ -846,7 +846,8 @@ public class CommandServiceImpl implements CommandService {
             if (management.getTargetByPlatform(model.getPlatformCode()).size() != 0) {
                 list.add(management.getTargetByPlatform(model.getPlatformCode()).get(0));
             } else {
-                list.add(management.getTargetByPlatform("36").get(0));
+                //TODO:magic value 100
+                list.add(management.getTargetByPlatform("100").get(0));
             }
         }
 

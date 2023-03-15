@@ -11,7 +11,6 @@ import com.soul.pooling.config.Constants;
 import com.soul.pooling.config.MetaConfig;
 import com.soul.pooling.config.PoolingConfig;
 import com.soul.pooling.entity.*;
-import com.soul.pooling.entity.enums.CommandType;
 import com.soul.pooling.model.*;
 import com.soul.pooling.mqtt.producer.MqttMsgProducer;
 import com.soul.pooling.netty.NettyUdpClient;
@@ -23,9 +22,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Collectors;
 
 
@@ -98,6 +99,9 @@ public class PoolingController {
         Long endTime = management.getTimeRecords().get("endTime");
         management.clearTimeRecords();
         Long totalTime = endTime - startTime;
+        for (String id : forces) {
+            management.setTimeRecords(id, totalTime);
+        }
         return totalTime;
     }
 
@@ -179,6 +183,9 @@ public class PoolingController {
         Long endTime = management.getTimeRecords().get("endTime");
         management.clearTimeRecords();
         Long totalTime = endTime - startTime;
+        for (String id : forces) {
+            management.setTimeRecords(id, totalTime);
+        }
         return totalTime;
     }
 
@@ -323,8 +330,16 @@ public class PoolingController {
         }
 
         for (PlatformStatus platform : list) {
-            platform.setLastOnlineTime(Long.valueOf(String.valueOf(RedisUtils.getService(19).getTemplate().opsForHash().get(Constants.POOLING_TIME_ONLINE, platform.getPlatformId()))));
-            platform.setLastOperationUsedTime(management.getTimeRecords().get(platform.getPlatformId()));
+            String onlinTime = String.valueOf(RedisUtils.getService(19).getTemplate().opsForHash().get(Constants.POOLING_TIME_ONLINE, platform.getPlatformId()));
+            if (onlinTime == null || onlinTime.equals(null) || onlinTime == "") {
+                onlinTime = "0";
+            }
+            platform.setLastOnlineTime(Long.valueOf(onlinTime));
+            Long opTime = management.getTimeRecords().get(platform.getPlatformId());
+            if (opTime == null || opTime.equals(null)) {
+                opTime = 0L;
+            }
+            platform.setLastOperationUsedTime(opTime);
         }
 
         if (condition == null) {
@@ -604,42 +619,53 @@ public class PoolingController {
     @Api
     @PostMapping(value = "/all-resource")
     public Map<String, Object> allResource(@RequestBody Command command) {
-        Map<String, Object> result = new HashMap<String, Object>();
-        CommandType type = management.getCommandType(command);
-        List<Find> finds = management.getFindPool(type);
-        List<Fix> fixes = new ArrayList<>();
-        List<Track> tracks = new ArrayList<>();
-        List<Target> targets = new ArrayList<>();
-        List<Engage> engages = new ArrayList<>();
-        List<Asses> asses = new ArrayList<>();
-        Short[][] netState1 = new Short[150][150];
-        for (int i = 0; i < 150; i++) {
-            for (int j = 0; j < 150; j++) {
-                ThreadLocalRandom tlr = ThreadLocalRandom.current();
-                int random = tlr.nextInt(-1, 1000);
-                netState1[i][j] = (short) random;
-            }
-        }
 
-        Short[][] netState = management.getNetData().getMgmt_150x150();
-        if (type != CommandType.SEARCH) {
-            fixes = management.getFixPool(type);
-            tracks = management.getTrackPool(type);
-            targets = management.getTargetPool(type);
-            engages = management.getEngagePool(type);
-            asses = management.getAssesPool(type);
-
-        }
-        List<PlatformStatus> platforms = management.getAll().values().stream().collect(Collectors.toList());
-        result.put("find", finds);
-        result.put("fix", fixes);
-        result.put("track", tracks);
-        result.put("target", targets);
-        result.put("engage", engages);
-        result.put("asses", asses);
-        result.put("platform", platforms);
-        result.put("netState", netState1);
-        return result;
+        return management.selectResource(command, metaConfig.getBeNet());
     }
+
+
+//    public Map<String, Object> allResource(@RequestBody Command command) {
+//        Map<String, Object> result = new HashMap<String, Object>();
+//        CommandType type = management.getCommandType(command);
+//
+//        List<Find> finds = management.getFindPool(type);
+//        List<Fix> fixes = new ArrayList<>();
+//        List<Track> tracks = new ArrayList<>();
+//        List<Target> targets = new ArrayList<>();
+//        List<Engage> engages = new ArrayList<>();
+//        List<Asses> asses = new ArrayList<>();
+//        Short[][] netState1 = new Short[150][150];
+//        for (int i = 0; i < 150; i++) {
+//            for (int j = 0; j < 150; j++) {
+//                ThreadLocalRandom tlr = ThreadLocalRandom.current();
+//                int random = tlr.nextInt(-1, 1000);
+//                netState1[i][j] = (short) random;
+//            }
+//        }
+//
+//        Short[][] netState = management.getNetData().getMgmt_150x150();
+//        if (type != CommandType.SEARCH) {
+//            fixes = management.getFixPool(type);
+//            tracks = management.getTrackPool(type);
+//            targets = management.getTargetPool(type);
+//            engages = management.getEngagePool(type);
+//            asses = management.getAssesPool(type);
+//
+//        }
+//        List<PlatformStatus> platforms = management.getAll().values().stream().collect(Collectors.toList());
+//        result.put("find", finds);
+//        result.put("fix", fixes);
+//        result.put("track", tracks);
+//        result.put("target", targets);
+//        result.put("engage", engages);
+//        result.put("asses", asses);
+//        result.put("platform", platforms);
+//        if (metaConfig.getBeNet()) {
+//            result.put("netState", netState);
+//        } else {
+//            result.put("netState", netState1);
+//        }
+//        return result;
+//    }
 
 }

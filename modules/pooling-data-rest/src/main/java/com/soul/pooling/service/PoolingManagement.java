@@ -11,6 +11,7 @@ import com.soul.pooling.entity.enums.CommandType;
 import com.soul.pooling.entity.enums.ResourceStatus;
 import com.soul.pooling.model.*;
 import com.soul.pooling.mqtt.producer.MqttMsgProducer;
+import com.soul.pooling.utils.GeometryUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
@@ -21,6 +22,7 @@ import javax.annotation.Priority;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Collectors;
 
 
@@ -274,6 +276,7 @@ public class PoolingManagement {
         return result;
 
     }
+
 
     public List<Track> getTrackPool(CommandType type) {
         List<Track> result = trackPool.values().stream().collect(Collectors.toList());
@@ -733,4 +736,295 @@ public class PoolingManagement {
 
         return;
     }
+
+
+    public Map<String, Object> selectResource(Command command, Boolean beNet) {
+
+        Map<String, Object> result = new HashMap<String, Object>();
+        CommandType type = getCommandType(command);
+
+        List<Find> finds = getFindPool(type);
+        List<Fix> fixes = new ArrayList<>();
+        List<Track> tracks = new ArrayList<>();
+        List<Target> targets = new ArrayList<>();
+        List<Engage> engages = new ArrayList<>();
+        List<Asses> asses = new ArrayList<>();
+
+        int time = 200;
+        for (TargetData targetData : command.getTargets()) {
+            GeometryUtils.Point start = new GeometryUtils.Point();
+            GeometryUtils.Point end = new GeometryUtils.Point();
+            start.setX(targetData.getMoveDetect().getLon());
+            start.setY(targetData.getMoveDetect().getLat());
+
+            Double heading = targetData.getMoveDetect().getHeading();
+            Double speed = targetData.getMoveDetect().getSpeed();
+            Double distance = speed * time;
+            //得到B点
+
+            end.setX(GeometryUtils.getTargetPoint(start.getX(), start.getY(), heading, distance).getX());
+            end.setY(GeometryUtils.getTargetPoint(start.getX(), start.getY(), heading, distance).getY());
+
+            for (Find model : getFind(start, end, command)) {
+                if (!finds.contains(model)) {
+                    finds.add(model);
+                }
+            }
+            for (Fix model : getFix(start, end, command)) {
+                if (!fixes.contains(model)) {
+                    fixes.add(model);
+                }
+            }
+            for (Track model : getTrack(start, end, command)) {
+                if (!tracks.contains(model)) {
+                    tracks.add(model);
+                }
+            }
+            for (Engage model : getEngage(start, end, command)) {
+                if (!engages.contains(model)) {
+                    engages.add(model);
+                }
+            }
+            for (Target model : getTarget(engages)) {
+                if (!targets.contains(model)) {
+                    targets.add(model);
+                }
+            }
+            for (Asses model : getAsses(start, end, command)) {
+                if (!asses.contains(model)) {
+                    asses.add(model);
+                }
+            }
+        }
+
+        Short[][] netState1 = new Short[150][150];
+        for (int i = 0; i < 150; i++) {
+            for (int j = 0; j < 150; j++) {
+                ThreadLocalRandom tlr = ThreadLocalRandom.current();
+                int random = tlr.nextInt(-1, 1000);
+                netState1[i][j] = (short) random;
+            }
+        }
+        Short[][] netState = getNetData().getMgmt_150x150();
+
+        List<PlatformStatus> platforms = getAll().values().stream().collect(Collectors.toList());
+        result.put("find", finds);
+        result.put("fix", fixes);
+        result.put("track", tracks);
+        result.put("target", targets);
+        result.put("engage", engages);
+        result.put("asses", asses);
+        result.put("platform", platforms);
+        if (beNet) {
+            result.put("netState", netState);
+        } else {
+            result.put("netState", netState1);
+        }
+        return result;
+
+    }
+
+    public GeometryUtils.Point moveData2Point(PlatformMoveData moveData) {
+        GeometryUtils.Point point = new GeometryUtils.Point();
+        point.setX(moveData.getLon());
+        point.setY(moveData.getLat());
+        return point;
+    }
+
+    public List<Find> getFind(GeometryUtils.Point start, GeometryUtils.Point end, Command command) {
+        List<Find> list = new ArrayList<>();
+        List<Find> finds = getFindPool(getCommandType(command));
+
+        for (Find find : finds) {
+            PlatformMoveData moveData = getPlatformPool().get(find.getPlatformCode()).getPlatformMoveData();
+            if (moveData != null) {
+                GeometryUtils.Point point = moveData2Point(moveData);
+
+                double distance = GeometryUtils.minDistanceFromPointToLine(start, end, point);
+                find.setDistance(distance);
+                if (getCommandType(command).getValue() == 21 && (find.getMaxDetectRangeAir() * 1000 > distance)) {
+                    distance = GeometryUtils.getDistance(start.getX(), start.getY(), point.getX(), point.getY());
+                    find.setDistance(distance);
+                    list.add(find);
+                } else if (getCommandType(command).getValue() == 22 && (find.getMaxDetectRangeSea() * 1000 > distance)) {
+                    distance = GeometryUtils.getDistance(start.getX(), start.getY(), point.getX(), point.getY());
+                    find.setDistance(distance);
+                    list.add(find);
+                } else if (getCommandType(command).getValue() == 23 && (find.getMaxDetectRangeLand() * 1000 > distance)) {
+                    distance = GeometryUtils.getDistance(start.getX(), start.getY(), point.getX(), point.getY());
+                    find.setDistance(distance);
+                    list.add(find);
+                } else if (getCommandType(command).getValue() == 24 && (find.getMaxDetectRangeUnderSea() * 1000 > distance)) {
+                    distance = GeometryUtils.getDistance(start.getX(), start.getY(), point.getX(), point.getY());
+                    find.setDistance(distance);
+                    list.add(find);
+                }
+
+            }
+        }
+
+        list.sort(Comparator.comparing(Find::getDistance));
+
+        return list;
+    }
+
+    public List<Fix> getFix(GeometryUtils.Point start, GeometryUtils.Point end, Command command) {
+        List<Fix> list = new ArrayList<>();
+        List<Fix> fixes = getFixPool(getCommandType(command));
+
+        for (Fix fix : fixes) {
+            PlatformMoveData moveData = getPlatformPool().get(fix.getPlatformCode()).getPlatformMoveData();
+            if (moveData != null) {
+                GeometryUtils.Point point = moveData2Point(moveData);
+
+                double distance = GeometryUtils.minDistanceFromPointToLine(start, end, point);
+                fix.setDistance(distance);
+                if (getCommandType(command).getValue() == 21 && (fix.getMaxDetectRangeAir() * 1000 > distance)) {
+                    distance = GeometryUtils.getDistance(start.getX(), start.getY(), point.getX(), point.getY());
+                    fix.setDistance(distance);
+                    list.add(fix);
+                } else if (getCommandType(command).getValue() == 22 && (fix.getMaxDetectRangeSea() * 1000 > distance)) {
+                    distance = GeometryUtils.getDistance(start.getX(), start.getY(), point.getX(), point.getY());
+                    fix.setDistance(distance);
+                    list.add(fix);
+                } else if (getCommandType(command).getValue() == 23 && (fix.getMaxDetectRangeLand() * 1000 > distance)) {
+                    distance = GeometryUtils.getDistance(start.getX(), start.getY(), point.getX(), point.getY());
+                    fix.setDistance(distance);
+                    list.add(fix);
+                } else if (getCommandType(command).getValue() == 24 && (fix.getMaxDetectRangeUnderSea() * 1000 > distance)) {
+                    distance = GeometryUtils.getDistance(start.getX(), start.getY(), point.getX(), point.getY());
+                    fix.setDistance(distance);
+                    list.add(fix);
+                }
+
+            }
+        }
+
+        list.sort(Comparator.comparing(Fix::getDistance));
+        return list;
+    }
+
+    public List<Target> getTarget(List<Engage> engages) {
+        List<Target> list = new ArrayList<>();
+        for (Engage model : engages) {
+            if (getTargetByPlatform(model.getPlatformCode()).size() != 0) {
+                list.add(getTargetByPlatform(model.getPlatformCode()).get(0));
+            } else {
+                //TODO:magic value 36
+                list.add(getTargetByPlatform("100").get(0));
+            }
+        }
+
+        return list;
+    }
+
+    public List<Track> getTrack(GeometryUtils.Point start, GeometryUtils.Point end, Command command) {
+        List<Track> list = new ArrayList<>();
+        List<Track> tracks = getTrackPool(getCommandType(command));
+
+        for (Track track : tracks) {
+            PlatformMoveData moveData = getPlatformPool().get(track.getPlatformCode()).getPlatformMoveData();
+            if (moveData != null) {
+                GeometryUtils.Point point = moveData2Point(moveData);
+
+                double distance = GeometryUtils.minDistanceFromPointToLine(start, end, point);
+                track.setDistance(distance);
+                if (getCommandType(command).getValue() == 21 && (track.getMaxDetectRangeAir() * 1000 > distance)) {
+                    distance = GeometryUtils.getDistance(start.getX(), start.getY(), point.getX(), point.getY());
+                    track.setDistance(distance);
+                    list.add(track);
+                } else if (getCommandType(command).getValue() == 22 && (track.getMaxDetectRangeSea() * 1000 > distance)) {
+                    distance = GeometryUtils.getDistance(start.getX(), start.getY(), point.getX(), point.getY());
+                    track.setDistance(distance);
+                    list.add(track);
+                } else if (getCommandType(command).getValue() == 23 && (track.getMaxDetectRangeLand() * 1000 > distance)) {
+                    distance = GeometryUtils.getDistance(start.getX(), start.getY(), point.getX(), point.getY());
+                    track.setDistance(distance);
+                    list.add(track);
+                } else if (getCommandType(command).getValue() == 24 && (track.getMaxDetectRangeUnderSea() * 1000 > distance)) {
+                    distance = GeometryUtils.getDistance(start.getX(), start.getY(), point.getX(), point.getY());
+                    track.setDistance(distance);
+                    list.add(track);
+                }
+
+            }
+        }
+
+        list.sort(Comparator.comparing(Track::getDistance));
+        return list;
+    }
+
+    public List<Asses> getAsses(GeometryUtils.Point start, GeometryUtils.Point end, Command command) {
+        List<Asses> list = new ArrayList<>();
+        List<Asses> assesList = getAssesPool(getCommandType(command));
+
+        for (Asses asses : assesList) {
+            PlatformMoveData moveData = getPlatformPool().get(asses.getPlatformCode()).getPlatformMoveData();
+            if (moveData != null) {
+                GeometryUtils.Point point = moveData2Point(moveData);
+
+                double distance = GeometryUtils.minDistanceFromPointToLine(start, end, point);
+                asses.setDistance(distance);
+                if (getCommandType(command).getValue() == 21 && (asses.getMaxDetectRangeAir() * 1000 > distance)) {
+                    distance = GeometryUtils.getDistance(end.getX(), end.getY(), point.getX(), point.getY());
+                    asses.setDistance(distance);
+                    list.add(asses);
+                } else if (getCommandType(command).getValue() == 22 && (asses.getMaxDetectRangeSea() * 1000 > distance)) {
+                    distance = GeometryUtils.getDistance(end.getX(), end.getY(), point.getX(), point.getY());
+                    asses.setDistance(distance);
+                    list.add(asses);
+                } else if (getCommandType(command).getValue() == 23 && (asses.getMaxDetectRangeLand() * 1000 > distance)) {
+                    distance = GeometryUtils.getDistance(end.getX(), end.getY(), point.getX(), point.getY());
+                    asses.setDistance(distance);
+                    list.add(asses);
+                } else if (getCommandType(command).getValue() == 24 && (asses.getMaxDetectRangeUnderSea() * 1000 > distance)) {
+                    distance = GeometryUtils.getDistance(end.getX(), end.getY(), point.getX(), point.getY());
+                    asses.setDistance(distance);
+                    list.add(asses);
+                }
+
+            }
+        }
+
+        list.sort(Comparator.comparing(Asses::getDistance));
+        return list;
+    }
+
+    public List<Engage> getEngage(GeometryUtils.Point start, GeometryUtils.Point end, Command command) {
+        List<Engage> list = new ArrayList<>();
+        List<Engage> engages = getEngagePool(getCommandType(command));
+
+        for (Engage engage : engages) {
+            PlatformMoveData moveData = getPlatformPool().get(engage.getPlatformCode()).getPlatformMoveData();
+            if (moveData != null) {
+                GeometryUtils.Point point = moveData2Point(moveData);
+
+                double distance = GeometryUtils.minDistanceFromPointToLine(start, end, point);
+                engage.setDistance(distance);
+                if (getCommandType(command).getValue() == 21 && (engage.getMaxFireRangeAir() * 1000 > distance)) {
+                    distance = GeometryUtils.getDistance(start.getX(), start.getY(), point.getX(), point.getY());
+                    engage.setDistance(distance);
+                    list.add(engage);
+                } else if (getCommandType(command).getValue() == 22 && (engage.getMaxFireRangeSea() * 1000 > distance)) {
+                    distance = GeometryUtils.getDistance(start.getX(), start.getY(), point.getX(), point.getY());
+                    engage.setDistance(distance);
+                    list.add(engage);
+                } else if (getCommandType(command).getValue() == 23 && (engage.getMaxFireRangeLand() * 1000 > distance)) {
+                    distance = GeometryUtils.getDistance(start.getX(), start.getY(), point.getX(), point.getY());
+                    engage.setDistance(distance);
+                    list.add(engage);
+                } else if (getCommandType(command).getValue() == 24 && (engage.getMaxFireRangeUnderSea() * 1000 > distance)) {
+                    distance = GeometryUtils.getDistance(start.getX(), start.getY(), point.getX(), point.getY());
+                    engage.setDistance(distance);
+                    list.add(engage);
+                }
+
+            }
+        }
+
+        list.sort(Comparator.comparing(Engage::getDistance));
+        return list;
+    }
+
+
 }
