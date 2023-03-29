@@ -330,11 +330,12 @@ public class PoolingController {
         }
 
         for (PlatformStatus platform : list) {
-            String onlinTime = String.valueOf(RedisUtils.getService(19).getTemplate().opsForHash().get(Constants.POOLING_TIME_ONLINE, platform.getPlatformId()));
-            if (onlinTime == null || onlinTime.equals(null) || onlinTime == "") {
-                onlinTime = "0";
+            String onlineTime = String.valueOf(RedisUtils.getService(19).getTemplate().opsForHash().get(Constants.POOLING_TIME_ONLINE, platform.getPlatformId()));
+            if (StringUtils.isBlank(onlineTime) || onlineTime.equals("null")) {
+                platform.setLastOnlineTime(0L);
+            } else {
+                platform.setLastOnlineTime(Long.valueOf(onlineTime));
             }
-            platform.setLastOnlineTime(Long.valueOf(onlinTime));
             Long opTime = management.getTimeRecords().get(platform.getPlatformId());
             if (opTime == null || opTime.equals(null)) {
                 opTime = 0L;

@@ -5,6 +5,7 @@ import com.egova.exception.ExceptionUtils;
 import com.egova.json.utils.JsonUtils;
 import com.egova.redis.RedisUtils;
 import com.soul.pooling.config.Constants;
+import com.soul.pooling.config.MetaConfig;
 import com.soul.pooling.config.PoolingConfig;
 import com.soul.pooling.entity.*;
 import com.soul.pooling.entity.enums.CommandType;
@@ -48,6 +49,9 @@ public class PoolingManagement {
     @Autowired
     private PoolingConfig poolingConfig;
 
+    @Autowired
+    private MetaConfig metaConfig;
+
     private final ConcurrentMap<String, PlatformStatus> forceStatusData = new ConcurrentHashMap();
 
     private final ConcurrentMap<String, Platform> platformPool = new ConcurrentHashMap<>();
@@ -86,26 +90,35 @@ public class PoolingManagement {
 
     public void setNetData(NetStatusData data) {
         int head = 19020;
-        if (data.getMgmt_head() == head) {
-            Short[] index = data.getMgmt_150();
-            Short[][] arr = data.getMgmt_150x150();
-            Short[][] res = new Short[150][150];
-            for (int i = 0; i < index.length; i++) {
-                for (int j = 0; j < index.length; j++) {
-                    res[i][j] = -1;
-                }
-            }
-            for (int i = 0; i < index.length; i++) {
-                for (int j = 0; j < index.length; j++) {
-                    if (index[i] * index[j] != 0 && index[i] < index.length && index[j] < index.length && index[i] >= -1 && index[j] >= -1) {
-                        res[index[i] - 1][index[j] - 1] = arr[i][j];
+        if (metaConfig.getBeNet()) {
+            if (data.getMgmt_head() == head) {
+                Short[] index = data.getMgmt_150();
+                Short[][] arr = data.getMgmt_150x150();
+                Short[][] res = new Short[150][150];
+                for (int i = 0; i < index.length; i++) {
+                    for (int j = 0; j < index.length; j++) {
+                        res[i][j] = -1;
                     }
                 }
+                for (int i = 0; i < index.length; i++) {
+                    for (int j = 0; j < index.length; j++) {
+                        if (index[i] * index[j] != 0 && index[i] < index.length && index[j] < index.length && index[i] >= -1 && index[j] >= -1) {
+                            res[index[i] - 1][index[j] - 1] = arr[i][j];
+                        }
+                    }
+                }
+                netStatusData.setMgmt_150x150(res);
+            } else {
+                netStatusData.setTimes(data.getTimes());
+                System.out.println("上下线组网返回时间" + data.getTimes());
+                //重连截止时间
+                Long endTime = System.currentTimeMillis();
+                timeRecords.put("endTime", endTime);
             }
-            netStatusData.setMgmt_150x150(res);
         } else {
-            netStatusData.setTimes(data.getTimes());
-            System.out.println("上下线组网返回时间" + data.getTimes());
+            double time = Math.random() * 10 + 15;
+            netStatusData.setTimes(time);
+            System.out.println("上下线组网返回时间" + time);
             //重连截止时间
             Long endTime = System.currentTimeMillis();
             timeRecords.put("endTime", endTime);
@@ -691,15 +704,27 @@ public class PoolingManagement {
             netPositions.add(position);
         }
         netNoticeData.setNodesInfo(netPositions);
-        String url = "http://192.168.1.9:8900/free/pooling/resource/init/position";
-        String json = JSON.toJSONString(netNoticeData);
+        String url = "";
+        if (metaConfig.getBeNet()) {
+            url = "http://192.168.1.9:8900/free/pooling/resource/init/position";
+            String json = JSON.toJSONString(netNoticeData);
+            RestTemplate template = new RestTemplate();
+            try {
+                template.postForEntity(url, json, String.class);
+            } catch (Exception e) {
 
-        RestTemplate template = new RestTemplate();
-        try {
-            template.postForEntity(url, json, String.class);
-        } catch (Exception e) {
-
+            }
+        } else {
+            url = "http://192.168.1.9:8900/api/postTest";
+            RestTemplate template = new RestTemplate();
+            String json = JSON.toJSONString("noNet");
+            try {
+                template.postForEntity(url, json, String.class);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
+
         System.out.println("上线：已向网络仿真发送节点位置信息");
 
         return;
@@ -723,14 +748,25 @@ public class PoolingManagement {
             forcesData.setActiveStatus(false);
         }
         netNoticeData.setNodesInfo(netPositions);
-        String url = "http://192.168.1.9:8900/free/pooling/resource/init/position";
-        String json = JSON.toJSONString(netNoticeData);
+        String url = "";
+        if (metaConfig.getBeNet()) {
+            url = "http://192.168.1.9:8900/free/pooling/resource/init/position";
+            String json = JSON.toJSONString(netNoticeData);
+            RestTemplate template = new RestTemplate();
+            try {
+                template.postForEntity(url, json, String.class);
+            } catch (Exception e) {
 
-        RestTemplate template = new RestTemplate();
-        try {
-            template.postForEntity(url, json, String.class);
-        } catch (Exception e) {
+            }
+        } else {
+            url = "http://192.168.1.9:8900/api/postTest";
+            RestTemplate template = new RestTemplate();
+            String json = JSON.toJSONString("noNet");
+            try {
+                template.postForEntity(url, json, String.class);
+            } catch (Exception e) {
 
+            }
         }
         System.out.println("下线：已向网络仿真发送节点位置信息");
 
