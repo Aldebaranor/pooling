@@ -1062,5 +1062,37 @@ public class PoolingManagement {
         return list;
     }
 
+    public List<NetLinkModel> getForceNetLink(PlatformStatus platformStatus, List<PlatformStatus> platformList) {
+        List<NetLinkModel> list = new ArrayList<>();
+        Short[][] netState = new Short[150][150];
+        if (metaConfig.getBeNet()) {
+            netState = getNetData().getMgmt_150x150();
+        } else {
+            for (int i = 0; i < 150; i++) {
+                for (int j = 0; j < 150; j++) {
+                    ThreadLocalRandom tlr = ThreadLocalRandom.current();
+                    int random = tlr.nextInt(-1, 1000);
+                    netState[i][j] = (short) random;
+                }
+            }
+        }
+        for (PlatformStatus p : platformList) {
+            int cId = Integer.parseInt(p.getPlatformId());
+            int rId = Integer.parseInt(platformStatus.getPlatformId());
+            short delay = netState[cId][rId];
+            if (cId != rId && delay > 0 && p.getName() != null) {
+                NetLinkModel n = new NetLinkModel();
+                n.setId(p.getPlatformId());
+                n.setType("0");
+                n.setTransRate(1.0);
+                n.setBandWidth(200.0);
+                n.setMaxTimeDelay((int) delay);
+                n.setMinTimeDelay((int) delay);
+                list.add(n);
+            }
+        }
+
+        return list;
+    }
 
 }

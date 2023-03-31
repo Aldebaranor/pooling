@@ -34,8 +34,6 @@ public class DisConnJob {
 
     @Scheduled(fixedDelayString = "5000")
     public void disConnect() {
-
-
         Map<String, Platform> platformPool = poolingManagement.getPlatformPool();
         for (Map.Entry<String, Platform> entry : platformPool.entrySet()) {
             String key = Constants.FORCE_HEAR + entry.getKey();
@@ -49,5 +47,5 @@ public class DisConnJob {
             }
         }
     }
-    
+
 }
