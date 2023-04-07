@@ -82,8 +82,9 @@ public class PoolingController {
      */
     @Api
     @PostMapping(value = "/restart/platform")
-    public Long restart(@RequestBody List<String> forces) throws InterruptedException {
+    public JSONObject restart(@RequestBody List<String> forces) throws InterruptedException {
         Long startTime = System.currentTimeMillis();
+        System.out.println("重启请求开始时间：" + startTime);
         management.offLine(forces);
         try {
             Thread.sleep(5000);
@@ -91,17 +92,32 @@ public class PoolingController {
             e.printStackTrace();
         }
         management.clearTimeRecords();
+        for (String s : forces) {
+            if (management.getOnLineNodes().contains(s)) {
+                JSONObject jsonObject = new JSONObject();
+                jsonObject.put("500", "包含上线中的节点" + s);
+                return jsonObject;
+            }
+        }
         management.onLine(forces);
         while (management.getTimeRecords().get("endTime") == null) {
 
         }
-        Long endTime = management.getTimeRecords().get("endTime");
+        for (String s : forces) {
+            management.removeOnLineNodes(s);
+        }
+        Long endTime = System.currentTimeMillis();
+        System.out.println("重启请求结束时间：" + endTime);
         management.clearTimeRecords();
         Long totalTime = endTime - startTime;
         for (String id : forces) {
             management.setTimeRecords(id, totalTime);
+            management.setLastRecords(id, totalTime);
         }
-        return totalTime;
+        System.out.println("重连耗时：" + totalTime);
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("200", "重连成功，耗时" + totalTime);
+        return jsonObject;
     }
 
     @Api
@@ -187,19 +203,35 @@ public class PoolingController {
      */
     @Api
     @PostMapping(value = "/activate/platform")
-    public Long forcesActivate(@RequestBody List<String> forces) throws InterruptedException {
+    public JSONObject forcesActivate(@RequestBody List<String> forces) throws InterruptedException {
+        for (String s : forces) {
+            if (management.getOnLineNodes().contains(s)) {
+                JSONObject jsonObject = new JSONObject();
+                jsonObject.put("500", "包含上线中的节点" + s);
+                return jsonObject;
+            }
+        }
         Long startTime = System.currentTimeMillis();
+        System.out.println("上线请求开始时间：" + startTime);
         management.onLine(forces);
         while (management.getTimeRecords().get("endTime") == null) {
 
         }
-        Long endTime = management.getTimeRecords().get("endTime");
+        for (String s : forces) {
+            management.removeOnLineNodes(s);
+        }
+        Long endTime = System.currentTimeMillis();
+        System.out.println("上线请求结束时间：" + endTime);
         management.clearTimeRecords();
         Long totalTime = endTime - startTime;
         for (String id : forces) {
             management.setTimeRecords(id, totalTime);
+            management.setLastRecords(id, totalTime);
         }
-        return totalTime;
+        System.out.println("上线耗时：" + totalTime);
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("200", "上线成功，耗时：" + totalTime);
+        return jsonObject;
     }
 
     /**
@@ -261,19 +293,25 @@ public class PoolingController {
 
     @Api
     @PostMapping(value = "/dis-activated/platformIds")
-    public Long forcesDisActivatedBatch(@RequestBody List<String> platformIds) {
+    public JSONObject forcesDisActivatedBatch(@RequestBody List<String> platformIds) {
         Long startTime = System.currentTimeMillis();
+        System.out.println("下线请求开始时间：" + startTime);
         management.offLine(platformIds);
         while (management.getTimeRecords().get("endTime") == null) {
 
         }
-        Long endTime = management.getTimeRecords().get("endTime");
+        Long endTime = System.currentTimeMillis();
+        System.out.println("下线请求结束时间：" + endTime);
         management.clearTimeRecords();
         Long totalTime = endTime - startTime;
         for (String id : platformIds) {
             management.setTimeRecords(id, totalTime);
+            management.setLastRecords(id, totalTime);
         }
-        return totalTime;
+        System.out.println("下线操作耗时：" + totalTime);
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("200", "下线成功，耗时：" + totalTime);
+        return jsonObject;
     }
 
     /**
@@ -349,11 +387,15 @@ public class PoolingController {
             } else {
                 platform.setLastOnlineTime(Long.valueOf(onlineTime));
             }
-            Long opTime = management.getTimeRecords().get(platform.getPlatformId());
-            if (opTime == null || opTime.equals(null)) {
-                opTime = 0L;
+//            Long opTime = management.getTimeRecords().get(platform.getPlatformId());
+            if (platform.getActiveStatus()) {
+                Long opTime = management.getLastRecords().get(platform.getPlatformId());
+                if (opTime == null || opTime.equals(null)) {
+                    opTime = 0L;
+                }
+                platform.setLastOperationUsedTime(opTime);
             }
-            platform.setLastOperationUsedTime(opTime);
+
         }
 
         if (condition == null) {

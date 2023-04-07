@@ -72,6 +72,30 @@ public class PoolingManagement {
 
     private Map<String, Long> timeRecords = new HashMap<>();
 
+    private Map<String, Long> lastRecords = new HashMap<>();
+
+    private Set<String> onLineNodes = new HashSet<>();
+
+    public Set<String> getOnLineNodes() {
+        return onLineNodes;
+    }
+
+    public void setOnLineNodes(String s) {
+        onLineNodes.add(s);
+    }
+
+    public void removeOnLineNodes(String s) {
+        onLineNodes.remove(s);
+    }
+
+    public Map<String, Long> getLastRecords() {
+        return lastRecords;
+    }
+
+    public void setLastRecords(String id, Long time) {
+        lastRecords.put(id, time);
+    }
+
     public Map<String, Long> getTimeRecords() {
         return timeRecords;
     }
@@ -678,12 +702,9 @@ public class PoolingManagement {
         NetNoticeData netNoticeData = new NetNoticeData();
         List<NetPosition> netPositions = new ArrayList<>();
         netNoticeData.setSign(0);
-        for (String s : forces) {
-            List<String> list = new ArrayList<>();
-            list.add(s);
-            mqttMsgProducer.producerMsg(poolingConfig.getActivateTopic(), JsonUtils.serialize(list));
-            Thread.sleep(1);
 
+        for (String s : forces) {
+            setOnLineNodes(s);
             Platform platform = platformService.seekById(s);
             NetPosition position = new NetPosition();
             position.setId(s);
@@ -724,6 +745,12 @@ public class PoolingManagement {
                 e.printStackTrace();
             }
         }
+        for (String s : forces) {
+            List<String> list = new ArrayList<>();
+            list.add(s);
+            mqttMsgProducer.producerMsg(poolingConfig.getActivateTopic(), JsonUtils.serialize(list));
+            Thread.sleep(1);
+        }
 
         System.out.println("上线：已向网络仿真发送节点位置信息");
 
@@ -736,16 +763,11 @@ public class PoolingManagement {
         netNoticeData.setSign(1);
 
         for (String platformId : forces) {
-            PlatformStatus forcesData = getForcesData(platformId);
-
             //通知下线
             NetPosition position = new NetPosition();
             position.setId(platformId);
             netPositions.add(position);
-            sendDisActivated(platformId);
 
-            disActiveForce(platformId);
-            forcesData.setActiveStatus(false);
         }
         netNoticeData.setNodesInfo(netPositions);
         String url = "";
@@ -767,6 +789,13 @@ public class PoolingManagement {
             } catch (Exception e) {
 
             }
+        }
+
+        for (String platformId : forces) {
+            PlatformStatus forcesData = getForcesData(platformId);
+            sendDisActivated(platformId);
+            disActiveForce(platformId);
+            forcesData.setActiveStatus(false);
         }
         System.out.println("下线：已向网络仿真发送节点位置信息");
 
