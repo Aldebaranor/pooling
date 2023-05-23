@@ -209,7 +209,6 @@ public class PoolingManagement {
         return;
     }
 
-
     public Map<String, PlatformStatus> getAll() {
         return forceStatusData;
     }
@@ -373,8 +372,7 @@ public class PoolingManagement {
         return result;
 
     }
-
-
+    
     public List<Track> getTrackPool(CommandType type) {
         List<Track> result = trackPool.values().stream().collect(Collectors.toList());
         if (type == null) {
@@ -703,6 +701,7 @@ public class PoolingManagement {
      * 清除资源库
      */
     public void cleanForce() {
+        //TODO：维护上下线时间的Map清空
         onLineNodes.clear();
         forceStatusData.clear();
         platformPool.clear();
@@ -794,7 +793,6 @@ public class PoolingManagement {
 
     }
 
-
     public void onLine(List<String> forces) throws InterruptedException {
         NetNoticeData netNoticeData = new NetNoticeData();
         List<NetPosition> netPositions = new ArrayList<>();
@@ -836,6 +834,7 @@ public class PoolingManagement {
                 } catch (Exception e) {
 
                 }
+                System.out.println("已向总线发送实装上线请求id：" + s);
             }
         }
         netNoticeData.setNodesInfo(netPositions);
@@ -849,6 +848,7 @@ public class PoolingManagement {
             } catch (Exception e) {
 
             }
+            System.out.println("已向总线发送当前态势");
         } else {
             url = metaConfig.getBusUrl() + "api/postTest";
             RestTemplate template = new RestTemplate();
@@ -859,6 +859,7 @@ public class PoolingManagement {
                 e.printStackTrace();
             }
         }
+        //上线操作
         for (String platformId : forces) {
 
             List<String> list = new ArrayList<>();
@@ -895,6 +896,7 @@ public class PoolingManagement {
                 } catch (Exception e) {
 
                 }
+                System.out.println("已向总线发送实装下线请求id：" + platformId);
             }
         }
         netNoticeData.setNodesInfo(netPositions);
@@ -908,6 +910,8 @@ public class PoolingManagement {
             } catch (Exception e) {
 
             }
+            System.out.println("已向总线发送当前态势");
+
         } else {
             url = metaConfig.getBusUrl() + "api/postTest";
             RestTemplate template = new RestTemplate();
@@ -918,7 +922,7 @@ public class PoolingManagement {
 
             }
         }
-
+        //下线操作
         for (String platformId : forces) {
             PlatformStatus forcesData = getForcesData(platformId);
             sendDisActivated(platformId);
