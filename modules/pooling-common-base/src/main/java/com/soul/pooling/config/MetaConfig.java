@@ -5,6 +5,9 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 /**
  * @Author: 王质松
@@ -32,4 +35,7 @@ public class MetaConfig {
 
     private Boolean beRealEquipment;
 
+    private String busUrl;
+
+    private List<String> forcesList = new ArrayList<>();
 }

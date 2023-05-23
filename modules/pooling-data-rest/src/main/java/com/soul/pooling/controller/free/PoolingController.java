@@ -74,6 +74,13 @@ public class PoolingController {
         return true;
     }
 
+    @Api
+    @PostMapping(value = "/net/link")
+    public Boolean getNetLink(@RequestBody NetStatusData data) {
+        management.setNetLinkData(data);
+        return true;
+    }
+
     /**
      * 重启节点
      *
@@ -92,19 +99,23 @@ public class PoolingController {
             e.printStackTrace();
         }
         management.clearTimeRecords();
-        for (String s : forces) {
-            if (management.getOnLineNodes().contains(s)) {
-                JSONObject jsonObject = new JSONObject();
-                jsonObject.put("500", "包含上线中的节点" + s);
-                return jsonObject;
+        if (metaConfig.getBeNet()) {
+            for (String s : forces) {
+                if (management.getOnLineNodes().contains(s)) {
+                    JSONObject jsonObject = new JSONObject();
+                    jsonObject.put("500", "包含上线中的节点" + s);
+                    return jsonObject;
+                }
             }
         }
         management.onLine(forces);
         while (management.getTimeRecords().get("endTime") == null) {
 
         }
-        for (String s : forces) {
-            management.removeOnLineNodes(s);
+        if (metaConfig.getBeNet()) {
+            for (String s : forces) {
+                management.removeOnLineNodes(s);
+            }
         }
         Long endTime = System.currentTimeMillis();
         System.out.println("重启请求结束时间：" + endTime);
@@ -132,6 +143,24 @@ public class PoolingController {
         }
 
         return netMap;
+    }
+
+    @Api
+    @PostMapping(value = "/fake/net")
+    public Short[][] fake(@RequestBody Map<String, List<NetLinkModel>> map) {
+        Short[][] netState = new Short[150][150];
+        Short[] arr = new Short[150];
+        short delay = -1;
+        Arrays.fill(arr, delay);
+        Arrays.fill(netState, arr);
+        for (Map.Entry<String, List<NetLinkModel>> entry : map.entrySet()) {
+            List<NetLinkModel> list = entry.getValue();
+            for (NetLinkModel netLink : list) {
+                netState[Integer.valueOf(entry.getKey())][Integer.valueOf(netLink.getId())] = Short.valueOf(netLink.getMaxTimeDelay().toString());
+            }
+        }
+        management.setState(netState);
+        return netState;
     }
 
     /**
@@ -204,21 +233,28 @@ public class PoolingController {
     @Api
     @PostMapping(value = "/activate/platform")
     public JSONObject forcesActivate(@RequestBody List<String> forces) throws InterruptedException {
-        for (String s : forces) {
-            if (management.getOnLineNodes().contains(s)) {
-                JSONObject jsonObject = new JSONObject();
-                jsonObject.put("500", "包含上线中的节点" + s);
-                return jsonObject;
+        if (metaConfig.getBeNet()) {
+            for (String s : forces) {
+                if (management.getOnLineNodes().contains(s)) {
+                    JSONObject jsonObject = new JSONObject();
+                    jsonObject.put("500", "包含上线中的节点" + s);
+                    return jsonObject;
+                }
             }
         }
         Long startTime = System.currentTimeMillis();
         System.out.println("上线请求开始时间：" + startTime);
         management.onLine(forces);
+//        if (!metaConfig.getBeNet()) {
+//            management.setNetData(null);
+//        }
         while (management.getTimeRecords().get("endTime") == null) {
 
         }
-        for (String s : forces) {
-            management.removeOnLineNodes(s);
+        if (metaConfig.getBeNet()) {
+            for (String s : forces) {
+                management.removeOnLineNodes(s);
+            }
         }
         Long endTime = System.currentTimeMillis();
         System.out.println("上线请求结束时间：" + endTime);
@@ -245,16 +281,17 @@ public class PoolingController {
     public Boolean forcesActivated(@PathVariable String platformId) {
         PlatformStatus forcesData = management.getForcesData(platformId);
         if (forcesData == null) {
-            throw ExceptionUtils.api(String.format("该兵力未注册"));
+            throw ExceptionUtils.api(String.format("该兵力未注册") + platformId);
         }
         if (!forcesData.getInitStatus()) {
-            throw ExceptionUtils.api(String.format("该兵力未初始化"));
+            throw ExceptionUtils.api(String.format("该兵力未初始化") + platformId);
         }
 
         forcesData.setActiveStatus(true);
         //往redis写上线时间
         RedisUtils.getService(19).getTemplate().opsForHash().put(Constants.POOLING_TIME_ONLINE, platformId, String.valueOf(System.currentTimeMillis()));
         //通知上线
+
         management.sendActivated(platformId);
 
         management.activeForce(platformId);
@@ -273,16 +310,17 @@ public class PoolingController {
     public Boolean forcesDisActivated(@PathVariable String platformId) {
         PlatformStatus forcesData = management.getForcesData(platformId);
         if (forcesData == null) {
-            throw ExceptionUtils.api(String.format("该兵力未注册"));
+            throw ExceptionUtils.api(String.format("该兵力未注册") + platformId);
         }
         if (!forcesData.getInitStatus()) {
-            throw ExceptionUtils.api(String.format("该兵力未初始化"));
+            throw ExceptionUtils.api(String.format("该兵力未初始化") + platformId);
         }
         if (!forcesData.getActiveStatus()) {
-            throw ExceptionUtils.api(String.format("该兵力未被激活"));
+            throw ExceptionUtils.api(String.format("该兵力未被激活") + platformId);
         }
 
         //通知下线
+
         management.sendDisActivated(platformId);
 
         management.disActiveForce(platformId);
@@ -305,6 +343,7 @@ public class PoolingController {
         management.clearTimeRecords();
         Long totalTime = endTime - startTime;
         for (String id : platformIds) {
+
             management.setTimeRecords(id, totalTime);
             management.setLastRecords(id, totalTime);
         }
@@ -425,6 +464,10 @@ public class PoolingController {
 
             list = list.stream().filter(q -> q.getType() != null && StringUtils.equals(condition.getType(), q.getType())).collect(Collectors.toList());
 
+        }
+        if (!StringUtils.isBlank(condition.getKind())) {
+
+            list = list.stream().filter(q -> q.getKind().toString() != null && q.getKind().toString().contains(condition.getKind())).collect(Collectors.toList());
         }
         return list;
 
@@ -695,7 +738,7 @@ public class PoolingController {
         for (int i = 0; i < 150; i++) {
             for (int j = 0; j < 150; j++) {
                 ThreadLocalRandom tlr = ThreadLocalRandom.current();
-                int random = tlr.nextInt(-1, 1000);
+                int random = tlr.nextInt(1, 1000);
                 netState1[i][j] = (short) random;
             }
         }

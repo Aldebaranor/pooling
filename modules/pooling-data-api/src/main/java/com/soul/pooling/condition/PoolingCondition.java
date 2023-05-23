@@ -34,6 +34,10 @@ public class PoolingCondition {
     @ConditionOperator(name = "initStatus", operator = ClauseOperator.Equal)
     private Boolean initStatus;
 
+    @Display("kind")
+    @ConditionOperator(name = "kind", operator = ClauseOperator.Equal)
+    private String kind;
+
     @Display("状态")
     @ConditionOperator(name = "activeStatus", operator = ClauseOperator.Equal)
     private Boolean activeStatus;

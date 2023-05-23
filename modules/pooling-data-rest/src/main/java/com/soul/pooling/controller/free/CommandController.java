@@ -76,8 +76,9 @@ public class CommandController {
     @Api
     @PostMapping("/resource")
     public KillingChain getTargetResource(@RequestBody Command command) {
+        return commandService.getTargetResources(command);
 
-        return commandService.getTargetResource(command);
+//        return commandService.getTargetResource(command);
     }
 
 

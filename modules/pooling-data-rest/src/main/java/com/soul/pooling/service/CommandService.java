@@ -16,6 +16,8 @@ public interface CommandService {
 
     KillingChain getTargetResource(Command command);
 
+    KillingChain getTargetResources(Command command);
+
     KillingChain getSearchResource();
 
     List<KillingChain> getKillChain(Command command);

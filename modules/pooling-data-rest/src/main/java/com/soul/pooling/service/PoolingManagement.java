@@ -1,6 +1,7 @@
 package com.soul.pooling.service;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.egova.exception.ExceptionUtils;
 import com.egova.json.utils.JsonUtils;
 import com.egova.redis.RedisUtils;
@@ -70,14 +71,22 @@ public class PoolingManagement {
 
     private NetStatusData netStatusData = new NetStatusData();
 
+    private NetStatusData netLinkData = new NetStatusData();
+
     private Map<String, Long> timeRecords = new HashMap<>();
 
     private Map<String, Long> lastRecords = new HashMap<>();
 
     private Set<String> onLineNodes = new HashSet<>();
 
+    private Short[][] state = new Short[150][150];
+
     public Set<String> getOnLineNodes() {
         return onLineNodes;
+    }
+
+    public void setState(Short[][] arr) {
+        state = arr;
     }
 
     public void setOnLineNodes(String s) {
@@ -112,6 +121,10 @@ public class PoolingManagement {
         return netStatusData;
     }
 
+    public NetStatusData getNetLinkData() {
+        return netLinkData;
+    }
+
     public void setNetData(NetStatusData data) {
         int head = 19020;
         if (metaConfig.getBeNet()) {
@@ -127,16 +140,19 @@ public class PoolingManagement {
                 for (int i = 0; i < index.length; i++) {
                     for (int j = 0; j < index.length; j++) {
                         if (index[i] * index[j] != 0 && index[i] < index.length && index[j] < index.length && index[i] >= -1 && index[j] >= -1) {
-                            res[index[i] - 1][index[j] - 1] = arr[i][j];
+                            res[index[i]][index[j]] = arr[i][j];
                         }
                     }
                 }
+
                 netStatusData.setMgmt_150x150(res);
+
             } else {
                 netStatusData.setTimes(data.getTimes());
                 System.out.println("上下线组网返回时间" + data.getTimes());
                 //重连截止时间
                 Long endTime = System.currentTimeMillis();
+                //TODO:根据id设置endTime
                 timeRecords.put("endTime", endTime);
             }
         } else {
@@ -145,10 +161,54 @@ public class PoolingManagement {
             System.out.println("上下线组网返回时间" + time);
             //重连截止时间
             Long endTime = System.currentTimeMillis();
+            //TODO:根据id设置endTime
             timeRecords.put("endTime", endTime);
         }
         return;
     }
+
+    public void setNetLinkData(NetStatusData data) {
+        int head = 19534;
+        if (metaConfig.getBeNet()) {
+            if (data.getMgmt_head() == head) {
+                Short[] index = data.getMgmt_150();
+                Short[][] arr = data.getMgmt_150x150();
+                Short[][] res = new Short[150][150];
+                for (int i = 0; i < index.length; i++) {
+                    for (int j = 0; j < index.length; j++) {
+                        res[i][j] = -1;
+                    }
+                }
+                for (int i = 0; i < index.length; i++) {
+                    for (int j = 0; j < index.length; j++) {
+                        if (index[i] * index[j] != 0 && index[i] < index.length && index[j] < index.length && index[i] >= -1 && index[j] >= -1) {
+                            res[index[i]][index[j]] = arr[i][j];
+                        }
+                    }
+                }
+
+                netLinkData.setMgmt_150x150(res);
+
+            } else {
+                netLinkData.setTimes(data.getTimes());
+                System.out.println("上下线组网返回时间" + data.getTimes());
+                //重连截止时间
+                Long endTime = System.currentTimeMillis();
+                //TODO:根据id设置endTime
+                timeRecords.put("endTime", endTime);
+            }
+        } else {
+            double time = Math.random() * 10 + 15;
+            netLinkData.setTimes(time);
+            System.out.println("上下线组网返回时间" + time);
+            //重连截止时间
+            Long endTime = System.currentTimeMillis();
+            //TODO:根据id设置endTime
+            timeRecords.put("endTime", endTime);
+        }
+        return;
+    }
+
 
     public Map<String, PlatformStatus> getAll() {
         return forceStatusData;
@@ -494,7 +554,7 @@ public class PoolingManagement {
         if (forceStatusData.containsKey(id)) {
             PlatformStatus forcesStatus = forceStatusData.get(id);
             if (!forcesStatus.getInitStatus()) {
-                throw ExceptionUtils.api(String.format("该兵力未初始化"));
+                throw ExceptionUtils.api(String.format("该兵力未初始化") + id);
             }
             forcesStatus.setActiveStatus(true);
             log.info("--->兵力" + id + "激活成功");
@@ -541,7 +601,7 @@ public class PoolingManagement {
             }
 
         } else {
-            throw ExceptionUtils.api(String.format("该兵力未初始化"));
+            throw ExceptionUtils.api(String.format("该兵力未初始化") + id);
         }
     }
 
@@ -554,10 +614,10 @@ public class PoolingManagement {
         if (forceStatusData.containsKey(id)) {
             PlatformStatus forcesStatus = forceStatusData.get(id);
             if (!forcesStatus.getInitStatus()) {
-                throw ExceptionUtils.api(String.format("该兵力未初始化"));
+                throw ExceptionUtils.api(String.format("该兵力未初始化") + id);
             }
             if (!forcesStatus.getActiveStatus()) {
-                throw ExceptionUtils.api(String.format("该兵力已经注销"));
+                throw ExceptionUtils.api(String.format("该兵力已经注销") + id);
             }
             forcesStatus.setActiveStatus(false);
             forceStatusData.put(id, forcesStatus);
@@ -588,7 +648,7 @@ public class PoolingManagement {
             }
 
         } else {
-            throw ExceptionUtils.api(String.format("该兵力未初始化"));
+            throw ExceptionUtils.api(String.format("该兵力未初始化") + id);
         }
     }
 
@@ -598,8 +658,9 @@ public class PoolingManagement {
      * @param id
      */
     public void deleteForce(String id) {
+
         if (!forceStatusData.containsKey(id)) {
-            throw ExceptionUtils.api(String.format("该兵力未初始化"));
+            throw ExceptionUtils.api(String.format("该兵力未初始化") + id);
         } else {
             PlatformStatus forcesStatus = forceStatusData.get(id);
             forcesStatus.setInitStatus(false);
@@ -642,6 +703,7 @@ public class PoolingManagement {
      * 清除资源库
      */
     public void cleanForce() {
+        onLineNodes.clear();
         forceStatusData.clear();
         platformPool.clear();
         findPool.clear();
@@ -656,10 +718,27 @@ public class PoolingManagement {
     }
 
     public boolean isInited(String id) {
+
         return forceStatusData.containsKey(id);
     }
 
     public Boolean sendActivated(String id) {
+
+        if (org.apache.commons.lang3.StringUtils.equals(id, "42")) {
+            id = "16385";
+        }
+        if (org.apache.commons.lang3.StringUtils.equals(id, "43")) {
+            id = "20481";
+        }
+        if (org.apache.commons.lang3.StringUtils.equals(id, "78")) {
+            id = "2049";
+        }
+        if (org.apache.commons.lang3.StringUtils.equals(id, "79")) {
+            id = "2305";
+        }
+        if (org.apache.commons.lang3.StringUtils.equals(id, "87")) {
+            id = "24577";
+        }
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         ActivatedModel model = new ActivatedModel();
@@ -667,6 +746,8 @@ public class PoolingManagement {
         model.setType("1");
         HttpEntity<Object> request = new HttpEntity<>(model, headers);
         try {
+//            System.out.println("仿真上线节点" + JsonUtils.serialize(model));
+
             ResponseEntity<String> response = restTemplate.postForEntity(poolingConfig.getSimulationUrlHead() + Constants.OPERATE_FORCE_URL, request, String.class);
             if (response.getStatusCode() != HttpStatus.OK) {
                 throw ExceptionUtils.api("仿真引擎未开启");
@@ -679,6 +760,21 @@ public class PoolingManagement {
     }
 
     public Boolean sendDisActivated(String id) {
+        if (org.apache.commons.lang3.StringUtils.equals(id, "42")) {
+            id = "16385";
+        }
+        if (org.apache.commons.lang3.StringUtils.equals(id, "43")) {
+            id = "20481";
+        }
+        if (org.apache.commons.lang3.StringUtils.equals(id, "78")) {
+            id = "2049";
+        }
+        if (org.apache.commons.lang3.StringUtils.equals(id, "79")) {
+            id = "2305";
+        }
+        if (org.apache.commons.lang3.StringUtils.equals(id, "87")) {
+            id = "24577";
+        }
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         ActivatedModel model = new ActivatedModel();
@@ -686,6 +782,7 @@ public class PoolingManagement {
         model.setType("0");
         HttpEntity<Object> request = new HttpEntity<>(model, headers);
         try {
+            System.out.println("仿真下线节点" + JsonUtils.serialize(model));
             ResponseEntity<String> response = restTemplate.postForEntity(poolingConfig.getSimulationUrlHead() + Constants.OPERATE_FORCE_URL, request, String.class);
             if (response.getStatusCode() != HttpStatus.OK) {
                 throw ExceptionUtils.api("仿真引擎未开启");
@@ -704,7 +801,10 @@ public class PoolingManagement {
         netNoticeData.setSign(0);
 
         for (String s : forces) {
-            setOnLineNodes(s);
+            if (metaConfig.getBeNet()) {
+//                setOnLineNodes(s);
+            }
+
             Platform platform = platformService.seekById(s);
             NetPosition position = new NetPosition();
             position.setId(s);
@@ -718,16 +818,30 @@ public class PoolingManagement {
                 position.setLat(moveData.getLat());
                 position.setAlt(moveData.getAlt());
             } else {
+//                System.out.println("收到的ID：" + s);
+//                System.out.println("平台信息" + JsonUtils.serialize(platform));
                 position.setLon(platform.getLon());
                 position.setLat(platform.getLat());
                 position.setAlt(platform.getAlt());
             }
             netPositions.add(position);
+            if (platform.getBeRealEquipment()) {
+                String url = metaConfig.getBusUrl() + "api/register";
+                RestTemplate template = new RestTemplate();
+                JSONObject object = new JSONObject();
+                object.put("number", s);
+                object.put("type", "1");
+                try {
+                    template.postForEntity(url, object, String.class);
+                } catch (Exception e) {
+
+                }
+            }
         }
         netNoticeData.setNodesInfo(netPositions);
         String url = "";
         if (metaConfig.getBeNet()) {
-            url = "http://192.168.1.9:8900/free/pooling/resource/init/position";
+            url = metaConfig.getBusUrl() + "free/pooling/resource/init/position";
             String json = JSON.toJSONString(netNoticeData);
             RestTemplate template = new RestTemplate();
             try {
@@ -736,7 +850,7 @@ public class PoolingManagement {
 
             }
         } else {
-            url = "http://192.168.1.9:8900/api/postTest";
+            url = metaConfig.getBusUrl() + "api/postTest";
             RestTemplate template = new RestTemplate();
             String json = JSON.toJSONString("noNet");
             try {
@@ -745,9 +859,10 @@ public class PoolingManagement {
                 e.printStackTrace();
             }
         }
-        for (String s : forces) {
+        for (String platformId : forces) {
+
             List<String> list = new ArrayList<>();
-            list.add(s);
+            list.add(platformId);
             mqttMsgProducer.producerMsg(poolingConfig.getActivateTopic(), JsonUtils.serialize(list));
             Thread.sleep(1);
         }
@@ -763,16 +878,29 @@ public class PoolingManagement {
         netNoticeData.setSign(1);
 
         for (String platformId : forces) {
+
             //通知下线
             NetPosition position = new NetPosition();
             position.setId(platformId);
             netPositions.add(position);
+            Platform platform = platformService.seekById(platformId);
+            if (platform.getBeRealEquipment()) {
+                String url = metaConfig.getBusUrl() + "api/register";
+                RestTemplate template = new RestTemplate();
+                JSONObject object = new JSONObject();
+                object.put("number", platformId);
+                object.put("type", "1");
+                try {
+                    template.postForEntity(url, object, String.class);
+                } catch (Exception e) {
 
+                }
+            }
         }
         netNoticeData.setNodesInfo(netPositions);
         String url = "";
         if (metaConfig.getBeNet()) {
-            url = "http://192.168.1.9:8900/free/pooling/resource/init/position";
+            url = metaConfig.getBusUrl() + "free/pooling/resource/init/position";
             String json = JSON.toJSONString(netNoticeData);
             RestTemplate template = new RestTemplate();
             try {
@@ -781,7 +909,7 @@ public class PoolingManagement {
 
             }
         } else {
-            url = "http://192.168.1.9:8900/api/postTest";
+            url = metaConfig.getBusUrl() + "api/postTest";
             RestTemplate template = new RestTemplate();
             String json = JSON.toJSONString("noNet");
             try {
@@ -1095,21 +1223,24 @@ public class PoolingManagement {
         List<NetLinkModel> list = new ArrayList<>();
         Short[][] netState = new Short[150][150];
         if (metaConfig.getBeNet()) {
-            netState = getNetData().getMgmt_150x150();
+            netState = getNetLinkData().getMgmt_150x150();
         } else {
-            for (int i = 0; i < 150; i++) {
-                for (int j = 0; j < 150; j++) {
-                    ThreadLocalRandom tlr = ThreadLocalRandom.current();
-                    int random = tlr.nextInt(-1, 1000);
-                    netState[i][j] = (short) random;
-                }
+            if (state != null) {
+                netState = state;
             }
+//            for (int i = 0; i < 150; i++) {
+//                for (int j = 0; j < 150; j++) {
+//                    ThreadLocalRandom tlr = ThreadLocalRandom.current();
+//                    int random = tlr.nextInt(-1, 1000);
+//                    netState[i][j] = (short) random;
+//                }
+//            }
         }
         for (PlatformStatus p : platformList) {
             int cId = Integer.parseInt(p.getPlatformId());
             int rId = Integer.parseInt(platformStatus.getPlatformId());
             short delay = netState[cId][rId];
-            if (cId != rId && delay > 0 && p.getName() != null) {
+            if (cId != rId && delay >= 0 && p.getName() != null) {
                 NetLinkModel n = new NetLinkModel();
                 n.setId(p.getPlatformId());
                 n.setType("0");

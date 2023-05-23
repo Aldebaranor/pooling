@@ -35,6 +35,42 @@ public class CommandServiceImpl implements CommandService {
     @Autowired
     private MetaConfig metaConfig;
 
+    @Override
+    public KillingChain getTargetResources(Command command) {
+        if (command.getType() == 25) {
+            return getSquid();
+        } else if (command.getType() == CommandType.SEARCH.getValue()) {
+            return getSearchResource();
+        }
+        CommandType type = getCommandType(command);
+
+        KillingChain killingChain = new KillingChain();
+        List<ResourceModel> find = new ArrayList<>();
+        List<ResourceModel> fix = new ArrayList<>();
+        List<ResourceModel> track = new ArrayList<>();
+        List<ResourceModel> target = new ArrayList<>();
+        List<ResourceModel> engage = new ArrayList<>();
+        List<ResourceModel> asses = new ArrayList<>();
+
+        find = poolingService.findToList(management.getFindPool(type));
+        fix = poolingService.fixToList(management.getFixPool(type));
+        track = poolingService.trackToList(management.getTrackPool(type));
+        engage = poolingService.engageToList(management.getEngagePool(type));
+        killingChain.setEngage(engage);
+        for (ResourceModel model : getTarget(engage)) {
+            if (!target.contains(model)) {
+                target.add(model);
+            }
+        }
+        asses = poolingService.assesToList(management.getAssesPool(type));
+
+        killingChain.setFind(find);
+        killingChain.setFix(fix);
+        killingChain.setTrack(track);
+        killingChain.setTarget(target);
+        killingChain.setAsses(asses);
+        return killingChain;
+    }
 
     @Override
     public KillingChain getTargetResource(Command command) {
@@ -225,7 +261,18 @@ public class CommandServiceImpl implements CommandService {
             if (find.size() != 0) {
                 killChainFind.add(find.get(0));
             } else {
-
+                //为空就安排一个卫星
+                Find star = management.getFindById("135");
+                ResourceModel model = new ResourceModel();
+                model.setId(star.getId());
+                model.setName(star.getName());
+                model.setDeviceCode(star.getDeviceCode());
+                model.setType(star.getType());
+                model.setPlatformCode(star.getPlatformCode());
+                model.setPlatformName(star.getPlatformName());
+                model.setStatus(star.getStatus());
+                model.setDeviceType(star.getDeviceType());
+                killChainFind.add(model);
             }
 
 //            选择离A点最近的fix
@@ -239,6 +286,18 @@ public class CommandServiceImpl implements CommandService {
             }
             if (fix.size() != 0) {
                 killChainFix.add(fix.get(0));
+            } else {
+                Fix star = management.getFixById("135");
+                ResourceModel model = new ResourceModel();
+                model.setId(star.getId());
+                model.setName(star.getName());
+                model.setDeviceCode(star.getDeviceCode());
+                model.setType(star.getType());
+                model.setPlatformCode(star.getPlatformCode());
+                model.setPlatformName(star.getPlatformName());
+                model.setStatus(star.getStatus());
+                model.setDeviceType(star.getDeviceType());
+                killChainFix.add(model);
             }
 //            选择离A点最近的track
             for (ResourceModel model : getTrack(start, end, command)) {
@@ -251,6 +310,18 @@ public class CommandServiceImpl implements CommandService {
             }
             if (track.size() != 0) {
                 killChainTrack.add(track.get(0));
+            } else {
+                Track star = management.getTrackById("135");
+                ResourceModel model = new ResourceModel();
+                model.setId(star.getId());
+                model.setName(star.getName());
+                model.setDeviceCode(star.getDeviceCode());
+                model.setType(star.getType());
+                model.setPlatformCode(star.getPlatformCode());
+                model.setPlatformName(star.getPlatformName());
+                model.setStatus(star.getStatus());
+                model.setDeviceType(star.getDeviceType());
+                killChainTrack.add(model);
             }
 
 
@@ -332,6 +403,18 @@ public class CommandServiceImpl implements CommandService {
             }
             if (asses.size() != 0) {
                 killChainAsses.add(asses.get(0));
+            } else {
+                Asses star = management.getAssesById("135");
+                ResourceModel model = new ResourceModel();
+                model.setId(star.getId());
+                model.setName(star.getName());
+                model.setDeviceCode(star.getDeviceCode());
+                model.setType(star.getType());
+                model.setPlatformCode(star.getPlatformCode());
+                model.setPlatformName(star.getPlatformName());
+                model.setStatus(star.getStatus());
+                model.setDeviceType(star.getDeviceType());
+                killChainAsses.add(model);
             }
 
 
@@ -773,30 +856,34 @@ public class CommandServiceImpl implements CommandService {
 
         for (Find find : finds) {
             PlatformMoveData moveData = management.getPlatformPool().get(find.getPlatformCode()).getPlatformMoveData();
+            GeometryUtils.Point point = new GeometryUtils.Point();
             if (moveData != null) {
-                GeometryUtils.Point point = moveData2Point(moveData);
-
-                double distance = GeometryUtils.minDistanceFromPointToLine(start, end, point);
-                find.setDistance(distance);
-                if (getCommandType(command).getValue() == 21 && (find.getMaxDetectRangeAir() * 1000 > distance)) {
-                    distance = GeometryUtils.getDistance(start.getX(), start.getY(), point.getX(), point.getY());
-                    find.setDistance(distance);
-                    list.add(find);
-                } else if (getCommandType(command).getValue() == 22 && (find.getMaxDetectRangeSea() * 1000 > distance)) {
-                    distance = GeometryUtils.getDistance(start.getX(), start.getY(), point.getX(), point.getY());
-                    find.setDistance(distance);
-                    list.add(find);
-                } else if (getCommandType(command).getValue() == 23 && (find.getMaxDetectRangeLand() * 1000 > distance)) {
-                    distance = GeometryUtils.getDistance(start.getX(), start.getY(), point.getX(), point.getY());
-                    find.setDistance(distance);
-                    list.add(find);
-                } else if (getCommandType(command).getValue() == 24 && (find.getMaxDetectRangeUnderSea() * 1000 > distance)) {
-                    distance = GeometryUtils.getDistance(start.getX(), start.getY(), point.getX(), point.getY());
-                    find.setDistance(distance);
-                    list.add(find);
-                }
-
+                point = moveData2Point(moveData);
+            } else {
+                point.setX(management.getPlatformPool().get(find.getPlatformCode()).getLon());
+                point.setY(management.getPlatformPool().get(find.getPlatformCode()).getLat());
             }
+            double distance = GeometryUtils.minDistanceFromPointToLine(start, end, point);
+            find.setDistance(distance);
+            if (getCommandType(command).getValue() == 21 && (find.getMaxDetectRangeAir() * 1000 > distance)) {
+                distance = GeometryUtils.getDistance(start.getX(), start.getY(), point.getX(), point.getY());
+                find.setDistance(distance);
+                list.add(find);
+            } else if (getCommandType(command).getValue() == 22 && (find.getMaxDetectRangeSea() * 1000 > distance)) {
+                distance = GeometryUtils.getDistance(start.getX(), start.getY(), point.getX(), point.getY());
+                find.setDistance(distance);
+                list.add(find);
+            } else if (getCommandType(command).getValue() == 23 && (find.getMaxDetectRangeLand() * 1000 > distance)) {
+                distance = GeometryUtils.getDistance(start.getX(), start.getY(), point.getX(), point.getY());
+                find.setDistance(distance);
+                list.add(find);
+            } else if (getCommandType(command).getValue() == 24 && (find.getMaxDetectRangeUnderSea() * 1000 > distance)) {
+                distance = GeometryUtils.getDistance(start.getX(), start.getY(), point.getX(), point.getY());
+                find.setDistance(distance);
+                list.add(find);
+            }
+
+
         }
 
         list.sort(Comparator.comparing(Find::getDistance));
@@ -810,30 +897,34 @@ public class CommandServiceImpl implements CommandService {
 
         for (Fix fix : fixes) {
             PlatformMoveData moveData = management.getPlatformPool().get(fix.getPlatformCode()).getPlatformMoveData();
+            GeometryUtils.Point point = new GeometryUtils.Point();
             if (moveData != null) {
-                GeometryUtils.Point point = moveData2Point(moveData);
-
-                double distance = GeometryUtils.minDistanceFromPointToLine(start, end, point);
-                fix.setDistance(distance);
-                if (getCommandType(command).getValue() == 21 && (fix.getMaxDetectRangeAir() * 1000 > distance)) {
-                    distance = GeometryUtils.getDistance(start.getX(), start.getY(), point.getX(), point.getY());
-                    fix.setDistance(distance);
-                    list.add(fix);
-                } else if (getCommandType(command).getValue() == 22 && (fix.getMaxDetectRangeSea() * 1000 > distance)) {
-                    distance = GeometryUtils.getDistance(start.getX(), start.getY(), point.getX(), point.getY());
-                    fix.setDistance(distance);
-                    list.add(fix);
-                } else if (getCommandType(command).getValue() == 23 && (fix.getMaxDetectRangeLand() * 1000 > distance)) {
-                    distance = GeometryUtils.getDistance(start.getX(), start.getY(), point.getX(), point.getY());
-                    fix.setDistance(distance);
-                    list.add(fix);
-                } else if (getCommandType(command).getValue() == 24 && (fix.getMaxDetectRangeUnderSea() * 1000 > distance)) {
-                    distance = GeometryUtils.getDistance(start.getX(), start.getY(), point.getX(), point.getY());
-                    fix.setDistance(distance);
-                    list.add(fix);
-                }
-
+                point = moveData2Point(moveData);
+            } else {
+                point.setX(management.getPlatformPool().get(fix.getPlatformCode()).getLon());
+                point.setY(management.getPlatformPool().get(fix.getPlatformCode()).getLat());
             }
+            double distance = GeometryUtils.minDistanceFromPointToLine(start, end, point);
+            fix.setDistance(distance);
+            if (getCommandType(command).getValue() == 21 && (fix.getMaxDetectRangeAir() * 1000 > distance)) {
+                distance = GeometryUtils.getDistance(start.getX(), start.getY(), point.getX(), point.getY());
+                fix.setDistance(distance);
+                list.add(fix);
+            } else if (getCommandType(command).getValue() == 22 && (fix.getMaxDetectRangeSea() * 1000 > distance)) {
+                distance = GeometryUtils.getDistance(start.getX(), start.getY(), point.getX(), point.getY());
+                fix.setDistance(distance);
+                list.add(fix);
+            } else if (getCommandType(command).getValue() == 23 && (fix.getMaxDetectRangeLand() * 1000 > distance)) {
+                distance = GeometryUtils.getDistance(start.getX(), start.getY(), point.getX(), point.getY());
+                fix.setDistance(distance);
+                list.add(fix);
+            } else if (getCommandType(command).getValue() == 24 && (fix.getMaxDetectRangeUnderSea() * 1000 > distance)) {
+                distance = GeometryUtils.getDistance(start.getX(), start.getY(), point.getX(), point.getY());
+                fix.setDistance(distance);
+                list.add(fix);
+            }
+
+
         }
 
         list.sort(Comparator.comparing(Fix::getDistance));
@@ -860,30 +951,34 @@ public class CommandServiceImpl implements CommandService {
 
         for (Track track : tracks) {
             PlatformMoveData moveData = management.getPlatformPool().get(track.getPlatformCode()).getPlatformMoveData();
+            GeometryUtils.Point point = new GeometryUtils.Point();
             if (moveData != null) {
-                GeometryUtils.Point point = moveData2Point(moveData);
-
-                double distance = GeometryUtils.minDistanceFromPointToLine(start, end, point);
-                track.setDistance(distance);
-                if (getCommandType(command).getValue() == 21 && (track.getMaxDetectRangeAir() * 1000 > distance)) {
-                    distance = GeometryUtils.getDistance(start.getX(), start.getY(), point.getX(), point.getY());
-                    track.setDistance(distance);
-                    list.add(track);
-                } else if (getCommandType(command).getValue() == 22 && (track.getMaxDetectRangeSea() * 1000 > distance)) {
-                    distance = GeometryUtils.getDistance(start.getX(), start.getY(), point.getX(), point.getY());
-                    track.setDistance(distance);
-                    list.add(track);
-                } else if (getCommandType(command).getValue() == 23 && (track.getMaxDetectRangeLand() * 1000 > distance)) {
-                    distance = GeometryUtils.getDistance(start.getX(), start.getY(), point.getX(), point.getY());
-                    track.setDistance(distance);
-                    list.add(track);
-                } else if (getCommandType(command).getValue() == 24 && (track.getMaxDetectRangeUnderSea() * 1000 > distance)) {
-                    distance = GeometryUtils.getDistance(start.getX(), start.getY(), point.getX(), point.getY());
-                    track.setDistance(distance);
-                    list.add(track);
-                }
-
+                point = moveData2Point(moveData);
+            } else {
+                point.setX(management.getPlatformPool().get(track.getPlatformCode()).getLon());
+                point.setY(management.getPlatformPool().get(track.getPlatformCode()).getLat());
             }
+            double distance = GeometryUtils.minDistanceFromPointToLine(start, end, point);
+            track.setDistance(distance);
+            if (getCommandType(command).getValue() == 21 && (track.getMaxDetectRangeAir() * 1000 > distance)) {
+                distance = GeometryUtils.getDistance(start.getX(), start.getY(), point.getX(), point.getY());
+                track.setDistance(distance);
+                list.add(track);
+            } else if (getCommandType(command).getValue() == 22 && (track.getMaxDetectRangeSea() * 1000 > distance)) {
+                distance = GeometryUtils.getDistance(start.getX(), start.getY(), point.getX(), point.getY());
+                track.setDistance(distance);
+                list.add(track);
+            } else if (getCommandType(command).getValue() == 23 && (track.getMaxDetectRangeLand() * 1000 > distance)) {
+                distance = GeometryUtils.getDistance(start.getX(), start.getY(), point.getX(), point.getY());
+                track.setDistance(distance);
+                list.add(track);
+            } else if (getCommandType(command).getValue() == 24 && (track.getMaxDetectRangeUnderSea() * 1000 > distance)) {
+                distance = GeometryUtils.getDistance(start.getX(), start.getY(), point.getX(), point.getY());
+                track.setDistance(distance);
+                list.add(track);
+            }
+
+
         }
 
         list.sort(Comparator.comparing(Track::getDistance));
@@ -896,30 +991,35 @@ public class CommandServiceImpl implements CommandService {
 
         for (Asses asses : assesList) {
             PlatformMoveData moveData = management.getPlatformPool().get(asses.getPlatformCode()).getPlatformMoveData();
+            GeometryUtils.Point point = new GeometryUtils.Point();
             if (moveData != null) {
-                GeometryUtils.Point point = moveData2Point(moveData);
-
-                double distance = GeometryUtils.minDistanceFromPointToLine(start, end, point);
-                asses.setDistance(distance);
-                if (getCommandType(command).getValue() == 21 && (asses.getMaxDetectRangeAir() * 1000 > distance)) {
-                    distance = GeometryUtils.getDistance(end.getX(), end.getY(), point.getX(), point.getY());
-                    asses.setDistance(distance);
-                    list.add(asses);
-                } else if (getCommandType(command).getValue() == 22 && (asses.getMaxDetectRangeSea() * 1000 > distance)) {
-                    distance = GeometryUtils.getDistance(end.getX(), end.getY(), point.getX(), point.getY());
-                    asses.setDistance(distance);
-                    list.add(asses);
-                } else if (getCommandType(command).getValue() == 23 && (asses.getMaxDetectRangeLand() * 1000 > distance)) {
-                    distance = GeometryUtils.getDistance(end.getX(), end.getY(), point.getX(), point.getY());
-                    asses.setDistance(distance);
-                    list.add(asses);
-                } else if (getCommandType(command).getValue() == 24 && (asses.getMaxDetectRangeUnderSea() * 1000 > distance)) {
-                    distance = GeometryUtils.getDistance(end.getX(), end.getY(), point.getX(), point.getY());
-                    asses.setDistance(distance);
-                    list.add(asses);
-                }
-
+                point = moveData2Point(moveData);
+            } else {
+                point.setX(management.getPlatformPool().get(asses.getPlatformCode()).getLon());
+                point.setY(management.getPlatformPool().get(asses.getPlatformCode()).getLat());
             }
+
+            double distance = GeometryUtils.minDistanceFromPointToLine(start, end, point);
+            asses.setDistance(distance);
+            if (getCommandType(command).getValue() == 21 && (asses.getMaxDetectRangeAir() * 1000 > distance)) {
+                distance = GeometryUtils.getDistance(end.getX(), end.getY(), point.getX(), point.getY());
+                asses.setDistance(distance);
+                list.add(asses);
+            } else if (getCommandType(command).getValue() == 22 && (asses.getMaxDetectRangeSea() * 1000 > distance)) {
+                distance = GeometryUtils.getDistance(end.getX(), end.getY(), point.getX(), point.getY());
+                asses.setDistance(distance);
+                list.add(asses);
+            } else if (getCommandType(command).getValue() == 23 && (asses.getMaxDetectRangeLand() * 1000 > distance)) {
+                distance = GeometryUtils.getDistance(end.getX(), end.getY(), point.getX(), point.getY());
+                asses.setDistance(distance);
+                list.add(asses);
+            } else if (getCommandType(command).getValue() == 24 && (asses.getMaxDetectRangeUnderSea() * 1000 > distance)) {
+                distance = GeometryUtils.getDistance(end.getX(), end.getY(), point.getX(), point.getY());
+                asses.setDistance(distance);
+                list.add(asses);
+            }
+
+
         }
 
         list.sort(Comparator.comparing(Asses::getDistance));
@@ -932,30 +1032,34 @@ public class CommandServiceImpl implements CommandService {
 
         for (Engage engage : engages) {
             PlatformMoveData moveData = management.getPlatformPool().get(engage.getPlatformCode()).getPlatformMoveData();
+            GeometryUtils.Point point = new GeometryUtils.Point();
             if (moveData != null) {
-                GeometryUtils.Point point = moveData2Point(moveData);
-
-                double distance = GeometryUtils.minDistanceFromPointToLine(start, end, point);
-                engage.setDistance(distance);
-                if (getCommandType(command).getValue() == 21 && (engage.getMaxFireRangeAir() * 1000 > distance)) {
-                    distance = GeometryUtils.getDistance(start.getX(), start.getY(), point.getX(), point.getY());
-                    engage.setDistance(distance);
-                    list.add(engage);
-                } else if (getCommandType(command).getValue() == 22 && (engage.getMaxFireRangeSea() * 1000 > distance)) {
-                    distance = GeometryUtils.getDistance(start.getX(), start.getY(), point.getX(), point.getY());
-                    engage.setDistance(distance);
-                    list.add(engage);
-                } else if (getCommandType(command).getValue() == 23 && (engage.getMaxFireRangeLand() * 1000 > distance)) {
-                    distance = GeometryUtils.getDistance(start.getX(), start.getY(), point.getX(), point.getY());
-                    engage.setDistance(distance);
-                    list.add(engage);
-                } else if (getCommandType(command).getValue() == 24 && (engage.getMaxFireRangeUnderSea() * 1000 > distance)) {
-                    distance = GeometryUtils.getDistance(start.getX(), start.getY(), point.getX(), point.getY());
-                    engage.setDistance(distance);
-                    list.add(engage);
-                }
-
+                point = moveData2Point(moveData);
+            } else {
+                point.setX(management.getPlatformPool().get(engage.getPlatformCode()).getLon());
+                point.setY(management.getPlatformPool().get(engage.getPlatformCode()).getLat());
             }
+            double distance = GeometryUtils.minDistanceFromPointToLine(start, end, point);
+            engage.setDistance(distance);
+            if (getCommandType(command).getValue() == 21 && (engage.getMaxFireRangeAir() * 1000 > distance)) {
+                distance = GeometryUtils.getDistance(start.getX(), start.getY(), point.getX(), point.getY());
+                engage.setDistance(distance);
+                list.add(engage);
+            } else if (getCommandType(command).getValue() == 22 && (engage.getMaxFireRangeSea() * 1000 > distance)) {
+                distance = GeometryUtils.getDistance(start.getX(), start.getY(), point.getX(), point.getY());
+                engage.setDistance(distance);
+                list.add(engage);
+            } else if (getCommandType(command).getValue() == 23 && (engage.getMaxFireRangeLand() * 1000 > distance)) {
+                distance = GeometryUtils.getDistance(start.getX(), start.getY(), point.getX(), point.getY());
+                engage.setDistance(distance);
+                list.add(engage);
+            } else if (getCommandType(command).getValue() == 24 && (engage.getMaxFireRangeUnderSea() * 1000 > distance)) {
+                distance = GeometryUtils.getDistance(start.getX(), start.getY(), point.getX(), point.getY());
+                engage.setDistance(distance);
+                list.add(engage);
+            }
+
+
         }
 
         list.sort(Comparator.comparing(Engage::getDistance));

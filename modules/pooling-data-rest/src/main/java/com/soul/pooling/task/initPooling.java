@@ -9,6 +9,8 @@ import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 /**
  * @Author: Song
  * @Date 2022/9/30 14:59
@@ -23,8 +25,13 @@ public class initPooling implements ApplicationRunner {
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
+        List<String> list = metaConfig.getForcesList();
         if (metaConfig.getBeTest()) {
             for (int i = 2; i <= 107; i++) {
+                if (list.contains(String.valueOf(i))) {
+
+                    continue;
+                }
                 management.initForce(String.valueOf(i));
                 initPooling(String.valueOf(i));
             }
@@ -35,10 +42,10 @@ public class initPooling implements ApplicationRunner {
     public void initPooling(String platformId) {
         PlatformStatus forcesData = management.getForcesData(platformId);
         if (forcesData == null) {
-            throw ExceptionUtils.api(String.format("该兵力未注册"));
+            throw ExceptionUtils.api(String.format("该兵力未注册") + platformId);
         }
         if (!forcesData.getInitStatus()) {
-            throw ExceptionUtils.api(String.format("该兵力未初始化"));
+            throw ExceptionUtils.api(String.format("该兵力未初始化") + platformId);
         }
 
         forcesData.setActiveStatus(true);
